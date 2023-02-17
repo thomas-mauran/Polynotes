@@ -20,9 +20,12 @@ import StarIcon from "@mui/icons-material/Star";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { Avatar, Divider, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 
-// Style
+import "./style.css";
+
+const drawerWidth = 240;
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -56,27 +59,24 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
   },
+  width: "100%",
 }));
 
 // Nav bar
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [sidebarAnchorEl, sidebarSetAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isSidebarOpen = Boolean(sidebarAnchorEl);
+  const isSidebarOpen = Boolean(sidebarOpen);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleSidebarMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    sidebarSetAnchorEl(event.currentTarget);
+    setSidebarOpen(true);
   };
 
   const handleMenuClose = () => {
@@ -84,7 +84,7 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleSidebarMenuClose = () => {
-    sidebarSetAnchorEl(null);
+    setSidebarOpen(false);
   };
 
   const menuId = "primary-search-account-menu";
@@ -137,31 +137,29 @@ export default function PrimarySearchAppBar() {
     },
   ];
 
-  const SideList = () => (
-    <Menu open={isSidebarOpen} onClose={handleSidebarMenuClose}>
-      <Box>
-        <List>
-          {listItems.map((listItem, index) => (
-            <ListItem button key={index}>
-              <ListItemIcon>{listItem.listIcon}</ListItemIcon>
-              <ListItemText primary={listItem.listText} />
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-    </Menu>
+  const sideList = () => (
+    <Box sx={{overflow: "auto"}}>
+      <List>
+        {listItems.map((listItem, index) => (
+          <ListItem button key={index}>
+            <ListItemIcon>{listItem.listIcon}</ListItemIcon>
+            <ListItemText primary={listItem.listText} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   );
 
-  const StyledSideList = styled(SideList)(({ theme }) => ({
-    width: 250,
-    background: "#511",
-    height: "100vh",
-    backgroundColor: "red",
-  }));
+  //   const StyledSideList = styled(SideList)(({ theme }) => ({
+  //     width: 250,
+  //     background: "#511",
+  //     height: "100vh",
+  //     backgroundColor: "red",
+  //   }));
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }} onClick={handleSidebarMenuOpen}>
             <MenuIcon />
@@ -184,7 +182,17 @@ export default function PrimarySearchAppBar() {
         </Toolbar>
       </AppBar>
       {renderMenu}
-      {<StyledSideList />}
+      <Drawer
+        open={isSidebarOpen}
+        anchor="left"
+        onClose={handleSidebarMenuClose}
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: "border-box" },
+        }}>
+        {sideList()}
+      </Drawer>
     </Box>
   );
 }
