@@ -3,6 +3,11 @@ export default function WorkspaceView() {
     <div>
       <h1>Workspace</h1>
       <h1>Workspace</h1>
+      <h1>Workspace</h1>
+      <h1>Workspace</h1>
+      <h1>Workspace</h1>
+      <h1>Workspace</h1>
+      <h1>Workspace</h1>
     </div>
   );
 }

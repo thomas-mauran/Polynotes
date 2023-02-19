@@ -1,0 +1,11 @@
+.box{
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.image{
+    width: 600px;
+}
