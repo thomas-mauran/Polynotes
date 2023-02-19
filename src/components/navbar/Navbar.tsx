@@ -22,9 +22,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 
+import { Link, Route, Router } from "react-router-dom";
+
 import "./style.css";
+import { useTheme } from "@emotion/react";
 
 const drawerWidth = 240;
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -65,6 +69,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 // Nav bar
 export default function PrimarySearchAppBar() {
+
+  const theme = useTheme()
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
 
@@ -114,37 +121,45 @@ export default function PrimarySearchAppBar() {
     {
       listIcon: <AddIcon />,
       listText: "Create",
+      link: "/create",
     },
     {
       listIcon: <HomeIcon />,
       listText: "My workspace",
+      link: "/workspace",
     },
     {
       listIcon: <SharedIcon />,
       listText: "Shared with me",
+      link: "/shared",
     },
     {
       listIcon: <RestoreIcon />,
       listText: "Recent",
+      link: "/recent",
     },
     {
       listIcon: <StarIcon />,
       listText: "Stared",
+      link: "/stared",
     },
     {
       listIcon: <DeleteIcon />,
       listText: "Trash",
+      link: "/trash",
     },
   ];
 
   const sideList = () => (
-    <Box sx={{overflow: "auto"}}>
-      <List>
+    <Box sx={{ overflow: "auto" }}>
+      <List >
         {listItems.map((listItem, index) => (
-          <ListItem button key={index}>
-            <ListItemIcon>{listItem.listIcon}</ListItemIcon>
-            <ListItemText primary={listItem.listText} />
-          </ListItem>
+          <Link to={listItem.link}>
+            <ListItem button key={index}>
+              <ListItemIcon>{listItem.listIcon}</ListItemIcon>
+              <ListItemText primary={listItem.listText} />
+            </ListItem>
+          </Link>
         ))}
       </List>
     </Box>
