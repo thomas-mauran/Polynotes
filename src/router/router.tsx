@@ -24,11 +24,11 @@ function AppLayout(){
 
 const Router = createBrowserRouter(
   createRoutesFromElements(
-    <Route>
+    <Route errorElement={<NotFoundView />}>
       <Route path="login" element={<LoginView />} />
       <Route path="signup" element={<SignupView />} />
       <Route path="cgu" element={<CguView />} />
-      <Route path="/" element={<AppLayout />} errorElement={<NotFoundView />}>
+      <Route path="/" element={<AppLayout />} >
         <Route path="/workspace" element={<WorkspaceView />} />
       </Route>
     </Route>
