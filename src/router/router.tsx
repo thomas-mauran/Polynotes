@@ -1,25 +1,36 @@
 import React from "react";
-import { createBrowserRouter, createRoutesFromElements, Outlet, Route } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Outlet, Route, Navigate } from "react-router-dom";
 
 import Navbar from "../components/navbar/Navbar";
 import NotFoundView from "../views/NotFound/NotFoundView";
 
 import WorkspaceView from "../views/Workspace/WorkspaceView";
 import LoginView from "../views/Login/LoginView";
+import SignupView from "../views/Signup/SignupView";
+import CguView from "../views/CGU/CguView";
 
-const AppLayout = () => (
-  <>
+function AppLayout(){
+  // Todo check if login 
+  // if (!isAuth) return <Navigate to="/login" />
+
+  return(
+    <>
     <Navbar />
-    <Outlet/>
+    <Outlet />
   </>
-);
+  )
+
+}
 
 const Router = createBrowserRouter(
   createRoutesFromElements(
-    <Route element={<AppLayout />} errorElement={<NotFoundView />}>
-      <Route path="/" element={<WorkspaceView />} />
-      <Route path="/login" element={<LoginView />} />
-      <Route path="/workspace" element={<WorkspaceView />} />
+    <Route>
+      <Route path="login" element={<LoginView />} />
+      <Route path="signup" element={<SignupView />} />
+      <Route path="cgu" element={<CguView />} />
+      <Route path="/" element={<AppLayout />} errorElement={<NotFoundView />}>
+        <Route path="/workspace" element={<WorkspaceView />} />
+      </Route>
     </Route>
   )
 );
