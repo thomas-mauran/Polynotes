@@ -174,7 +174,7 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar position="static" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, boxShadow: "none"}} color="transparent">
         <Toolbar>
           <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }} onClick={handleSidebarMenuOpen}>
             <MenuIcon />

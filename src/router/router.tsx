@@ -8,6 +8,7 @@ import WorkspaceView from "../views/Workspace/WorkspaceView";
 import LoginView from "../views/Login/LoginView";
 import SignupView from "../views/Signup/SignupView";
 import CguView from "../views/CGU/CguView";
+import PageView from "../views/Page/PageView";
 
 function AppLayout(){
   // Todo check if login 
@@ -30,6 +31,8 @@ const Router = createBrowserRouter(
       <Route path="cgu" element={<CguView />} />
       <Route path="/" element={<AppLayout />} >
         <Route path="/workspace" element={<WorkspaceView />} />
+        <Route path="page" element={<PageView />} />
+
       </Route>
     </Route>
   )
