@@ -13,7 +13,9 @@ export default function PageView() {
 
   // const blocks: any[] = ['test']
 
-  const [blocks, setBlocks] = useState(["first", "second"]);
+  const [blocks, setBlocks] = useState(
+    [{html: '', type: "p"}]
+    );
 
   const [helperState, setHelperState] = useState({
     helperOpen: false,
@@ -23,7 +25,6 @@ export default function PageView() {
     },
   });
 
-  const lastBlockRef = useRef();
 
   // useEffect(() => {
   //   const selection = window.getSelection();
@@ -69,15 +70,15 @@ export default function PageView() {
     }));
   };
 
-  const handleCreateNewBlock = () => {
-    const newList = [...blocks, ""];
+  const handleCreateNewBlock = (blockType = 'p') => {
+    const newList = [...blocks, {html: '', type: blockType}];
     setBlocks(newList);
   };
 
   const handleUpdateHtml = (index, html) => {
     console.log(index)
     const newBlockList = blocks
-    newBlockList[index] = html
+    newBlockList[index].html = html
     setBlocks(newBlockList);
   };
 
@@ -87,7 +88,7 @@ export default function PageView() {
 
   const blockElements = blocks.map((item, index) => {
     return <Block key={index} 
-    defaultValue={item} 
+    defaultValue={item.html} 
     onEnter={handleCreateNewBlock} 
     onSlash={handleOpen} 
     index={index} 

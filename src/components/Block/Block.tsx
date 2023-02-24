@@ -20,7 +20,7 @@ export default function Block(props) {
     }
     if (e.key === "Enter") {
       e.preventDefault();
-      props.onEnter(true);
+      props.onEnter('p');
     }
     if (e.key === "ArrowUp") {
       e.preventDefault();
