@@ -78,6 +78,6 @@ export default function Block(props) {
   };
 
   return (
-      <ContentEditable className={props.className} innerRef={ref} html={state.html} onChange={handleChange} onKeyDown={handleKeyDown} onClick={handleClick} style={{width: "100%"}}/>
+      <ContentEditable spellCheck={false} className={props.className} innerRef={ref} html={state.html} onChange={handleChange} onKeyDown={handleKeyDown} onClick={handleClick} style={{width: "100%", fontFamily: '"Roboto","Helvetica","Arial",sans-serif', outline: "0px solid transparent"}}/>
   );
 }

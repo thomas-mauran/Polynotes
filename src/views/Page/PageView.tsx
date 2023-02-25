@@ -1,12 +1,18 @@
-import styled from "@emotion/styled";
+// MUI
 import { Box, Container, IconButton, Menu, MenuItem } from "@mui/material";
-import React, { useRef } from "react";
-import { useEffect, useState } from "react";
-import Block from "../../components/Block/Block";
-import Draggable from "react-draggable";
 
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+// Style
+import styled from "@emotion/styled";
+import { useState } from "react";
+import Block from "../../components/Block/Block";
+
+import Board from "react-trello";
+// Delete line
 import DeleteIcon from "@mui/icons-material/Delete";
+
+// Draglines
+import Draggable from "react-draggable";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import "./blockStyle.css";
 import "./style.css";
 
@@ -20,7 +26,7 @@ export default function PageView() {
   `;
 
   const [blocks, setBlocks] = useState({
-    list: [{ html: 'Press "/" to open the block menu', type: "p" }],
+    list: [{ html: "Press / to open the block menu", type: "p" }, ],
     focusIndex: 0,
   });
 
@@ -56,8 +62,14 @@ export default function PageView() {
   };
 
   const handleCreateNewBlock = (blockType = "p") => {
-    const newList = blocks.list
-    newList.splice(blocks.focusIndex + 1 , 0, { html: "", type: blockType })
+    const newList = blocks.list;
+    let html = ''
+
+    if(blockType === 'trello'){
+      html = {lanes: []}
+    }
+    newList.splice(blocks.focusIndex + 1, 0, { html: html, type: blockType });
+
     setBlocks((prevState) => ({
       list: newList,
       focusIndex: prevState.focusIndex + 1,
@@ -66,10 +78,8 @@ export default function PageView() {
 
   const handleUpdateHtml = (index, html) => {
     // setBlockFocus((focus) => focus += 1)
-    console.log(html);
     const newBlockList = blocks.list;
     newBlockList[index].html = html;
-    console.log(newBlockList);
 
     setBlocks((prevState) => ({
       ...prevState,
@@ -115,41 +125,105 @@ export default function PageView() {
     }
   };
 
+  const data = {
+    // lanes: [
+      // {
+      //   id: "lane1",
+      //   title: "Planned Tasks",
+      //   label: "2/2",
+      //   cards: [
+      //     {
+      //       id: "Card1",
+      //       title: "Write Blog",
+      //       description: "Can AI make memes",
+      //       label: "30 mins",
+      //     },
+      //     {
+      //       id: "Card2",
+      //       title: "Pay Rent",
+      //       description: "Transfer via NEFT",
+      //       label: "5 mins",
+      //       metadata: { sha: "be312a1" },
+
+      //     },
+      //   ],
+      //   style: {
+      //     width: 300,
+      //   },
+      // },
+      
+    // ],
+
+  };
+
   const blockElements = blocks.list.map((item, index) => {
     const isCurrentBlockFocused = index == blocks.focusIndex;
     if (isCurrentBlockFocused) {
       console.log(index);
     }
-    return (
-      // <Draggable axis="y" grid={[50, 45]}>
-      <Box className="draggableBox">
-        <Box className="lineOptions">
-          <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px" }}>
-            <DeleteIcon />
-          </IconButton>
-          <DragIndicatorIcon />
-        </Box>
 
-        <Block
-          key={index}
-          defaultValue={item.html}
-          onEnter={handleCreateNewBlock}
-          onSlash={handleOpenMenu}
-          index={index}
-          onChange={handleUpdateHtml}
-          onArrowUp={handleArrowUp}
-          onArrowDown={handleArrowDown}
-          className={item.type}
-          isFocused={isCurrentBlockFocused}
-          onClickFocus={handleClickFocus}></Block>
-      </Box>
-      // </Draggable> */}
-    );
+    if (item.type === "trello") {
+      return (
+        // <Draggable axis="y" grid={[50, 45]}>
+        <Box className="draggableBox">
+          <Box className="lineOptions">
+            <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <DeleteIcon />
+            </IconButton>
+            <DragIndicatorIcon />
+          </Box>
+          <Board
+            data={item.html}
+            style={{
+              backgroundColor: "transparent",
+              padding: "30px 20px",
+              height: "100%",
+              fontFamily: '"Roboto","Helvetica","Arial",sans-serif'
+            }}
+            draggable
+            editable
+            id="EditableBoard1"
+            onCardAdd={function noRefCheck(){}}
+            onCardClick={function noRefCheck(){}}
+            onCardDelete={function noRefCheck(){}}
+            onDataChange={function noRefCheck(){}}
+            canAddLanes
+          />
+        </Box>
+        // </Draggable> */}
+      );
+    } else {
+      return (
+        // <Draggable axis="y" grid={[50, 45]}>
+        <Box className="draggableBox">
+          <Box className="lineOptions">
+            <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <DeleteIcon />
+            </IconButton>
+            <DragIndicatorIcon />
+          </Box>
+
+          <Block
+            key={index}
+            defaultValue={item.html}
+            onEnter={handleCreateNewBlock}
+            onSlash={handleOpenMenu}
+            index={index}
+            onChange={handleUpdateHtml}
+            onArrowUp={handleArrowUp}
+            onArrowDown={handleArrowDown}
+            className={item.type}
+            isFocused={isCurrentBlockFocused}
+            onClickFocus={handleClickFocus}></Block>
+        </Box>
+        // </Draggable> */}
+      );
+    }
   });
 
   return (
     <Container fixed>
-      <MainBox id="mainBlock" sx={{ margin: "20px 200px" }}>
+      <MainBox id="mainBlock">
         <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={helperState.helperOpen} anchorPosition={helperState.helperPosition} onClose={handleCloseMenu}>
           <MenuItem id="h1" onClick={handleClickMenu}>
             h1
@@ -162,6 +236,9 @@ export default function PageView() {
           </MenuItem>
           <MenuItem id="p" onClick={handleClickMenu}>
             paragraph
+          </MenuItem>
+          <MenuItem id="trello" onClick={handleClickMenu}>
+            trello
           </MenuItem>
         </Menu>
         {/* <Block onEnter={handleCreateNewBlock}/> */}

@@ -15,3 +15,16 @@
     opacity: 0.3;
     visibility: hidden;
 }
+/* 
+.smooth-dnd-draggable-wrapper{
+    background-color: red;
+    width: 100px !important;
+    height: 100px !important;
+    font-size: 0.5m !important;
+
+}
+
+.react-trello-card{
+    width: 100% !important;
+    min-width: 100px !important;
+} */
