@@ -47,8 +47,6 @@ export default function Block(props) {
   };
 
   return (
-    <Box>
-      <ContentEditable innerRef={ref} html={state.html} onChange={handleChange} onKeyDown={handleKeyDown} style={{ fontSize: "1.3em" }} />
-    </Box>
+      <ContentEditable className={props.className} innerRef={ref} html={state.html} onChange={handleChange} onKeyDown={handleKeyDown} />
   );
 }

@@ -4,17 +4,21 @@ import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import Block from "../../components/Block/Block";
+
+import './blockStyle.css'
+
 export default function PageView() {
-  const Box = styled.html`
+  const Box = styled.div`
     width: 100%%;
     min-width: 200px;
     margin: 5% 20%;
   `;
 
+
   // const blocks: any[] = ['test']
 
   const [blocks, setBlocks] = useState(
-    [{html: '', type: "p"}]
+    [{html: 'asda', type: "p"}]
     );
 
   const [helperState, setHelperState] = useState({
@@ -50,10 +54,8 @@ export default function PageView() {
 
   // Functions
   const handleClickMenu = (e) => {
-    setHelperState((prevState) => ({
-      ...prevState,
-      helperOpen: false,
-    }));
+    handleCreateNewBlock(e.target.id)
+    handleClose()
   };
 
   const handleOpen = () => {
@@ -94,6 +96,7 @@ export default function PageView() {
     index={index} 
     onChange={handleUpdateHtml}
     onArrowUp={handleArrowUp}
+    className={item.type}
     ></Block>;
   });
 
@@ -101,17 +104,17 @@ export default function PageView() {
     <Container fixed>
       <Box id="mainBlock">
         <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={helperState.helperOpen} anchorPosition={helperState.helperPosition} onClose={handleClose}>
+          <MenuItem id="h1" onClick={handleClickMenu}>
+            h1
+          </MenuItem>
           <MenuItem id="h2" onClick={handleClickMenu}>
-            H1
+            h2
           </MenuItem>
           <MenuItem id="h3" onClick={handleClickMenu}>
-            H2
-          </MenuItem>
-          <MenuItem id="h4" onClick={handleClickMenu}>
             h3
           </MenuItem>
-          <MenuItem id="h6" onClick={handleClickMenu}>
-            normal text
+          <MenuItem id="p" onClick={handleClickMenu}>
+            paragraph
           </MenuItem>
         </Menu>
         {/* <Block onEnter={handleCreateNewBlock}/> */}
