@@ -154,7 +154,7 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ overflow: "auto" }}>
       <List >
         {listItems.map((listItem, index) => (
-          <Link to={listItem.link}>
+          <Link to={listItem.link} key={index}>
             <ListItem button key={index}>
               <ListItemIcon>{listItem.listIcon}</ListItemIcon>
               <ListItemText primary={listItem.listText} />
