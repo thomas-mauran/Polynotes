@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import Block from "../../components/Block/Block";
 
-import './blockStyle.css'
+import "./blockStyle.css";
 
 export default function PageView() {
   const Box = styled.div`
@@ -14,12 +14,14 @@ export default function PageView() {
     margin: 5% 20%;
   `;
 
-
   // const blocks: any[] = ['test']
 
-  const [blocks, setBlocks] = useState(
-    [{html: 'asda', type: "p"}]
-    );
+  const [blocks, setBlocks] = useState({
+    list: [{ html: 'Press "/" to open the block menu', type: "p" }],
+    focusIndex: 0
+  });
+
+  // const [blockFocus, setBlockFocus] = useState(0)
 
   const [helperState, setHelperState] = useState({
     helperOpen: false,
@@ -28,7 +30,6 @@ export default function PageView() {
       left: 0,
     },
   });
-
 
   // useEffect(() => {
   //   const selection = window.getSelection();
@@ -50,15 +51,19 @@ export default function PageView() {
   //     }
   //   }
   // }, [helperState.helperOpen]);
-
+  
+  // useEffect(()=> {
+  //   console.log("number has changed", blocks.focusIndex)
+  // }, [blocks])
 
   // Functions
   const handleClickMenu = (e) => {
-    handleCreateNewBlock(e.target.id)
-    handleClose()
+    handleCreateNewBlock(e.target.id);
+    handleClose();
   };
 
   const handleOpen = () => {
+    console.log("test");
     setHelperState((prevState) => ({
       ...prevState,
       helperOpen: true,
@@ -72,32 +77,59 @@ export default function PageView() {
     }));
   };
 
-  const handleCreateNewBlock = (blockType = 'p') => {
-    const newList = [...blocks, {html: '', type: blockType}];
-    setBlocks(newList);
+  const handleCreateNewBlock = (blockType = "p") => {
+    const newList = [...blocks.list, { html: "", type: blockType }];
+    setBlocks((prevState) => ({
+      list: newList,
+      focusIndex: prevState.focusIndex + 1
+    }));
   };
 
   const handleUpdateHtml = (index, html) => {
-    console.log(index)
-    const newBlockList = blocks
-    newBlockList[index].html = html
-    setBlocks(newBlockList);
+    // setBlockFocus((focus) => focus += 1)
+    console.log(html)
+    const newBlockList = blocks.list;
+    newBlockList[index].html = html;
+    console.log(newBlockList)
+
+    setBlocks((prevState) => ({
+      ...prevState,
+      list: newBlockList,
+    }));
   };
 
-  const handleArrowUp = () =>{
-    //todo
-  }
+  const handleArrowUp = (index: number) => {
+    if (index > 0) {
+      setBlocks((prevState) => ({
+        ...prevState,
+        focusIndex: prevState.focusIndex - 1,
+      }));
+    }
+  };
 
-  const blockElements = blocks.map((item, index) => {
+  const handleArrowDown = (index: number) => {
+    if (index < blocks.list.length - 1) {
+      setBlocks((prevState) => ({
+        ...prevState,
+        focusIndex: prevState.focusIndex + 1,
+      }));
+    }
+  };
+
+  const blockElements = blocks.list.map((item, index) => {
+    const isCurrentBlockFocused = index == blocks.focusIndex;
+    console.log(blocks.focusIndex);
+
     return <Block key={index} 
     defaultValue={item.html} 
     onEnter={handleCreateNewBlock} 
     onSlash={handleOpen} 
     index={index} 
-    onChange={handleUpdateHtml}
-    onArrowUp={handleArrowUp}
-    className={item.type}
-    ></Block>;
+    onChange={handleUpdateHtml} 
+    onArrowUp={handleArrowUp} 
+    onArrowDown={handleArrowDown} 
+    className={item.type} 
+    isFocused={isCurrentBlockFocused}></Block>;
   });
 
   return (
