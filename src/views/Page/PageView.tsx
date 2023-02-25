@@ -1,24 +1,27 @@
 import styled from "@emotion/styled";
-import { Box, Container, Menu, MenuItem } from "@mui/material";
+import { Box, Container, IconButton, Menu, MenuItem } from "@mui/material";
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
 import Block from "../../components/Block/Block";
+import Draggable from "react-draggable";
 
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import DeleteIcon from "@mui/icons-material/Delete";
 import "./blockStyle.css";
+import "./style.css";
 
 export default function PageView() {
-  const Box = styled.div`
+  // const blocks: any[] = ['test']
+
+  const MainBox = styled.div`
     width: 100%%;
     min-width: 200px;
     margin: 5% 20%;
   `;
 
-  // const blocks: any[] = ['test']
-
   const [blocks, setBlocks] = useState({
     list: [{ html: 'Press "/" to open the block menu', type: "p" }],
-    focusIndex: 0
+    focusIndex: 0,
   });
 
   // const [blockFocus, setBlockFocus] = useState(0)
@@ -31,38 +34,13 @@ export default function PageView() {
     },
   });
 
-  // useEffect(() => {
-  //   const selection = window.getSelection();
-  //   if (selection?.rangeCount !== 0) {
-  //     const range = selection?.getRangeAt(0).cloneRange();
-  //     range?.collapse(true);
-  //     const rect = range?.getClientRects()[0];
-  //     if (rect) {
-  //       const left = rect.left ? rect.left : 0;
-  //       const top = rect.top ? rect.top : 0;
-  //       const newPos = {
-  //         top: top,
-  //         left: left,
-  //       };
-  //       setHelperState((prevState) => ({
-  //         ...prevState,
-  //         helperPosition: newPos,
-  //       }));
-  //     }
-  //   }
-  // }, [helperState.helperOpen]);
-  
-  // useEffect(()=> {
-  //   console.log("number has changed", blocks.focusIndex)
-  // }, [blocks])
-
   // Functions
   const handleClickMenu = (e) => {
     handleCreateNewBlock(e.target.id);
-    handleClose();
+    handleCloseMenu();
   };
 
-  const handleOpen = () => {
+  const handleOpenMenu = () => {
     console.log("test");
     setHelperState((prevState) => ({
       ...prevState,
@@ -70,7 +48,7 @@ export default function PageView() {
     }));
   };
 
-  const handleClose = () => {
+  const handleCloseMenu = () => {
     setHelperState((prevState) => ({
       ...prevState,
       helperOpen: false,
@@ -78,19 +56,20 @@ export default function PageView() {
   };
 
   const handleCreateNewBlock = (blockType = "p") => {
-    const newList = [...blocks.list, { html: "", type: blockType }];
+    const newList = blocks.list
+    newList.splice(blocks.focusIndex + 1 , 0, { html: "", type: blockType })
     setBlocks((prevState) => ({
       list: newList,
-      focusIndex: prevState.focusIndex + 1
+      focusIndex: prevState.focusIndex + 1,
     }));
   };
 
   const handleUpdateHtml = (index, html) => {
     // setBlockFocus((focus) => focus += 1)
-    console.log(html)
+    console.log(html);
     const newBlockList = blocks.list;
     newBlockList[index].html = html;
-    console.log(newBlockList)
+    console.log(newBlockList);
 
     setBlocks((prevState) => ({
       ...prevState,
@@ -104,6 +83,7 @@ export default function PageView() {
         ...prevState,
         focusIndex: prevState.focusIndex - 1,
       }));
+      console.log(blocks.focusIndex);
     }
   };
 
@@ -116,26 +96,61 @@ export default function PageView() {
     }
   };
 
+  const handleClickFocus = (index: number) => {
+    setBlocks((prevState) => ({
+      ...prevState,
+      focusIndex: index,
+    }));
+  };
+
+  const handleDeleteLine = (index: number) => {
+    if (blocks.list.length > 1) {
+      const newBlockList = blocks.list;
+      newBlockList.splice(index, 1);
+
+      setBlocks((prevState) => ({
+        ...prevState,
+        list: newBlockList,
+      }));
+    }
+  };
+
   const blockElements = blocks.list.map((item, index) => {
     const isCurrentBlockFocused = index == blocks.focusIndex;
-    console.log(blocks.focusIndex);
+    if (isCurrentBlockFocused) {
+      console.log(index);
+    }
+    return (
+      // <Draggable axis="y" grid={[50, 45]}>
+      <Box className="draggableBox">
+        <Box className="lineOptions">
+          <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px" }}>
+            <DeleteIcon />
+          </IconButton>
+          <DragIndicatorIcon />
+        </Box>
 
-    return <Block key={index} 
-    defaultValue={item.html} 
-    onEnter={handleCreateNewBlock} 
-    onSlash={handleOpen} 
-    index={index} 
-    onChange={handleUpdateHtml} 
-    onArrowUp={handleArrowUp} 
-    onArrowDown={handleArrowDown} 
-    className={item.type} 
-    isFocused={isCurrentBlockFocused}></Block>;
+        <Block
+          key={index}
+          defaultValue={item.html}
+          onEnter={handleCreateNewBlock}
+          onSlash={handleOpenMenu}
+          index={index}
+          onChange={handleUpdateHtml}
+          onArrowUp={handleArrowUp}
+          onArrowDown={handleArrowDown}
+          className={item.type}
+          isFocused={isCurrentBlockFocused}
+          onClickFocus={handleClickFocus}></Block>
+      </Box>
+      // </Draggable> */}
+    );
   });
 
   return (
     <Container fixed>
-      <Box id="mainBlock">
-        <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={helperState.helperOpen} anchorPosition={helperState.helperPosition} onClose={handleClose}>
+      <MainBox id="mainBlock" sx={{ margin: "20px 200px" }}>
+        <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={helperState.helperOpen} anchorPosition={helperState.helperPosition} onClose={handleCloseMenu}>
           <MenuItem id="h1" onClick={handleClickMenu}>
             h1
           </MenuItem>
@@ -151,7 +166,7 @@ export default function PageView() {
         </Menu>
         {/* <Block onEnter={handleCreateNewBlock}/> */}
         {blockElements}
-      </Box>
+      </MainBox>
     </Container>
   );
 }

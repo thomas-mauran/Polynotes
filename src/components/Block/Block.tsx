@@ -22,28 +22,39 @@ export default function Block(props) {
       range.collapse(false);
       selection?.removeAllRanges();
       selection?.addRange(range);
+
+      console.log(props.index, props.isFocused)
     }
   }, []);
 
 
   const handleKeyDown = (e: any) => {
+
     if (e.key === "/") {
       e.preventDefault()
+
       props.onSlash(true);
     }
     if (e.key === "Enter") {
-      e.preventDefault();
+      e.preventDefault()
+
       props.onEnter('p');
     }
     if (e.key === "ArrowUp") {
-      e.preventDefault();
+      e.preventDefault()
+
       props.onArrowUp(props.index);
     }  
     if (e.key === "ArrowDown") {
-      e.preventDefault();
+      e.preventDefault()
+
       props.onArrowDown(props.index);
     }
   };
+
+  const handleClick = (e: any) => {
+    props.onClickFocus(props.index)
+  }
 
   const handleChange = (e: { target: { value: any } }) => {
     console.log()
@@ -67,6 +78,6 @@ export default function Block(props) {
   };
 
   return (
-      <ContentEditable className={props.className} innerRef={ref} html={state.html} onChange={handleChange} onKeyDown={handleKeyDown} />
+      <ContentEditable className={props.className} innerRef={ref} html={state.html} onChange={handleChange} onKeyDown={handleKeyDown} onClick={handleClick} style={{width: "100%"}}/>
   );
 }

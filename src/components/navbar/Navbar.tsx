@@ -121,7 +121,7 @@ export default function PrimarySearchAppBar() {
     {
       listIcon: <AddIcon />,
       listText: "Create",
-      link: "/create",
+      link: "/page",
     },
     {
       listIcon: <HomeIcon />,

@@ -1,0 +1,17 @@
+.draggableBox{
+    display: flex;
+    width: 100%;
+}
+
+.draggableBox:hover > .lineOptions{
+    visibility: visible;
+}
+
+.lineOptions{
+    display: flex;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+    opacity: 0.3;
+    visibility: hidden;
+}
