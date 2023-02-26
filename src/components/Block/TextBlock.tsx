@@ -3,11 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import React from "react";
 
-export default function Block(props) {
+export default function TextBlock(props) {
   const [state, setState] = useState({
     html: props.defaultValue,
   });
   const ref = React.createRef() as any;
+
 
   useEffect(() => {
     if(props.isFocused){
@@ -53,6 +54,7 @@ export default function Block(props) {
 
   const handleClick = (e: any) => {
     props.onClickFocus(props.index)
+
   }
 
   const handleChange = (e: { target: { value: any } }) => {

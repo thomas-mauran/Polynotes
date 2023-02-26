@@ -6,19 +6,20 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 
 // Block components
-import Block from "../../components/Block/Block";
 import ImageBlock from "../../components/Block/ImageBlock";
+import TrelloBlock from "../../components/Block/TrelloBlock";
 
-import Board from "react-trello";
 // Delete line
 import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 // Draglines
 import Draggable from "react-draggable";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import "./blockStyle.css";
 import "./style.css";
+import TextBlock from "../../components/Block/TextBlock";
 
 export default function PageView() {
   // const blocks: any[] = ['test']
@@ -30,9 +31,7 @@ export default function PageView() {
   `;
 
   const [blocks, setBlocks] = useState({
-    list: [
-      { html: "Press / to open the block menu", type: "p" },
-    ],
+    list: [{ html: "Press / to open the block menu", type: "p" }],
     focusIndex: 0,
   });
 
@@ -72,18 +71,15 @@ export default function PageView() {
 
     if (blockType === "trello") {
       html = { lanes: [] };
-      newList.splice(blocks.focusIndex + 1, 0, { html: html, type: blockType });
+      newList.splice(blocks.focusIndex + 1, 0, { html: { lanes: [] }, type: blockType });
       newList.splice(blocks.focusIndex + 2, 0, { html: "", type: "p" });
-    }
-    else if (blockType === "img") {
+    } else if (blockType === "img") {
       html = { lanes: [] };
-      newList.splice(blocks.focusIndex + 1, 0, { html: '', type: blockType, settingsOpen: true });
+      newList.splice(blocks.focusIndex + 1, 0, { html: "", type: blockType, settingsOpen: true });
       newList.splice(blocks.focusIndex + 2, 0, { html: "", type: "p" });
-    }
-    else{
+    } else {
       newList.splice(blocks.focusIndex + 1, 0, { html: html, type: blockType });
     }
-
 
     setBlocks((prevState) => ({
       ...prevState,
@@ -101,7 +97,6 @@ export default function PageView() {
       ...prevState,
       list: newBlockList,
     }));
-    console.log(html);
   };
 
   const handleArrowUp = (index: number) => {
@@ -143,21 +138,24 @@ export default function PageView() {
 
   const handleOpenSettings = (index: number) => {
     const newBlockList = blocks.list;
-    newBlockList[index].settingsOpen = true
+    newBlockList[index].settingsOpen = true;
     setBlocks((prevState) => ({
       ...prevState,
-      list: newBlockList
+      list: newBlockList,
     }));
   };
   const handleCloseSettings = (index: number) => {
     const newBlockList = blocks.list;
-    newBlockList[index].settingsOpen = false
+    newBlockList[index].settingsOpen = false;
     setBlocks((prevState) => ({
       ...prevState,
-      list: newBlockList
+      list: newBlockList,
     }));
   };
 
+  const onDragEnd = (result) => {
+    //todo
+  };
 
   const blockElements = blocks.list.map((item, index) => {
     const isCurrentBlockFocused = index == blocks.focusIndex;
@@ -170,15 +168,16 @@ export default function PageView() {
             <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
               <DeleteIcon />
             </IconButton>
-            <IconButton onClick={() => handleOpenSettings(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+            <IconButton onClick={() => handleOpenSettings(index)} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
               <SettingsIcon />
             </IconButton>
             <DragIndicatorIcon />
           </Box>
-          <ImageBlock defaultValue={item.html} index={index} key={index} onChange={handleUpdateHtml} settingsOpen={item.settingsOpen} onCloseSettings={handleCloseSettings}/>
+          <ImageBlock defaultValue={item.html} index={index} key={index} onChange={handleUpdateHtml} settingsOpen={item.settingsOpen} onCloseSettings={handleCloseSettings} />
         </Box>
       );
     } else if (item.type === "trello") {
+      console.log(item.html)
       return (
         // <Draggable axis="y" grid={[50, 45]}>p
 
@@ -189,31 +188,15 @@ export default function PageView() {
             </IconButton>
             <DragIndicatorIcon />
           </Box>
-          <Board
-            key={index}
-            data={item.html}
-            style={{
-              backgroundColor: "transparent",
-              padding: "30px 20px",
-              height: "100%",
-              fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
-            }}
-            draggable
-            editable
-            id="EditableBoard1"
-            onCardAdd={function noRefCheck() {}}
-            onCardClick={function noRefCheck() {}}
-            onCardDelete={function noRefCheck() {}}
-            onDataChange={function noRefCheck() {}}
-            canAddLanes
-            index={index}
-          />
+          <TrelloBlock key={index} defaultValue={item.html} onChange={handleUpdateHtml} index={index} />
         </Box>
+
         // </Draggable> */}
       );
     } else {
       return (
         // <Draggable axis="y" grid={[50, 45]}>
+
         <Box className="draggableBox">
           <Box className="lineOptions">
             <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
@@ -222,7 +205,7 @@ export default function PageView() {
             <DragIndicatorIcon />
           </Box>
 
-          <Block
+          <TextBlock
             key={index}
             defaultValue={item.html}
             onEnter={handleCreateNewBlock}
@@ -233,39 +216,44 @@ export default function PageView() {
             onArrowDown={handleArrowDown}
             className={item.type}
             isFocused={isCurrentBlockFocused}
-            onClickFocus={handleClickFocus}></Block>
+            onClickFocus={handleClickFocus}
+          />
         </Box>
-        // </Draggable> */}
+
+        /* </Draggable> */
       );
     }
   });
 
   return (
     <Container fixed>
-      <MainBox id="mainBlock">
-        <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={helperState.helperOpen} anchorPosition={helperState.helperPosition} onClose={handleCloseMenu}>
-          <MenuItem id="h1" onClick={handleClickMenu}>
-            h1
-          </MenuItem>
-          <MenuItem id="h2" onClick={handleClickMenu}>
-            h2
-          </MenuItem>
-          <MenuItem id="h3" onClick={handleClickMenu}>
-            h3
-          </MenuItem>
-          <MenuItem id="p" onClick={handleClickMenu}>
-            paragraph
-          </MenuItem>
-          <MenuItem id="trello" onClick={handleClickMenu}>
-            trello
-          </MenuItem>
-          <MenuItem id="img" onClick={handleClickMenu}>
-            image
-          </MenuItem>
-        </Menu>
-        {/* <Block onEnter={handleCreateNewBlock}/> */}
-        {blockElements}
-      </MainBox>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <MainBox id="mainBlock">
+          <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={helperState.helperOpen} anchorPosition={helperState.helperPosition} onClose={handleCloseMenu}>
+            <MenuItem id="h1" onClick={handleClickMenu} key="h1">
+              h1
+            </MenuItem>
+            <MenuItem id="h2" onClick={handleClickMenu} key="h2">
+              h2
+            </MenuItem>
+            <MenuItem id="h3" onClick={handleClickMenu} key="h3">
+              h3
+            </MenuItem>
+            <MenuItem id="p" onClick={handleClickMenu} key="p">
+              paragraph
+            </MenuItem>
+            <MenuItem id="trello" onClick={handleClickMenu} key="trello">
+              trello
+            </MenuItem>
+            <MenuItem id="img" onClick={handleClickMenu} key="img">
+              image
+            </MenuItem>
+          </Menu>
+          {/* <Block onEnter={handleCreateNewBlock}/> */}
+          {blockElements}
+          {/* <Droppable droppableId={`test`}>{(provided) => ( <BlockElements/>)}</Droppable> */}
+        </MainBox>
+      </DragDropContext>
     </Container>
   );
 }
