@@ -23,7 +23,6 @@ export default function Block(props) {
       selection?.removeAllRanges();
       selection?.addRange(range);
 
-      console.log(props.index, props.isFocused)
     }
   }, []);
 
@@ -57,12 +56,10 @@ export default function Block(props) {
   }
 
   const handleChange = (e: { target: { value: any } }) => {
-    console.log()
     setState((prevState) => ({
       ...prevState,
       html: e.target.value,
     }));
-    console.log(state.html)
     props.onChange(props.index, e.target.value)
 
   };
@@ -74,7 +71,6 @@ export default function Block(props) {
       ...prevState,
       html: html,
     }));
-    console.log(html);
   };
 
   return (

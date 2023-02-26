@@ -4,11 +4,15 @@ import { Box, Container, IconButton, Menu, MenuItem } from "@mui/material";
 // Style
 import styled from "@emotion/styled";
 import { useState } from "react";
+
+// Block components
 import Block from "../../components/Block/Block";
+import ImageBlock from "../../components/Block/ImageBlock";
 
 import Board from "react-trello";
 // Delete line
 import DeleteIcon from "@mui/icons-material/Delete";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 // Draglines
 import Draggable from "react-draggable";
@@ -26,7 +30,9 @@ export default function PageView() {
   `;
 
   const [blocks, setBlocks] = useState({
-    list: [{ html: "Press / to open the block menu", type: "p" }, ],
+    list: [
+      { html: "Press / to open the block menu", type: "p" },
+    ],
     focusIndex: 0,
   });
 
@@ -47,7 +53,6 @@ export default function PageView() {
   };
 
   const handleOpenMenu = () => {
-    console.log("test");
     setHelperState((prevState) => ({
       ...prevState,
       helperOpen: true,
@@ -63,14 +68,25 @@ export default function PageView() {
 
   const handleCreateNewBlock = (blockType = "p") => {
     const newList = blocks.list;
-    let html = ''
+    let html = "";
 
-    if(blockType === 'trello'){
-      html = {lanes: []}
+    if (blockType === "trello") {
+      html = { lanes: [] };
+      newList.splice(blocks.focusIndex + 1, 0, { html: html, type: blockType });
+      newList.splice(blocks.focusIndex + 2, 0, { html: "", type: "p" });
     }
-    newList.splice(blocks.focusIndex + 1, 0, { html: html, type: blockType });
+    else if (blockType === "img") {
+      html = { lanes: [] };
+      newList.splice(blocks.focusIndex + 1, 0, { html: '', type: blockType, settingsOpen: true });
+      newList.splice(blocks.focusIndex + 2, 0, { html: "", type: "p" });
+    }
+    else{
+      newList.splice(blocks.focusIndex + 1, 0, { html: html, type: blockType });
+    }
+
 
     setBlocks((prevState) => ({
+      ...prevState,
       list: newList,
       focusIndex: prevState.focusIndex + 1,
     }));
@@ -85,6 +101,7 @@ export default function PageView() {
       ...prevState,
       list: newBlockList,
     }));
+    console.log(html);
   };
 
   const handleArrowUp = (index: number) => {
@@ -93,7 +110,6 @@ export default function PageView() {
         ...prevState,
         focusIndex: prevState.focusIndex - 1,
       }));
-      console.log(blocks.focusIndex);
     }
   };
 
@@ -125,46 +141,47 @@ export default function PageView() {
     }
   };
 
-  const data = {
-    // lanes: [
-      // {
-      //   id: "lane1",
-      //   title: "Planned Tasks",
-      //   label: "2/2",
-      //   cards: [
-      //     {
-      //       id: "Card1",
-      //       title: "Write Blog",
-      //       description: "Can AI make memes",
-      //       label: "30 mins",
-      //     },
-      //     {
-      //       id: "Card2",
-      //       title: "Pay Rent",
-      //       description: "Transfer via NEFT",
-      //       label: "5 mins",
-      //       metadata: { sha: "be312a1" },
-
-      //     },
-      //   ],
-      //   style: {
-      //     width: 300,
-      //   },
-      // },
-      
-    // ],
-
+  const handleOpenSettings = (index: number) => {
+    const newBlockList = blocks.list;
+    newBlockList[index].settingsOpen = true
+    setBlocks((prevState) => ({
+      ...prevState,
+      list: newBlockList
+    }));
   };
+  const handleCloseSettings = (index: number) => {
+    const newBlockList = blocks.list;
+    newBlockList[index].settingsOpen = false
+    setBlocks((prevState) => ({
+      ...prevState,
+      list: newBlockList
+    }));
+  };
+
 
   const blockElements = blocks.list.map((item, index) => {
     const isCurrentBlockFocused = index == blocks.focusIndex;
-    if (isCurrentBlockFocused) {
-      console.log(index);
-    }
 
-    if (item.type === "trello") {
+    if (item.type === "img") {
+      // <Draggable axis="y" grid={[50, 45]}>
       return (
-        // <Draggable axis="y" grid={[50, 45]}>
+        <Box className="draggableBox">
+          <Box className="lineOptions">
+            <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={() => handleOpenSettings(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <SettingsIcon />
+            </IconButton>
+            <DragIndicatorIcon />
+          </Box>
+          <ImageBlock defaultValue={item.html} index={index} key={index} onChange={handleUpdateHtml} settingsOpen={item.settingsOpen} onCloseSettings={handleCloseSettings}/>
+        </Box>
+      );
+    } else if (item.type === "trello") {
+      return (
+        // <Draggable axis="y" grid={[50, 45]}>p
+
         <Box className="draggableBox">
           <Box className="lineOptions">
             <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
@@ -173,21 +190,23 @@ export default function PageView() {
             <DragIndicatorIcon />
           </Box>
           <Board
+            key={index}
             data={item.html}
             style={{
               backgroundColor: "transparent",
               padding: "30px 20px",
               height: "100%",
-              fontFamily: '"Roboto","Helvetica","Arial",sans-serif'
+              fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
             }}
             draggable
             editable
             id="EditableBoard1"
-            onCardAdd={function noRefCheck(){}}
-            onCardClick={function noRefCheck(){}}
-            onCardDelete={function noRefCheck(){}}
-            onDataChange={function noRefCheck(){}}
+            onCardAdd={function noRefCheck() {}}
+            onCardClick={function noRefCheck() {}}
+            onCardDelete={function noRefCheck() {}}
+            onDataChange={function noRefCheck() {}}
             canAddLanes
+            index={index}
           />
         </Box>
         // </Draggable> */}
@@ -239,6 +258,9 @@ export default function PageView() {
           </MenuItem>
           <MenuItem id="trello" onClick={handleClickMenu}>
             trello
+          </MenuItem>
+          <MenuItem id="img" onClick={handleClickMenu}>
+            image
           </MenuItem>
         </Menu>
         {/* <Block onEnter={handleCreateNewBlock}/> */}
