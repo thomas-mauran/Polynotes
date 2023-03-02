@@ -5,7 +5,7 @@ import { useImmer } from "use-immer";
 
 // Style
 import styled from "@emotion/styled";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // Block components
 import ImageBlock from "../../components/Block/ImageBlock";
@@ -30,13 +30,17 @@ margin: 5% 15%;
 `);
 
 export default function PageView() {
-  // const blocks: any[] = ['test']
 
   const [blocks, setBlocks] = useImmer({
     list: [{ html: "", type: "p", id: "1", focus: true }],
   });
 
   const focusIndex = useRef(0);
+
+  useEffect(()=> {
+    console.log(blocks.list)
+  }, [blocks])
+
 
   // const [blockFocus, setBlockFocus] = useState(0)
 
@@ -109,7 +113,6 @@ export default function PageView() {
   };
 
   const handleUpdateHtml = (index: number, html: string) => {
-    console.log('update', html)
     setBlocks((draft) => {
       draft.list[index].html = html;
     });
@@ -145,7 +148,7 @@ export default function PageView() {
   const handleDeleteLine = (index: number) => {
     if (blocks.list.length > 1) {
       setBlocks((draft) => {
-        draft.splice(index, 1);
+        draft.list.splice(index, 1);
       });
     }
   };
@@ -154,13 +157,11 @@ export default function PageView() {
     setBlocks((draft) => {
       draft.list[index].settingsOpen = true;
     });
-    console.log('open')
   };
   const handleCloseSettings = (index: number) => {
     setBlocks((draft) => {
       draft.list[index].settingsOpen = false;
     });
-    console.log(blocks.list[index])
   };
 
   const blockElements = blocks.list.map((item, index) => {

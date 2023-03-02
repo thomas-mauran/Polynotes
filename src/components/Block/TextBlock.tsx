@@ -26,6 +26,7 @@ export default function TextBlock(props) {
   const [state, setState] = useState(props.defaultValue);
 
   const ref = React.createRef() as any;
+  const timerRef = useRef<number | null>(null)
   const editor = useEditor({
     extensions: [
       Placeholder.configure({
@@ -62,10 +63,9 @@ export default function TextBlock(props) {
 
       props.onSlash(true);
     } else if (e.key === "Enter" && e.shiftKey ) {
-      e.preventDefault();
+      props.onChange(props.index, editor?.getHTML());
       editor?.commands.setContent(removeLastBr())
       props.onEnter("p");
-      return false
     } else if (e.key === "ArrowUp" ) {
       props.onChange(props.index, editor?.getHTML());
       props.onArrowUp(props.index);
@@ -73,46 +73,35 @@ export default function TextBlock(props) {
       props.onChange(props.index, editor?.getHTML());
       props.onArrowDown(props.index);
     }
+    updateParent();
+
 
   };
 
   const removeLastBr = (): string => {
     const content = editor?.getHTML()
     const lastIndex = content?.lastIndexOf('<br>')
-    return content?.slice(0, lastIndex) + content?.slice(lastIndex+ 4)
+    return `${content?.slice(0, lastIndex)}${content?.slice(lastIndex+ 4)}`
   }
 
 
+  const updateParent = (): void => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
 
-
-  // const appendHtml = (blockType: string) => {
-  //   let html = state.html;
-  //   html += "<h1></h1>";
-  //   setState((prevState) => ({
-  //     ...prevState,
-  //     html: html,
-  //   }));
-  // };
-
-  // const updateParent = (e: any) => {
-  //     if (timerRef.current) {
-  //       clearTimeout(timerRef.current);
-  //       timerRef.current = null;
-  //     }
-
-  //     timerRef.current = setTimeout(() => {
-  //       console.log('test')
-  //       props.onChange(props.index, editor?.getHTML());
-  //     }, 1000); // reduced delay time
-  // };
-
-  const handleChange = () => {
-    // setState(editor?.getHTML());
-    props.onChange(props.index, editor?.getHTML());
+      timerRef.current = setTimeout(() => {
+        props.onChange(props.index, editor?.getHTML());
+      }, 1000); // reduced delay time
   };
 
+  const handleClick = (): void => {
+    props.clickFocus(props.index)
+  }
+
   return (
-    <div>
+    <div className={props.className}>
       <>
         {editor && (
           <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }} className="bubbleMenu">
@@ -136,7 +125,7 @@ export default function TextBlock(props) {
             </IconButton>
           </BubbleMenu>
         )}
-        <EditorContent editor={editor} onKeyDown={handleKeyDown} className="editor" />
+        <EditorContent editor={editor} onKeyDown={handleKeyDown} onClick={handleClick} className="editor" />
       </>
     </div>
   );
