@@ -7,10 +7,6 @@ import "./index.css";
 import Router from "./router/router";
 import Navbar from "./components/navbar/Navbar";
 
-
-
-
-
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-        <RouterProvider router={Router} />
+    <RouterProvider router={Router} />
 );

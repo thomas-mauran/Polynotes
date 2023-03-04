@@ -10,11 +10,11 @@
 .ProseMirror{
     width: 45vw;
 }
-/* 
+
 .ProseMirror p.is-editor-empty:first-child::before {
     color: #adb5bd;
     content: "Press / to open the command menu ";
     float: left;
     height: 0;
     pointer-events: none;
-  } */
+  }

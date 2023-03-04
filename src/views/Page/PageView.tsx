@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // Block components
 import ImageBlock from "../../components/Block/ImageBlock";
-import TrelloBlock from "../../components/Block/TrelloBlock";
+import DatabaseBlock from "../../components/Block/DatabaseBlock";
 
 // Delete line
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -21,7 +21,7 @@ import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import "./blockStyle.css";
 import "./style.css";
 import TextBlock from "../../components/Block/TextBlock";
-
+import produce, { setAutoFreeze } from "immer";
 
 const MainBox = styled.div(`
 width: 100%;
@@ -30,19 +30,15 @@ margin: 5% 15%;
 `);
 
 export default function PageView() {
-
+  setAutoFreeze(false);
+  
   const [blocks, setBlocks] = useImmer({
     list: [{ html: "", type: "p", id: "1", focus: true }],
   });
 
   const focusIndex = useRef(0);
 
-  useEffect(()=> {
-    console.log(blocks.list)
-  }, [blocks])
 
-
-  // const [blockFocus, setBlockFocus] = useState(0)
 
   const [helperState, setHelperState] = useState({
     helperOpen: false,
@@ -72,50 +68,50 @@ export default function PageView() {
     }));
   };
 
-
   // Function to create a newblock, by default a p
-  // splited in multiple parts we check the type of the block we want to create and then 
-  // splice the state block list at the current index to insert the block 
+  // splited in multiple parts we check the type of the block we want to create and then
+  // splice the state block list at the current index to insert the block
   const handleCreateNewBlock = (blockType = "p") => {
-    const index = focusIndex.current 
+    const index = focusIndex.current;
 
-    // Trello block
-    if (blockType === "trello") {
+    // DatabaseBlock block
+    if (blockType === "trello" || blockType === "table") {
       const id = Date.now().toString();
       const id2 = Date.now().toString();
       setBlocks((draft) => {
-        draft.list[index].focus = false
-        draft.list.splice(index + 1, 0, { html: { lanes: [] }, type: blockType, id, focus: true });
-        draft.list.splice(index + 2, 0, { html: { lanes: [] }, type: "p", id2, focus: false });
+        draft.list[index].focus = false;
+        draft.list.splice(index + 1, 0, { html: { lanes: [] }, type: blockType, settingsOpen: false, id, focus: true });
+        draft.list.splice(index + 2, 0, { html: "", type: "p", id2, focus: false });
       });
-    } 
+    }
     // Image blocks
     else if (blockType === "img") {
       const id = Date.now().toString();
       const id2 = Date.now().toString();
 
       setBlocks((draft) => {
-        draft.list[index].focus = false
+        draft.list[index].focus = false;
         draft.list.splice(index + 1, 0, { html: "", type: "img", settingsOpen: true, id, focus: true });
         draft.list.splice(index + 2, 0, { html: "", type: "p", id2, focus: false });
       });
-    } 
+    }
     // Text Blocks
     else {
       const id = Date.now().toString();
       setBlocks((draft) => {
-        draft.list[index].focus = false
+        draft.list[index].focus = false;
         draft.list.splice(index + 1, 0, { html: "", type: blockType, id, focus: true });
       });
     }
-    // We increase the focusIndex since there's a new block in our state list 
+    // We increase the focusIndex since there's a new block in our state list
     focusIndex.current += 1;
   };
 
-  const handleUpdateHtml = (index: number, html: string) => {
+  const handleUpdateHtml = (index: number, newData: any) => {
     setBlocks((draft) => {
-      draft.list[index].html = html;
-    });
+        draft.list[index].html = newData;
+      })
+
   };
 
   const handleClickFocus = (index: number) => {
@@ -164,6 +160,12 @@ export default function PageView() {
     });
   };
 
+  const handleDbTypeChange = (index: number, newType: string) => {
+    setBlocks((draft) => {
+      draft.list[index].type = newType;
+    });
+  }
+
   const blockElements = blocks.list.map((item, index) => {
     if (item.type === "img") {
       return (
@@ -180,16 +182,19 @@ export default function PageView() {
           <ImageBlock defaultValue={item.html} index={index} key={item.id} onChange={handleUpdateHtml} settingsOpen={item.settingsOpen} onCloseSettings={handleCloseSettings} />
         </Box>
       );
-    } else if (item.type === "trello") {
+    } else if (item.type === "trello" || item.type === "table") {
       return (
         <Box className="draggableBox" key={item.id}>
           <Box className="lineOptions">
             <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
               <DeleteIcon />
             </IconButton>
+            <IconButton onClick={() => handleOpenSettings(index)} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
+              <SettingsIcon />
+            </IconButton>
             <DragIndicatorIcon />
           </Box>
-          <TrelloBlock key={item.id} defaultValue={item.html} onChange={handleUpdateHtml} index={index} />
+          <DatabaseBlock dbType={item.type} key={item.id} onCloseSettings={handleCloseSettings} changeType={handleDbTypeChange} defaultValue={item.html} settingsOpen={item.settingsOpen} onChange={handleUpdateHtml} index={index} />
         </Box>
       );
     } else {
@@ -239,6 +244,9 @@ export default function PageView() {
           </MenuItem>
           <MenuItem id="img" onClick={handleClickMenu} key="img">
             image
+          </MenuItem>
+          <MenuItem id="table" onClick={handleClickMenu} key="table">
+            table
           </MenuItem>
         </Menu>
         {blockElements}
