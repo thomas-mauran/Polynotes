@@ -5,7 +5,7 @@ import { useImmer } from "use-immer";
 
 // Style
 import styled from "@emotion/styled";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {useRef, useState, MouseEvent } from "react";
 
 // Block components
 import ImageBlock from "../../components/Block/ImageBlock";
@@ -16,12 +16,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 // Draglines
-import Draggable from "react-draggable";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import "./blockStyle.css";
 import "./style.css";
 import TextBlock from "../../components/Block/TextBlock";
-import produce, { setAutoFreeze } from "immer";
+import { setAutoFreeze } from "immer";
+
+import {StateType, Lane, BoardData, Card, TextBlockType, DatabaseBlockType, ImageBlockType, TableData} from "../../Types/PageTypes"
 
 const MainBox = styled.div(`
 width: 100%;
@@ -29,11 +30,14 @@ min-width: 200px;
 margin: 5% 15% 5% 10%;
 `);
 
+
 export default function PageView() {
+  // to avoid immer error when adding a new attribute to an object
   setAutoFreeze(false);
   
-  const [blocks, setBlocks] = useImmer({
-    list: [{ html: {lanes: []}, type: "table", id: "1", focus: true }],
+  // List of block allowing the page to map them and display their content 
+  const [blocks, setBlocks] = useImmer<StateType>({
+    list: [{ html: '', type: "p", id: "1", focus: true }],
   });
 
   const focusIndex = useRef(0);
@@ -47,8 +51,8 @@ export default function PageView() {
   });
 
   // Functions
-  const handleClickMenu = (e: any) => {
-    handleCreateNewBlock(e.target.id);
+  const handleClickMenu = (e: MouseEvent) => {
+    handleCreateNewBlock((e.target as HTMLButtonElement).id);
     handleCloseMenu();
   };
 
@@ -79,7 +83,7 @@ export default function PageView() {
       setBlocks((draft) => {
         draft.list[index].focus = false;
         draft.list.splice(index + 1, 0, { html: { lanes: [] }, type: blockType, settingsOpen: false, id, focus: true });
-        draft.list.splice(index + 2, 0, { html: "", type: "p", id2, focus: false });
+        draft.list.splice(index + 2, 0, { html: "", type: "p", id: id2, focus: false });
       });
     }
     // Image blocks
@@ -90,7 +94,7 @@ export default function PageView() {
       setBlocks((draft) => {
         draft.list[index].focus = false;
         draft.list.splice(index + 1, 0, { html: "", type: "img", settingsOpen: true, id, focus: true });
-        draft.list.splice(index + 2, 0, { html: "", type: "p", id2, focus: false });
+        draft.list.splice(index + 2, 0, { html: "", type: "p", id: id2, focus: false });
       });
     }
     // Text Blocks
@@ -105,7 +109,7 @@ export default function PageView() {
     focusIndex.current += 1;
   };
 
-  const handleUpdateHtml = (index: number, newData: any) => {
+  const handleUpdateHtml = (index: number, newData: BoardData | TableData | string) => {
     setBlocks((draft) => {
         draft.list[index].html = newData;
       })
@@ -150,12 +154,12 @@ export default function PageView() {
 
   const handleOpenSettings = (index: number) => {
     setBlocks((draft) => {
-      draft.list[index].settingsOpen = true;
+      (draft.list[index] as DatabaseBlockType | ImageBlockType).settingsOpen = true;
     });
   };
   const handleCloseSettings = (index: number) => {
     setBlocks((draft) => {
-      draft.list[index].settingsOpen = false;
+      (draft.list[index] as DatabaseBlockType | ImageBlockType).settingsOpen = false;
     });
   };
 
