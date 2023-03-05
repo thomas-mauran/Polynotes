@@ -26,19 +26,17 @@ import produce, { setAutoFreeze } from "immer";
 const MainBox = styled.div(`
 width: 100%;
 min-width: 200px;
-margin: 5% 15%;
+margin: 5% 15% 5% 10%;
 `);
 
 export default function PageView() {
   setAutoFreeze(false);
   
   const [blocks, setBlocks] = useImmer({
-    list: [{ html: "", type: "p", id: "1", focus: true }],
+    list: [{ html: {lanes: []}, type: "table", id: "1", focus: true }],
   });
 
   const focusIndex = useRef(0);
-
-
 
   const [helperState, setHelperState] = useState({
     helperOpen: false,
@@ -111,6 +109,7 @@ export default function PageView() {
     setBlocks((draft) => {
         draft.list[index].html = newData;
       })
+
 
   };
 

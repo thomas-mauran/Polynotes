@@ -21,6 +21,8 @@
     "@tiptap/pm": "^2.0.0-beta.220",
     "@tiptap/react": "^2.0.0-beta.220",
     "@tiptap/starter-kit": "^2.0.0-beta.220",
+    "active-table": "^0.0.210",
+    "active-table-react": "^0.0.13",
     "immer": "^9.0.19",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
@@ -30,7 +32,8 @@
     "react-router": "^6.8.1",
     "react-router-dom": "^6.8.1",
     "react-trello": "^2.2.11",
-    "use-immer": "^0.8.1"
+    "use-immer": "^0.8.1",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

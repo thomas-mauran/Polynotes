@@ -8,7 +8,7 @@
 }
 
 .ProseMirror{
-    width: 45vw;
+    width: 40vw;
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {
