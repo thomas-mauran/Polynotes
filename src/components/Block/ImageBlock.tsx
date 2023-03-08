@@ -2,6 +2,8 @@ import { Button, Container, TextField, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import { closeSettings, updateHTML } from "../../redux/blockReducer";
+import { useDispatch } from "react-redux";
 
 
 export default function ImageBlock(props) {
@@ -11,6 +13,7 @@ export default function ImageBlock(props) {
     src: props.defaultValue,
   });
 
+  const dispatch = useDispatch();
 
 
   // Functions
@@ -22,12 +25,14 @@ export default function ImageBlock(props) {
   };
 
   const handleClick = () => {
+
     setInputs((prevState) => ({
         ...prevState,
         src: prevState.textField,
       }));
-    props.onChange(props.index, inputs.textField)
-    props.onCloseSettings(props.index)
+      dispatch(updateHTML({"index": props.index, "newData": inputs.textField}))
+      dispatch(closeSettings({"index": props.index}))
+
 };
 return (
   <Box sx={{ display: "flex" }}>

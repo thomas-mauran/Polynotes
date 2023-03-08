@@ -19,8 +19,13 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import CodeIcon from "@mui/icons-material/Code";
 import "./style.css";
+import { useDispatch } from "react-redux";
+import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper, focusBlock } from "../../redux/blockReducer";
 
 export default function TextBlock(props) {
+
+  const dispatch = useDispatch();
+
   const gotClickedRef = useRef(false);
 
   const [state, setState] = useState(props.defaultValue);
@@ -60,18 +65,18 @@ export default function TextBlock(props) {
     // setState(editor?.getHTML());
     if (e.key === "/") {
       e.preventDefault();
-
-      props.onSlash(true);
+      dispatch(openHelper({}))
+      
     } else if (e.key === "Enter" && e.shiftKey ) {
-      props.onChange(props.index, editor?.getHTML());
+      dispatch(updateHTML({"index": props.index, "newData": editor?.getHTML()}))
       editor?.commands.setContent(removeLastBr())
-      props.onEnter("p");
+      dispatch(addBlock({"blockType": "p"}))
     } else if (e.key === "ArrowUp" ) {
-      props.onChange(props.index, editor?.getHTML());
-      props.onArrowUp(props.index);
+      dispatch(updateHTML({"index": props.index, "newData": editor?.getHTML()}))
+      dispatch(onArrowUp({"index": props.index}))
     } else if (e.key === "ArrowDown" ) {
-      props.onChange(props.index, editor?.getHTML());
-      props.onArrowDown(props.index);
+      dispatch(updateHTML({"index": props.index, "newData": editor?.getHTML()}))
+      dispatch(onArrowDown({"index": props.index}))
     }
     updateParent();
 
@@ -92,12 +97,12 @@ export default function TextBlock(props) {
       }
 
       timerRef.current = setTimeout(() => {
-        props.onChange(props.index, editor?.getHTML());
+        dispatch(updateHTML({"index": props.index, "newData": editor?.getHTML()}))
       }, 1000); // reduced delay time
   };
 
   const handleClick = (): void => {
-    props.clickFocus(props.index)
+    dispatch(focusBlock({"index": props.index}))
   }
 
   return (
