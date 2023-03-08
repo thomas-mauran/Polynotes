@@ -24,6 +24,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.220",
     "active-table": "^0.0.210",
     "active-table-react": "^0.0.13",
+    "gif-picker-react": "^1.1.0",
     "immer": "^9.0.19",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
@@ -38,6 +39,7 @@
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
+    "@types/node": "^18.14.6",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/react-redux": "^7.1.25",

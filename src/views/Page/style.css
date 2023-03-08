@@ -16,6 +16,11 @@
     visibility: hidden;
 }
 
+.menuImg{
+    width: 30px;
+    margin: 5px 20px 5px 0px ;
+}
+
 
 /* 
 .smooth-dnd-draggable-wrapper{

@@ -25,13 +25,19 @@ const blockReducer = createSlice({
       if (action.payload.blockType === "trello" || action.payload.blockType === "table") {
         state.blocks[index].focus = false;
         state.blocks.splice(index + 1, 0, { html: { lanes: [] }, type: action.payload.blockType, settingsOpen: false, id, focus: true });
-        state.blocks.splice(index + 2, 0, { html: "", type: "p", settingsOpen: false, id: id2, focus: false });
+        state.blocks.splice(index + 2, 0, { html: "", type: "p", id: id2, focus: false });
       }
       // Image blocks
       else if (action.payload.blockType === "img") {
         state.blocks[index].focus = false;
         state.blocks.splice(index + 1, 0, { html: "", type: "img", settingsOpen: true, id, focus: true });
-        state.blocks.splice(index + 2, 0, { html: "", type: "p", settingsOpen: false, id: id2, focus: false });
+        state.blocks.splice(index + 2, 0, { html: "", type: "p", id: id2, focus: false });
+      }
+      // Image blocks
+      else if (action.payload.blockType === "gif") {
+        state.blocks[index].focus = false;
+        state.blocks.splice(index + 1, 0, { html: "", type: "gif", settingsOpen: true, id, focus: true });
+        state.blocks.splice(index + 2, 0, { html: "", type: "p", id: id2, focus: false });
       }
       // Text Blocks
       else {
@@ -70,9 +76,10 @@ const blockReducer = createSlice({
       }
     },
     deleteBlock: (state, action) => {
-      console.log(action.payload.index);
-      state.blocks.splice(action.payload.index, 1);
-      state.focusIndex = action.payload.index === state.blocks.length ? action.payload.index - 1 : state.focusIndex;
+      if(state.blocks.length > 1){
+        state.blocks.splice(action.payload.index, 1);
+        state.focusIndex = action.payload.index === state.blocks.length ? action.payload.index - 1 : state.focusIndex;
+      }
     },
     openHelper: (state, action) => {
       state.helperOpen = true;
@@ -92,9 +99,16 @@ const blockReducer = createSlice({
       state.blocks[action.payload.index].type = action.payload.newType;
       console.log(state.blocks[action.payload.index].type)
     },
+
+    createMultiColumn: (state, action) => {
+      state.blocks[action.payload.index].type = 'multiCol';
+      
+      state.blocks[action.payload.index].html = [state.blocks[action.payload.index]]
+      console.log(state.blocks[action.payload.index].type)
+    },
   },
 });
 
-export const { addBlock, updateHTML, focusBlock, onArrowUp, onArrowDown, moveBlockDown, changeType, deleteBlock, openHelper, closeHelper, closeSettings, openSettings } = blockReducer.actions;
+export const { addBlock, updateHTML, focusBlock, createMultiColumn, onArrowUp, onArrowDown, moveBlockDown, changeType, deleteBlock, openHelper, closeHelper, closeSettings, openSettings } = blockReducer.actions;
 
 export default blockReducer.reducer;

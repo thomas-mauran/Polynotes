@@ -1,5 +1,5 @@
 // MUI
-import { Box, Container, IconButton, Menu, MenuItem } from "@mui/material";
+import { Box, Container, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 
 import { useImmer } from "use-immer";
 
@@ -15,6 +15,7 @@ import DatabaseBlock from "../../components/Block/DatabaseBlock";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
 
+import TextFieldsIcon from "@mui/icons-material/TextFields";
 // Draglines
 import AddIcon from "@mui/icons-material/Add";
 import "./blockStyle.css";
@@ -24,7 +25,8 @@ import TextBlock from "../../components/Block/TextBlock";
 import MultiColumnBlock from "../../components/Block/MultiColumnBlock";
 
 import { useSelector, useDispatch } from "react-redux";
-import { addBlock, closeHelper, deleteBlock, openSettings } from "../../redux/blockReducer";
+import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings } from "../../redux/blockReducer";
+import GifPickerBlock from "../../components/Block/GifPickerBlock";
 
 const MainBox = styled.div(`
 width: 100%;
@@ -33,7 +35,6 @@ margin: 5% 15% 5% 10%;
 `);
 
 export default function PageView() {
-
   const blocks = useSelector((state) => state.block.blocks);
   const helperOpen = useSelector((state) => state.block.helperOpen);
   const dispatch = useDispatch();
@@ -65,8 +66,6 @@ export default function PageView() {
         </Box>
       );
     } else if (item.type === "trello" || item.type === "table") {
-      console.log("render", item.type)
-
       return (
         <Box className="draggableBox" key={item.id}>
           <Box className="lineOptions">
@@ -84,35 +83,53 @@ export default function PageView() {
           <DatabaseBlock dbType={item.type} defaultValue={item.html} settingsOpen={item.settingsOpen} index={index} />
         </Box>
       );
-    }
-    // }else if (item.type === "multiColumn") {
-    //   return (
-    //     <Box className="draggableBox" key={item.id}>
-    //       <Box className="lineOptions">
-    //         <IconButton onClick={() => handleDeleteLine(index)} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
-    //           <DeleteIcon />
-    //         </IconButton>
-    //         <IconButton onClick={() => handleCreateMultiBlock(index)} aria-label="add" sx={{ padding: "0px", height: "20px" }}>
-    //           <AddIcon />
-    //         </IconButton>{" "}
-    //       </Box>
-    //       <MultiColumnBlock defaultValue={item.html} onChange={handleUpdateHtml} index={index} />
-    //     </Box>
-    //   );
-    // } else {
-    return (
-      <Box className="draggableBox" key={item.id}>
-        <Box className="lineOptions">
-          <IconButton onClick={() => dispatch(deleteBlock({ index }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
-            <DeleteIcon />
-          </IconButton>
-          {/* <IconButton onClick={() => handleCreateMultiBlock(index)} aria-label="add" sx={{ padding: "0px", height: "20px" }}>
-              <AddIcon />
-            </IconButton> */}
+    } else if (item.type === "gif") {
+      return (
+        <Box className="draggableBox" key={item.id}>
+          <Box className="lineOptions">
+            <IconButton onClick={() => dispatch(deleteBlock({ index }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={() => dispatch(openSettings({ index: index }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
+              <SettingsIcon />
+            </IconButton>
+            {/*
+              <IconButton onClick={() => handleCreateMultiBlock(index)} aria-label="add" sx={{ padding: "0px", height: "20px" }}>
+                <AddIcon />
+              </IconButton> */}
+          </Box>
+          <GifPickerBlock defaultValue={item.html} index={index} settingsOpen={item.settingsOpen} />
         </Box>
-        <TextBlock defaultValue={item.html} index={index} className={item.type} isFocused={item.focus} />
-      </Box>
-    );
+      );
+    } else if (item.type === "multiCol") {
+      return (
+        <Box className="draggableBox" key={item.id}>
+          <Box className="lineOptions">
+            <IconButton onClick={() => dispatch(deleteBlock({ index }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={() => dispatch(openSettings({ index: index }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
+              <SettingsIcon />
+            </IconButton>
+          </Box>
+          <MultiColumnBlock defaultValue={item.html} index={index} />
+        </Box>
+      );
+    } else {
+      return (
+        <Box className="draggableBox" key={item.id}>
+          <Box className="lineOptions">
+            <IconButton onClick={() => dispatch(deleteBlock({ index }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={() => dispatch(createMultiColumn({ index }))} aria-label="add" sx={{ padding: "0px", height: "20px" }}>
+              <AddIcon />
+            </IconButton>
+          </Box>
+          <TextBlock defaultValue={item.html} index={index} className={item.type} isFocused={item.focus} />
+        </Box>
+      );
+    }
   });
 
   return (
@@ -120,25 +137,36 @@ export default function PageView() {
       <MainBox id="mainBlock">
         <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={helperOpen} onClose={() => dispatch(closeHelper())}>
           <MenuItem id="h1" onClick={handleClickMenu} key="h1">
-            h1
+            <img src="https://cdn-icons-png.flaticon.com/512/2800/2800015.png" alt="asdasds" className="menuImg" />
+            <Typography variant="h5">h1</Typography>
           </MenuItem>
           <MenuItem id="h2" onClick={handleClickMenu} key="h2">
-            h2
+            <img src="https://cdn-icons-png.flaticon.com/512/2800/2800015.png" alt="asdasds" className="menuImg" />
+            <Typography variant="h5">h2</Typography>
           </MenuItem>
           <MenuItem id="h3" onClick={handleClickMenu} key="h3">
-            h3
+            <img src="https://cdn-icons-png.flaticon.com/512/2800/2800015.png" alt="asdasds" className="menuImg" />
+            <Typography variant="h5">h3</Typography>
           </MenuItem>
           <MenuItem id="p" onClick={handleClickMenu} key="p">
-            paragraph
+            <img src="https://cdn-icons-png.flaticon.com/512/2800/2800015.png" alt="asdasds" className="menuImg" />
+            <Typography variant="h5">p</Typography>
           </MenuItem>
           <MenuItem id="trello" onClick={handleClickMenu} key="trello">
-            trello
-          </MenuItem>
-          <MenuItem id="img" onClick={handleClickMenu} key="img">
-            image
+            <img src="https://cdn-icons-png.flaticon.com/512/2762/2762537.png" alt="asdasds" className="menuImg" />
+            <Typography variant="h5">trello</Typography>
           </MenuItem>
           <MenuItem id="table" onClick={handleClickMenu} key="table">
-            table
+            <img src="https://cdn-icons-png.flaticon.com/512/3602/3602111.png" alt="asdasds" className="menuImg" />
+            <Typography variant="h5">table</Typography>
+          </MenuItem>
+          <MenuItem id="img" onClick={handleClickMenu} key="img">
+            <img src="https://cdn-icons-png.flaticon.com/512/5460/5460486.png" alt="asdasds" className="menuImg" />
+            <Typography variant="h5">img</Typography>
+          </MenuItem>
+          <MenuItem id="gif" onClick={handleClickMenu} key="gif">
+            <img src="https://media.tenor.com/GIVLitDIxr8AAAAM/breaking-bad-walter-white.gif" alt="asdasds" className="menuImg" />
+            <Typography variant="h5">gif</Typography>
           </MenuItem>
         </Menu>
         {blockElements}
