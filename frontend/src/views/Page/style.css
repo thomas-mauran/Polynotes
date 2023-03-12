@@ -21,6 +21,13 @@
     margin: 5px 20px 5px 0px ;
 }
 
+.multiColumnBox{
+    display: flex;
+    background-color: red;
+    border: 1px solid black;
+
+}
+
 
 /* 
 .smooth-dnd-draggable-wrapper{
