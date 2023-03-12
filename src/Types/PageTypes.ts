@@ -53,14 +53,14 @@ export interface ImageBlockType extends BaseBlock {
 }
 
 export interface MultiColumnBlock extends BaseBlock {
-  html: BlockType[];
+  html: BlockType[][];
   settingsOpen: boolean;
 }
 
-type BlockType = TextBlockType | DatabaseBlockType | ImageBlockType;
+export type BlockType = TextBlockType | DatabaseBlockType | ImageBlockType | MultiColumnBlock;
 
 export interface StateType {
   blocks: BlockType[];
-  helperOpen: boolean;
+  slashMenuBlockId: null | string;
   focusIndex: number;
 }

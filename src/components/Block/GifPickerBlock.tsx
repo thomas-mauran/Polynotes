@@ -22,7 +22,7 @@ export default function GifPickerBlock(props) {
       ...prevState,
       src: e.preview.url,
     }));
-    dispatch(updateHTML({ index: props.index, newData: e.preview.url }));
+    dispatch(updateHTML({ uuid: props.uuid, newData: newData }));
     dispatch(closeSettings({ index: props.index }));
   };
   return (

@@ -1,8 +1,6 @@
 // MUI
 import { Box, Container, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 
-import { useImmer } from "use-immer";
-
 // Style
 import styled from "@emotion/styled";
 import { useRef, useState, MouseEvent } from "react";
@@ -27,6 +25,7 @@ import MultiColumnBlock from "../../components/Block/MultiColumnBlock";
 import { useSelector, useDispatch } from "react-redux";
 import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings } from "../../redux/blockReducer";
 import GifPickerBlock from "../../components/Block/GifPickerBlock";
+import { setAutoFreeze } from "immer";
 
 const MainBox = styled.div(`
 width: 100%;
@@ -35,15 +34,19 @@ margin: 5% 15% 5% 10%;
 `);
 
 export default function PageView() {
+
+setAutoFreeze(false);
+
+  
   const blocks = useSelector((state) => state.block.blocks);
-  const helperOpen = useSelector((state) => state.block.helperOpen);
+  const slashMenuBlockId = useSelector((state) => state.block.slashMenuBlockId);
   const dispatch = useDispatch();
 
   const focusIndex = useRef(0);
 
   // Functions
   const handleClickMenu = (e: MouseEvent) => {
-    dispatch(addBlock({ blockType: (e.target as HTMLButtonElement).id }));
+    dispatch(addBlock({ blockType: (e.target as HTMLButtonElement).id, uuid: slashMenuBlockId }));
     dispatch(closeHelper());
   };
 
@@ -62,7 +65,7 @@ export default function PageView() {
               <AddIcon />
             </IconButton> */}
           </Box>
-          <ImageBlock defaultValue={item.html} index={index} settingsOpen={item.settingsOpen} />
+          <ImageBlock uuid={item.id} defaultValue={item.html} index={index} settingsOpen={item.settingsOpen} />
         </Box>
       );
     } else if (item.type === "trello" || item.type === "table") {
@@ -80,7 +83,7 @@ export default function PageView() {
               <AddIcon />
             </IconButton> */}
           </Box>
-          <DatabaseBlock dbType={item.type} defaultValue={item.html} settingsOpen={item.settingsOpen} index={index} />
+          <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html} settingsOpen={item.settingsOpen} index={index} />
         </Box>
       );
     } else if (item.type === "gif") {
@@ -98,7 +101,7 @@ export default function PageView() {
                 <AddIcon />
               </IconButton> */}
           </Box>
-          <GifPickerBlock defaultValue={item.html} index={index} settingsOpen={item.settingsOpen} />
+          <GifPickerBlock uuid={item.id} defaultValue={item.html} index={index} settingsOpen={item.settingsOpen} />
         </Box>
       );
     } else if (item.type === "multiCol") {
@@ -112,7 +115,8 @@ export default function PageView() {
               <SettingsIcon />
             </IconButton>
           </Box>
-          <MultiColumnBlock defaultValue={item.html} index={index} />
+          {/* {item.html} */}
+          <MultiColumnBlock uuid={item.id} defaultValue={item.html} index={index} />
         </Box>
       );
     } else {
@@ -126,7 +130,7 @@ export default function PageView() {
               <AddIcon />
             </IconButton>
           </Box>
-          <TextBlock defaultValue={item.html} index={index} className={item.type} isFocused={item.focus} />
+          <TextBlock uuid={item.id} defaultValue={item.html} index={index} className={item.type} isFocused={item.focus} />
         </Box>
       );
     }
@@ -135,7 +139,7 @@ export default function PageView() {
   return (
     <Container fixed>
       <MainBox id="mainBlock">
-        <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={helperOpen} onClose={() => dispatch(closeHelper())}>
+        <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={slashMenuBlockId !== null} onClose={() => dispatch(closeHelper())}>
           <MenuItem id="h1" onClick={handleClickMenu} key="h1">
             <img src="https://cdn-icons-png.flaticon.com/512/2800/2800015.png" alt="asdasds" className="menuImg" />
             <Typography variant="h5">h1</Typography>

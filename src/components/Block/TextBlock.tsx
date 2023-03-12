@@ -23,7 +23,6 @@ import { useDispatch } from "react-redux";
 import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper, focusBlock } from "../../redux/blockReducer";
 
 export default function TextBlock(props) {
-
   const dispatch = useDispatch();
 
   const gotClickedRef = useRef(false);
@@ -31,7 +30,7 @@ export default function TextBlock(props) {
   const [state, setState] = useState(props.defaultValue);
 
   const ref = React.createRef() as any;
-  const timerRef = useRef<number | null>(null)
+  const timerRef = useRef<number | null>(null);
   const editor = useEditor({
     extensions: [
       Placeholder.configure({
@@ -48,7 +47,7 @@ export default function TextBlock(props) {
           keepMarks: true,
           keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
         },
-      })
+      }),
     ],
     content: props.defaultValue,
   });
@@ -63,47 +62,47 @@ export default function TextBlock(props) {
 
   const handleKeyDown = (e: KeyboardEvent) => {
     // setState(editor?.getHTML());
-    if (e.key === "/") {
-      e.preventDefault();
-      dispatch(openHelper({}))
-      
-    } else if (e.key === "Enter" && e.shiftKey ) {
-      dispatch(updateHTML({"index": props.index, "newData": editor?.getHTML()}))
-      editor?.commands.setContent(removeLastBr())
-      dispatch(addBlock({"blockType": "p"}))
-    } else if (e.key === "ArrowUp" ) {
-      dispatch(updateHTML({"index": props.index, "newData": editor?.getHTML()}))
-      dispatch(onArrowUp({"index": props.index}))
-    } else if (e.key === "ArrowDown" ) {
-      dispatch(updateHTML({"index": props.index, "newData": editor?.getHTML()}))
-      dispatch(onArrowDown({"index": props.index}))
-    }
     updateParent();
 
-
+    if (e.key === "/") {
+      e.preventDefault();
+      dispatch(openHelper({uuid: props.uuid}));
+    } else if (e.key === "Enter" && e.shiftKey) {
+      editor?.commands.setContent(removeLastBr());
+      dispatch(addBlock({ blockType: "p", columnIndex: props.columnId, itemIndex: props.index, uuid: props.uuid }));
+    } else if (e.key === "ArrowUp") {
+      dispatch(onArrowUp({ uuid: props.uuid }));
+    } else if (e.key === "ArrowDown") {
+      dispatch(onArrowDown({ uuid: props.uuid }));
+    }
   };
 
   const removeLastBr = (): string => {
-    const content = editor?.getHTML()
-    const lastIndex = content?.lastIndexOf('<br>')
-    return `${content?.slice(0, lastIndex)}${content?.slice(lastIndex+ 4)}`
-  }
-
-
-  const updateParent = (): void => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
-
-      timerRef.current = setTimeout(() => {
-        dispatch(updateHTML({"index": props.index, "newData": editor?.getHTML()}))
-      }, 1000); // reduced delay time
+    const content = editor?.getHTML();
+    const lastIndex = content?.lastIndexOf("<br>");
+    return `${content?.slice(0, lastIndex)}${content?.slice(lastIndex + 4)}`;
   };
 
-  const handleClick = (): void => {
-    dispatch(focusBlock({"index": props.index}))
-  }
+  // const openHelp = (): void => {
+  //   if (props.onChangeMultiColumn) {
+  //     props.onChangeMultiColumn(props.index, props.columnId, editor?.getHTML())
+  // } else {
+  //     dispatch(updateHTML({ index: props.index, newData: editor?.getHTML() }));
+  // }
+  // }
+
+  const updateParent = (): void => {
+
+    if (props.onChangeMultiColumn) {
+        props.onChangeMultiColumn(props.index, props.columnId, editor?.getHTML())
+    } else {
+      dispatch(updateHTML({ uuid: props.uuid, newData: editor?.getHTML() }));
+    }
+  };
+
+  // const handleClick = (): void => {
+  //   dispatch(focusBlock({ index: props.index }));
+  // };
 
   return (
     <div className={props.className}>
@@ -130,7 +129,7 @@ export default function TextBlock(props) {
             </IconButton>
           </BubbleMenu>
         )}
-        <EditorContent editor={editor} onKeyDown={handleKeyDown} onClick={handleClick} className="editor" />
+        <EditorContent editor={editor} onKeyDown={handleKeyDown} className="editor" />
       </>
     </div>
   );

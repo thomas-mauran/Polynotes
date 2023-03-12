@@ -15,13 +15,12 @@ export default function DatabaseBlock(props) {
 
   const handleChange = useCallback(
     (newData: any) => {
-      console.log('inComponent', props.dbType)
       if (props.dbType === "table") {
         console.log('export from db')
         newData = tableConvertExport(newData);
       }
       if (JSON.stringify(newData) != JSON.stringify(props.defaultValue)) {
-        dispatch(updateHTML({ index: props.index, newData: newData }));
+        dispatch(updateHTML({ uuid: props.uuid, newData: newData }));
       }
     },
     [props.onChange, props.dbType]
@@ -39,7 +38,6 @@ export default function DatabaseBlock(props) {
     }
 
     const lanes = [];
-    const numberOfLanes = content.length;
 
     // create lane objects for each column
     for (let i = 0; i < content[0].length; i++) {
@@ -51,11 +49,21 @@ export default function DatabaseBlock(props) {
       };
       lanes.push(lane);
     }
+    // we remove the header line from the content to work only with data lines 
+    content.shift()
+
+
+    const tableMax = content.length
+    const numberOfLanes = lanes.length;
+
+
+    console.log('tabMax', tableMax)
+    console.log('number of lanes ', numberOfLanes)
 
     // for each lane
     for (let i = 0; i < numberOfLanes; i++) {
       // and each card
-      for (let j = 1; j < content.length; j++) {
+      for (let j = 0; j < tableMax; j++) {
         if (content[j][i]) {
           const card = {
             id: uuidv4(),
@@ -107,7 +115,7 @@ export default function DatabaseBlock(props) {
       }
       table.push(dataRow);
     }
-    console.log('asdl;jkaslkdjaskldjalksd', table)
+    console.log("import", table)
     return table;
   };
 
@@ -123,6 +131,16 @@ export default function DatabaseBlock(props) {
     }
     return max;
   };
+
+  // const tableMaxLength = (lines: any) => {
+  //   let max = 0;
+  //   for (let i = 0; i < lines.length; i++) {
+  //       if (lines[i].length > max) {
+  //         max = lines[i].length;
+  //       }
+  //   }
+  //   return max;
+  // };
 
   return (
     <Box sx={{ display: "flex" }}>
