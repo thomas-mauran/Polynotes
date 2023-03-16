@@ -3,9 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UsersSchema } from './schemas/users.schema';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { JwtService } from '@nestjs/jwt';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MailService } from './mail.service';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -19,9 +20,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    MailerModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, MailService],
   exports: [UsersService],
 })
 export class UsersModule {}

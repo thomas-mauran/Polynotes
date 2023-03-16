@@ -4,7 +4,9 @@ import { AppService } from './app.service';
 import { PagesModule } from './pages/pages.module';
 import { UsersModule } from './users/users.module';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MailService } from './users/mail.service';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -18,8 +20,25 @@ import { ConfigModule } from '@nestjs/config';
       }),
     }),
     ConfigModule.forRoot({ isGlobal: true }),
+    MailerModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: configService.get<string>('MAILER_HOST'),
+          port: configService.get<number>('MAILER_PORT'),
+          secure: false,
+          auth: {
+            user: configService.get<string>('MAILER_USER'),
+            pass: configService.get<string>('MAILER_PASSWORD'),
+          },
+        },
+        defaults: {
+          from: '"No Reply" <noreply@polynotes.net>',
+        },
+      }),
+      inject: [ConfigService], // Inject the ConfigService.
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MailService],
 })
 export class AppModule {}

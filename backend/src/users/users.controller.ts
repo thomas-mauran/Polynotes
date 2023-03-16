@@ -5,6 +5,7 @@ import {
   HttpCode,
   Post,
   HttpStatus,
+  Param,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -19,6 +20,11 @@ export class UsersController {
   async fetchAll(): Promise<string> {
     console.log('fetching');
     return 'ek';
+  }
+
+  @Get('verify-email/:token')
+  async verifyEmail(@Param('token') token: string) {
+    return await this.userService.verifyEmail(token);
   }
 
   @Post('signup')
