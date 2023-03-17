@@ -1,4 +1,4 @@
-import { Button, Checkbox, Container, Divider, FormControl, FormControlLabel, FormHelperText, Input, InputLabel, TextField, Typography } from "@mui/material";
+import { Alert, Button, Checkbox, Container, Divider, FormControl, FormControlLabel, FormHelperText, Input, InputLabel, Snackbar, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import SignupForm from "../../components/signupForm/SignupForm";
 import catGif from "../../assets/gifs/catSignup.gif";
 import { useState } from "react";
 
+import { signup } from "../../utils/users/usersAPICalls";
 // Style
 export default function SignupView() {
   const Box = styled.div`
@@ -16,8 +17,6 @@ export default function SignupView() {
     margin: 20% 10%;
   `;
   // Hooks
-  
-  //Functions
 
   // Return
   return (
@@ -25,7 +24,7 @@ export default function SignupView() {
       <Container fixed sx={{ textAlign: "center", display: "flex", justifyContent: "center" }}>
         <Box className="box">
           <h1>Signing up ? 🎉 </h1>
-          <SignupForm/>
+          <SignupForm />
 
           <Typography variant="subtitle1">
             <Link to="/login">I already have an account</Link>
