@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -27,6 +28,11 @@ export class UsersService {
   // SIGNUP
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { username, email, password } = createUserDto;
+    const user = await this.userModel.findOne({ email: email });
+
+    if (user) {
+      throw new ConflictException('Email already used'); // Throw an error if the user doesn't exist
+    }
 
     const token = uuid();
 
