@@ -8,19 +8,19 @@ import WorkspaceView from "../views/Workspace/WorkspaceView";
 import LoginView from "../views/Login/LoginView";
 import SignupView from "../views/Signup/SignupView";
 import CguView from "../views/CGU/CguView";
+import VerifyEmail from "../views/VerifyEmail/VerifyEmail";
 import PageView from "../views/Page/PageView";
 
-function AppLayout(){
-  // Todo check if login 
+function AppLayout() {
+  // Todo check if login
   // if (!isAuth) return <Navigate to="/login" />
 
-  return(
+  return (
     <>
-    <Navbar />
-    <Outlet />
-  </>
-  )
-
+      <Navbar />
+      <Outlet />
+    </>
+  );
 }
 
 const Router = createBrowserRouter(
@@ -29,10 +29,11 @@ const Router = createBrowserRouter(
       <Route path="login" element={<LoginView />} />
       <Route path="signup" element={<SignupView />} />
       <Route path="cgu" element={<CguView />} />
-      <Route path="/" element={<AppLayout />} >
+      <Route path="verifyEmail/:email" element={<VerifyEmail />} />
+
+      <Route path="/" element={<AppLayout />}>
         <Route path="/workspace" element={<WorkspaceView />} />
         <Route path="page" element={<PageView />} />
-
       </Route>
     </Route>
   )

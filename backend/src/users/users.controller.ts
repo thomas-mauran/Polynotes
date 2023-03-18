@@ -18,7 +18,6 @@ export class UsersController {
 
   @Get()
   async fetchAll(): Promise<string> {
-    console.log('fetching');
     return 'ek';
   }
 

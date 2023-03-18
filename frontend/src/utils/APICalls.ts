@@ -6,11 +6,24 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
     body: body ? JSON.stringify(body) : undefined, // Check if body is empty
   };
   const response = await fetch(url, options);
-  console.log(response);
-  const responseBody = await response.json();
-  if (typeof (responseBody.message === "string")) {
-    responseBody.message = [responseBody.message];
+
+  try {
+    const responseBody = await response.json();
+
+    // If there is an error, we put a list of errors in the `message` field
+    if (typeof responseBody.message === "string") {
+      responseBody.message = [responseBody.message];
+    }
+
+    if (responseBody.error) {
+      responseBody.message.push(responseBody.error);
+    }
+
+    console.log(responseBody);
+    return responseBody;
+  } catch (error) {
+    return {
+      code: response.status,
+    };
   }
-  console.log(responseBody);
-  return responseBody;
 }

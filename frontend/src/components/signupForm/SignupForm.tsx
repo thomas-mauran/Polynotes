@@ -2,7 +2,7 @@ import { LoadingButton } from "@mui/lab";
 import { Alert, Box, Button, Container, Snackbar, TextField } from "@mui/material";
 import { useState } from "react";
 import { signup } from "../../utils/users/usersAPICalls";
-
+import { useNavigate } from "react-router";
 export default function SignupForm() {
   // Hooks
   const [inputs, setInputs] = useState({
@@ -16,6 +16,8 @@ export default function SignupForm() {
   const [errorAPIList, setErrorAPIList] = useState([]);
 
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   // Functions
   const handleChange = (e: any) => {
@@ -36,11 +38,12 @@ export default function SignupForm() {
       const response = await signup(inputs.username, inputs.email, inputs.password);
 
       if (response.error) {
+        console.log(response);
         setErrorAPIList(response.message);
+        setLoading(false);
       } else {
-        console.log("good");
+        return navigate(`/verifyEmail/${inputs.email}`);
       }
-      setLoading(false);
     }
   };
 
