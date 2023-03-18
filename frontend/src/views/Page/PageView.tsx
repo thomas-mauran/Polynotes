@@ -23,10 +23,10 @@ import TextBlock from "../../components/Block/TextBlock";
 import MultiColumnBlock from "../../components/Block/MultiColumnBlock";
 
 import { useSelector, useDispatch } from "react-redux";
-import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings } from "../../redux/blockReducer";
+import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings } from "../../redux/reducers/blockReducer";
 import GifPickerBlock from "../../components/Block/GifPickerBlock";
 import { setAutoFreeze } from "immer";
-
+import { RootState } from "../../types/ReduxTypes";
 const MainBox = styled.div(`
 width: 100%;
 min-width: 200px;
@@ -34,11 +34,9 @@ margin: 5% 15% 5% 10%;
 `);
 
 export default function PageView() {
+  setAutoFreeze(false);
 
-setAutoFreeze(false);
-
-  
-  const blocks = useSelector((state) => state.block.blocks);
+  const blocks = useSelector((state: RootState) => state.block.blocks);
   const slashMenuBlockId = useSelector((state) => state.block.slashMenuBlockId);
   const dispatch = useDispatch();
 

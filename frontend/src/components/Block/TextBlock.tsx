@@ -20,7 +20,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import CodeIcon from "@mui/icons-material/Code";
 import "./style.css";
 import { useDispatch } from "react-redux";
-import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper, focusBlock } from "../../redux/blockReducer";
+import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper } from "../../redux/reducers/blockReducer";
 
 export default function TextBlock(props) {
   const dispatch = useDispatch();
@@ -66,7 +66,7 @@ export default function TextBlock(props) {
 
     if (e.key === "/") {
       e.preventDefault();
-      dispatch(openHelper({uuid: props.uuid}));
+      dispatch(openHelper({ uuid: props.uuid }));
     } else if (e.key === "Enter" && e.shiftKey) {
       editor?.commands.setContent(removeLastBr());
       dispatch(addBlock({ blockType: "p", columnIndex: props.columnId, itemIndex: props.index, uuid: props.uuid }));
@@ -92,9 +92,8 @@ export default function TextBlock(props) {
   // }
 
   const updateParent = (): void => {
-
     if (props.onChangeMultiColumn) {
-        props.onChangeMultiColumn(props.index, props.columnId, editor?.getHTML())
+      props.onChangeMultiColumn(props.index, props.columnId, editor?.getHTML());
     } else {
       dispatch(updateHTML({ uuid: props.uuid, newData: editor?.getHTML() }));
     }

@@ -4,19 +4,18 @@ import DatabaseBlock from "./DatabaseBlock";
 import TextBlock from "./TextBlock";
 import { IndeterminateCheckBoxSharp } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { deleteBlock, openSettings, updateHTML } from "../../redux/blockReducer";
+import { deleteBlock, openSettings, updateHTML } from "../../redux/reducers/blockReducer";
 import { IconButton } from "@mui/material";
 
 // Delete line
 import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { BlockType } from "../../Types/PageTypes";
+import { BlockType } from "../../types/PageTypes";
 import produce from "immer";
 
 export default function MultiColumnBlock(props) {
-
   const handleUpdateHtml = (itemIndex: number, columnIndex: number, newData: undefined) => {
-    const newHtml = produce(props.defaultValue, draft => {
+    const newHtml = produce(props.defaultValue, (draft) => {
       draft[columnIndex][itemIndex].html = newData;
     });
     dispatch(updateHTML({ uuid: props.uuid, newData: newData }));
@@ -61,7 +60,7 @@ export default function MultiColumnBlock(props) {
                 <DeleteIcon />
               </IconButton>
             </Box>
-            <TextBlock uuid={item.id} defaultValue={item.html} index={index}  columnId={columnId} className={item.type} isFocused={item.focus} onChangeMultiColumn={handleUpdateHtml} />
+            <TextBlock uuid={item.id} defaultValue={item.html} index={index} columnId={columnId} className={item.type} isFocused={item.focus} onChangeMultiColumn={handleUpdateHtml} />
           </Box>
         );
       }
@@ -71,12 +70,8 @@ export default function MultiColumnBlock(props) {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
-      <Box sx={{ display: "flex", flexDirection: "column", width: "35%"}}>
-        {blocks(0)}
-        </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", width: "35%"}}>
-        {blocks(1)}
-        </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", width: "35%" }}>{blocks(0)}</Box>
+      <Box sx={{ display: "flex", flexDirection: "column", width: "35%" }}>{blocks(1)}</Box>
     </Box>
   );
 }

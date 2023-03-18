@@ -2,7 +2,7 @@ import { Button, Container, TextField, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import { closeSettings, updateHTML } from "../../redux/blockReducer";
+import { closeSettings, updateHTML } from "../../redux/reducers/blockReducer";
 import { useDispatch } from "react-redux";
 
 export default function ImageBlock(props) {

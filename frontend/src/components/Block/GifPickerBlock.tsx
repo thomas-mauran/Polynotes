@@ -2,7 +2,7 @@ import { Button, Container, TextField, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import { closeSettings, updateHTML } from "../../redux/blockReducer";
+import { closeSettings, updateHTML } from "../../redux/reducers/blockReducer";
 import { useDispatch } from "react-redux";
 
 import GifPicker from "gif-picker-react";
@@ -17,7 +17,7 @@ export default function GifPickerBlock(props) {
   // Functions
 
   const handleClick = (e: any) => {
-    console.log(e)
+    console.log(e);
     setInputs((prevState) => ({
       ...prevState,
       src: e.preview.url,

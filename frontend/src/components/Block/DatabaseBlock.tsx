@@ -4,19 +4,19 @@ import Board from "react-trello";
 import { ActiveTable } from "active-table-react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import { changeType, closeSettings, updateHTML } from "../../redux/blockReducer";
+import { changeType, closeSettings, updateHTML } from "../../redux/reducers/blockReducer";
 
 export default function DatabaseBlock(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('newRender', props.dbType)
-  }, [props.dbType])
+    console.log("newRender", props.dbType);
+  }, [props.dbType]);
 
   const handleChange = useCallback(
     (newData: any) => {
       if (props.dbType === "table") {
-        console.log('export from db')
+        console.log("export from db");
         newData = tableConvertExport(newData);
       }
       if (JSON.stringify(newData) != JSON.stringify(props.defaultValue)) {
@@ -27,9 +27,9 @@ export default function DatabaseBlock(props) {
   );
 
   const handleDbTypeChange = (e: SelectChangeEvent) => {
-    console.log('newType', e.target.value)
+    console.log("newType", e.target.value);
     dispatch(closeSettings({ index: props.index }));
-    dispatch(changeType({ index: props.index, newType:  e.target.value}));
+    dispatch(changeType({ index: props.index, newType: e.target.value }));
   };
 
   const tableConvertExport = (content: any) => {
@@ -49,16 +49,14 @@ export default function DatabaseBlock(props) {
       };
       lanes.push(lane);
     }
-    // we remove the header line from the content to work only with data lines 
-    content.shift()
+    // we remove the header line from the content to work only with data lines
+    content.shift();
 
-
-    const tableMax = content.length
+    const tableMax = content.length;
     const numberOfLanes = lanes.length;
 
-
-    console.log('tabMax', tableMax)
-    console.log('number of lanes ', numberOfLanes)
+    console.log("tabMax", tableMax);
+    console.log("number of lanes ", numberOfLanes);
 
     // for each lane
     for (let i = 0; i < numberOfLanes; i++) {
@@ -83,7 +81,7 @@ export default function DatabaseBlock(props) {
     }
 
     const data = { lanes: lanes };
-    console.log('export', data)
+    console.log("export", data);
     return data;
   };
 
@@ -115,7 +113,7 @@ export default function DatabaseBlock(props) {
       }
       table.push(dataRow);
     }
-    console.log("import", table)
+    console.log("import", table);
     return table;
   };
 

@@ -6,6 +6,12 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
     body: body ? JSON.stringify(body) : undefined, // Check if body is empty
   };
   const response = await fetch(url, options);
+  let data;
+
+  if (response.ok) {
+    const responseText = await response.text();
+    data = JSON.parse(responseText);
+  }
 
   try {
     const responseBody = await response.json();
@@ -19,11 +25,11 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
       responseBody.message.push(responseBody.error);
     }
 
-    console.log(responseBody);
     return responseBody;
   } catch (error) {
     return {
       code: response.status,
+      data,
     };
   }
 }

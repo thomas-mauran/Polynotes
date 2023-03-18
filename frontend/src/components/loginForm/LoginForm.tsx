@@ -1,6 +1,12 @@
 import { LoadingButton } from "@mui/lab";
-import {Container, TextField } from "@mui/material";
+import { Alert, Container, TextField, Snackbar } from "@mui/material";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { login } from "../../utils/users/usersAPICalls";
+import { RootState } from "../../types/ReduxTypes";
+import { useDispatch } from "react-redux";
+import { login as loginReducer } from "../../redux/reducers/authReducer";
 
 export default function LoginForm() {
   // Hooks
@@ -10,8 +16,12 @@ export default function LoginForm() {
   });
 
   const [errorMsg, setErrorMsg] = useState("");
+  const [errorAPIList, setErrorAPIList] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   // Functions
   const handleChange = (e: any) => {
@@ -21,14 +31,31 @@ export default function LoginForm() {
     }));
   };
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-        setErrorMsg('')
-        setLoading(true)
-        console.log('submited')
+    setErrorMsg("");
+    setLoading(true);
+    const response = await login(inputs.email, inputs.password);
 
+    if (response.error) {
+      console.log(response);
+      setErrorAPIList(response.message);
+      setLoading(false);
+    } else {
+      // Store the jwt
+      const { username, email, jwt } = response.data;
+      dispatch(loginReducer({ username, email, jwt }));
+      return navigate(`/workspace/`);
+    }
+  };
 
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    } else {
+      setErrorAPIList([]);
+    }
   };
 
   // Return
@@ -36,11 +63,20 @@ export default function LoginForm() {
     <Container fixed sx={{ textAlign: "center", display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>
         <TextField name="email" label="Email address" margin="normal" variant="standard" value={inputs.email} type="email" onChange={handleChange} required />
-        <TextField name="password" label="Password" margin="normal" variant="standard" type="password" value={inputs.password} onChange={handleChange} required error={errorMsg !== ""} helperText={errorMsg}/>
+        <TextField name="password" label="Password" margin="normal" variant="standard" type="password" value={inputs.password} onChange={handleChange} required error={errorMsg !== ""} helperText={errorMsg} />
         <LoadingButton loading={loading} type="submit" variant="contained" color="info" sx={{ margin: "20px" }}>
           Login
         </LoadingButton>
       </form>
+      <Snackbar open={errorAPIList.length > 0} onClose={handleClose}>
+        <div>
+          {errorAPIList.map((errorMsg, index) => (
+            <Alert key={index} severity="error" onClose={handleClose}>
+              {errorMsg}
+            </Alert>
+          ))}
+        </div>
+      </Snackbar>
     </Container>
   );
 }

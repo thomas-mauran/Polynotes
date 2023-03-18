@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { Alert, Box, Button, Container, Snackbar, TextField } from "@mui/material";
+import { Alert, Container, Snackbar, TextField } from "@mui/material";
 import { useState } from "react";
 import { signup } from "../../utils/users/usersAPICalls";
 import { useNavigate } from "react-router";
@@ -14,7 +14,6 @@ export default function SignupForm() {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [errorAPIList, setErrorAPIList] = useState([]);
-
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();

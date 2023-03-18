@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import { StateType } from "../Types/PageTypes";
+import { StateType } from "../../types/PageTypes";
 import { setAutoFreeze } from "immer";
-import { BlockType } from "../Types/PageTypes";
+import { BlockType } from "../../types/PageTypes";
 
 const initialState: StateType = {
   blocks: [
@@ -47,19 +47,18 @@ const blockReducer = createSlice({
       } else {
         addItemAfterId(state.blocks, action.payload.uuid, { html: "", type: action.payload.blockType, id: id2, focus: true });
       }
-
     },
 
     updateHTML: (state, action) => {
-      updateAfterId(state.blocks, action.payload.uuid, action.payload.newData)
+      updateAfterId(state.blocks, action.payload.uuid, action.payload.newData);
     },
 
     onArrowUp: (state, action) => {
-      changeFocusWithArrow(state.blocks, action.payload.uuid, -1)
+      changeFocusWithArrow(state.blocks, action.payload.uuid, -1);
     },
 
     onArrowDown: (state, action) => {
-      changeFocusWithArrow(state.blocks, action.payload.uuid, +1)
+      changeFocusWithArrow(state.blocks, action.payload.uuid, +1);
     },
     moveBlockDown: (state, action) => {
       if (action.payload.index < state.blocks.length - 1) {
@@ -95,7 +94,7 @@ const blockReducer = createSlice({
     createMultiColumn: (state, action) => {
       const index = action.payload.index;
       const block = state.blocks[index];
-    
+
       // Replace the current block with a multi-column block containing the original block
       state.blocks[index] = {
         html: [[block], [{ html: "", type: "p", id: uuidv4(), focus: false }]],
@@ -104,7 +103,7 @@ const blockReducer = createSlice({
         focus: false,
         settingsOpen: false,
       };
-    
+
       // Add a new paragraph block after the multi-column block
       state.blocks.splice(index + 1, 0, {
         html: "",
@@ -114,11 +113,10 @@ const blockReducer = createSlice({
         settingsOpen: false,
       });
     },
-    
   },
 });
 
-function findItemById(array: BlockType[], id: string): {item: BlockType, index: number, parentArray: BlockType[]} | null {
+function findItemById(array: BlockType[], id: string): { item: BlockType; index: number; parentArray: BlockType[] } | null {
   // We itterate over the array given in argument
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
@@ -147,34 +145,34 @@ function addItemAfterId(array: BlockType[], id: string, newItem: BlockType) {
     // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
     // and add the block in the list after it
     if (Array.isArray(item.html)) {
-      console.log('in')
+      console.log("in");
       addItemAfterId(item.html, id, newItem);
     } else {
       // we simply add the block after the found one
-      parentArray[index].focus = false
+      parentArray[index].focus = false;
       parentArray.splice(index + 1, 0, newItem);
     }
   }
   return array;
 }
 
-function changeFocusWithArrow(array: BlockType[], id: string, direction: number){
-    const found = findItemById(array, id);
-    if (found) {
-      const { item, index, parentArray } = found;
-      // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
-      // and add the block in the list after it
-      if (Array.isArray(item.html)) {
-        changeFocusWithArrow(item.html, id, direction);
-      } else {
-        // we simply add the block after the found one
-        if( parentArray[index + direction]){
-          parentArray[index].focus = false
-          parentArray[index + direction].focus = true
-        }
+function changeFocusWithArrow(array: BlockType[], id: string, direction: number) {
+  const found = findItemById(array, id);
+  if (found) {
+    const { item, index, parentArray } = found;
+    // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
+    // and add the block in the list after it
+    if (Array.isArray(item.html)) {
+      changeFocusWithArrow(item.html, id, direction);
+    } else {
+      // we simply add the block after the found one
+      if (parentArray[index + direction]) {
+        parentArray[index].focus = false;
+        parentArray[index + direction].focus = true;
       }
     }
-    return array;
+  }
+  return array;
 }
 
 function updateAfterId(array: BlockType[], id: string, newHtml: string) {
@@ -187,7 +185,7 @@ function updateAfterId(array: BlockType[], id: string, newHtml: string) {
       addItemAfterId(item.html, id, newHtml);
     } else {
       // we simply add the block after the found one
-      parentArray[index].html = newHtml
+      parentArray[index].html = newHtml;
     }
   }
   return array;

@@ -1,10 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import blockReducer from "./blockReducer"
-
+import rootReducer from "./reducers/rootReducer";
 
 export default configureStore({
-  reducer: {
-    block: blockReducer
-  }
+  reducer: rootReducer,
 });

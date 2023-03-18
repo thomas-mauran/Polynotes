@@ -16,6 +16,12 @@ import { JwtService } from '@nestjs/jwt';
 import { v4 as uuid } from 'uuid';
 import { MailService } from './mail.service';
 
+interface dataLogin {
+  username: string;
+  email: string;
+  jwt: string;
+}
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -68,7 +74,7 @@ export class UsersService {
   }
 
   // LOGIN
-  async login(loginUserDto: LoginUserDto): Promise<string | null> {
+  async login(loginUserDto: LoginUserDto): Promise<dataLogin | null> {
     const { email, password } = loginUserDto;
     const user = await this.userModel.findOne({ email: email });
 
@@ -90,8 +96,14 @@ export class UsersService {
     if (passwordMatching === false) {
       throw new UnauthorizedException('Invalid Password'); // Throw an error if the password don't match
     }
+    const jwt = this.jwtService.sign({ username: user.username });
+    const data: dataLogin = {
+      username: user.username,
+      email,
+      jwt,
+    };
 
-    return this.jwtService.sign({ username: user.username });
+    return data;
   }
 
   async findAll(): Promise<User[]> {
