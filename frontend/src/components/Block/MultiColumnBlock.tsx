@@ -10,19 +10,26 @@ import { IconButton } from "@mui/material";
 // Delete line
 import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { BlockType } from "../../types/PageTypes";
+import { BlockType, BoardData, TableData } from "../../types/PageTypes";
 import produce from "immer";
 
-export default function MultiColumnBlock(props) {
-  const handleUpdateHtml = (itemIndex: number, columnIndex: number, newData: undefined) => {
+type newDataType = string | BoardData;
+
+interface propsType {
+  index: number;
+  defaultValue: BlockType[][];
+  uuid: string;
+}
+export default function MultiColumnBlock(props: propsType) {
+  const handleUpdateHtml = (itemIndex: number, columnIndex: number, newData: newDataType) => {
     const newHtml = produce(props.defaultValue, (draft) => {
       draft[columnIndex][itemIndex].html = newData;
     });
-    dispatch(updateHTML({ uuid: props.uuid, newData: newData }));
+    dispatch(updateHTML({ uuid: props.uuid, newData: newHtml }));
   };
   const dispatch = useDispatch();
 
-  const blocks = (columnId: BlockType) => {
+  const blocks = (columnId: number) => {
     const elements = props.defaultValue[columnId].map((item, index) => {
       if (item.type === "img") {
         return (
@@ -35,7 +42,7 @@ export default function MultiColumnBlock(props) {
                 <SettingsIcon />
               </IconButton>
             </Box>
-            <ImageBlock uuid={item.id} defaultValue={item.html} index={index} columnId={columnId} settingsOpen={item.settingsOpen} onChangeMultiColumn={handleUpdateHtml} />
+            <ImageBlock uuid={item.id} defaultValue={item.html as string} index={index} columnId={columnId} settingsOpen={item.settingsOpen as boolean} onChangeMultiColumn={handleUpdateHtml} />
           </Box>
         );
       } else if (item.type === "trello" || item.type === "table") {
@@ -49,7 +56,7 @@ export default function MultiColumnBlock(props) {
                 <SettingsIcon />
               </IconButton>
             </Box>
-            <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html} columnId={columnId} settingsOpen={item.settingsOpen} index={index} onChangeMultiColumn={handleUpdateHtml} />
+            <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html as BoardData} columnId={columnId} settingsOpen={item.settingsOpen} index={index} onChangeMultiColumn={handleUpdateHtml} />
           </Box>
         );
       } else {
@@ -60,7 +67,7 @@ export default function MultiColumnBlock(props) {
                 <DeleteIcon />
               </IconButton>
             </Box>
-            <TextBlock uuid={item.id} defaultValue={item.html} index={index} columnId={columnId} className={item.type} isFocused={item.focus} onChangeMultiColumn={handleUpdateHtml} />
+            <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} columnId={columnId} className={item.type} isFocused={item.focus} onChangeMultiColumn={handleUpdateHtml} />
           </Box>
         );
       }

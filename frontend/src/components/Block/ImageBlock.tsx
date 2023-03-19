@@ -5,7 +5,14 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import { closeSettings, updateHTML } from "../../redux/reducers/blockReducer";
 import { useDispatch } from "react-redux";
 
-export default function ImageBlock(props) {
+interface propsType {
+  index: number;
+  defaultValue: string;
+  settingsOpen: boolean;
+  uuid: string;
+}
+
+export default function ImageBlock(props: propsType) {
   const [inputs, setInputs] = useState({
     textField: props.defaultValue,
     src: props.defaultValue,

@@ -22,7 +22,18 @@ import "./style.css";
 import { useDispatch } from "react-redux";
 import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper } from "../../redux/reducers/blockReducer";
 
-export default function TextBlock(props) {
+interface propsType {
+  index: number;
+  defaultValue: string;
+  settingsOpen: boolean;
+  uuid: string;
+  isFocused: boolean;
+  columnId: number;
+  onChangeMultiColumn: (itemIndex: number, columnIndex: number, newData: string) => {};
+  className: string;
+}
+
+export default function TextBlock(props: propsType) {
   const dispatch = useDispatch();
 
   const gotClickedRef = useRef(false);
@@ -80,7 +91,12 @@ export default function TextBlock(props) {
   const removeLastBr = (): string => {
     const content = editor?.getHTML();
     const lastIndex = content?.lastIndexOf("<br>");
-    return `${content?.slice(0, lastIndex)}${content?.slice(lastIndex + 4)}`;
+
+    if (lastIndex === undefined) {
+      return content ?? "";
+    } else {
+      return `${content?.slice(0, lastIndex)}${content?.slice(lastIndex + 4)}`;
+    }
   };
 
   // const openHelp = (): void => {
@@ -93,7 +109,7 @@ export default function TextBlock(props) {
 
   const updateParent = (): void => {
     if (props.onChangeMultiColumn) {
-      props.onChangeMultiColumn(props.index, props.columnId, editor?.getHTML());
+      props.onChangeMultiColumn(props.index, props.columnId, editor?.getHTML() ?? "");
     } else {
       dispatch(updateHTML({ uuid: props.uuid, newData: editor?.getHTML() }));
     }

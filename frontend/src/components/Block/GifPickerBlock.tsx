@@ -5,8 +5,15 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import { closeSettings, updateHTML } from "../../redux/reducers/blockReducer";
 import { useDispatch } from "react-redux";
 
+interface propsType {
+  index: number;
+  defaultValue: string;
+  settingsOpen: boolean;
+  uuid: string;
+}
+
 import GifPicker from "gif-picker-react";
-export default function GifPickerBlock(props) {
+export default function GifPickerBlock(props: propsType) {
   const [inputs, setInputs] = useState({
     textField: props.defaultValue,
     src: props.defaultValue,
@@ -22,7 +29,7 @@ export default function GifPickerBlock(props) {
       ...prevState,
       src: e.preview.url,
     }));
-    dispatch(updateHTML({ uuid: props.uuid, newData: newData }));
+    dispatch(updateHTML({ uuid: props.uuid, newData: inputs.textField }));
     dispatch(closeSettings({ index: props.index }));
   };
   return (

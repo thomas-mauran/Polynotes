@@ -5,18 +5,27 @@ import { ActiveTable } from "active-table-react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
 import { changeType, closeSettings, updateHTML } from "../../redux/reducers/blockReducer";
+import { BoardData, Lane } from "../../types/PageTypes";
 
-export default function DatabaseBlock(props) {
+type dbTypes = "trello" | "table";
+
+interface propsType {
+  index: number;
+  defaultValue: BoardData;
+  settingsOpen: boolean;
+  uuid: string;
+  dbType: dbTypes;
+  onChange: () => {};
+}
+
+export default function DatabaseBlock(props: propsType) {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log("newRender", props.dbType);
-  }, [props.dbType]);
+  useEffect(() => {}, [props.dbType]);
 
   const handleChange = useCallback(
     (newData: any) => {
       if (props.dbType === "table") {
-        console.log("export from db");
         newData = tableConvertExport(newData);
       }
       if (JSON.stringify(newData) != JSON.stringify(props.defaultValue)) {
@@ -27,7 +36,6 @@ export default function DatabaseBlock(props) {
   );
 
   const handleDbTypeChange = (e: SelectChangeEvent) => {
-    console.log("newType", e.target.value);
     dispatch(closeSettings({ index: props.index }));
     dispatch(changeType({ index: props.index, newType: e.target.value }));
   };
@@ -37,7 +45,7 @@ export default function DatabaseBlock(props) {
       return { lanes: [] };
     }
 
-    const lanes = [];
+    const lanes: Lane = [];
 
     // create lane objects for each column
     for (let i = 0; i < content[0].length; i++) {
@@ -54,9 +62,6 @@ export default function DatabaseBlock(props) {
 
     const tableMax = content.length;
     const numberOfLanes = lanes.length;
-
-    console.log("tabMax", tableMax);
-    console.log("number of lanes ", numberOfLanes);
 
     // for each lane
     for (let i = 0; i < numberOfLanes; i++) {
@@ -81,40 +86,38 @@ export default function DatabaseBlock(props) {
     }
 
     const data = { lanes: lanes };
-    console.log("export", data);
     return data;
   };
 
-  const tableConvertImport = () => {
+  const tableConvertImport = (): (string | number)[][] => {
     const lanes = props.defaultValue.lanes;
-    const table = [];
-    const headerRow = [];
     if (lanes.length === 0) {
       return [["Click me"]];
-    }
-    // create header row
-    for (let i = 0; i < lanes.length; i++) {
-      headerRow.push(lanes[i].title);
-    }
-    table.push(headerRow);
-    // // create data rows
-    const headerLength = headerRow.length;
-    const cardMax = cardMaxLength(lanes);
-    for (let i = 0; i < cardMax; i++) {
-      const dataRow = [];
-      // const currentColumnLength = lanes[i].cards.length;
-      for (let j = 0; j < headerLength; j++) {
-        const card = lanes[j].cards[i];
-        if (card) {
-          dataRow.push(card.title);
-        } else {
-          dataRow.push("");
+    } else {
+      // create header row
+
+      // Create header row
+      const headerRow = lanes.map((lane) => lane.title);
+      const table = [headerRow];
+
+      // // create data rows
+      const headerLength = headerRow.length;
+      const cardMax = cardMaxLength(lanes);
+      for (let i = 0; i < cardMax; i++) {
+        const dataRow = [];
+        // const currentColumnLength = lanes[i].cards.length;
+        for (let j = 0; j < headerLength; j++) {
+          const card = lanes[j].cards?.[i];
+          if (card && card.title) {
+            dataRow.push(card.title);
+          } else {
+            dataRow.push("");
+          }
         }
+        table.push(dataRow);
       }
-      table.push(dataRow);
+      return table;
     }
-    console.log("import", table);
-    return table;
   };
 
   // The goal of this function is to know what is the max cards length of a given lanes object
