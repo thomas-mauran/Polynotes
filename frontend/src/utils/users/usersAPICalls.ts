@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../types/ReduxTypes";
 import { sendAPICall } from "../APICalls";
 
 const endpointBase = "users";

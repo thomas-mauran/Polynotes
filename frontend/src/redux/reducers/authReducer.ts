@@ -7,6 +7,7 @@ const initialState: StateType = {
   username: null,
   email: null,
   jwt: null,
+  isAuthenticated: false,
 };
 
 // setAutoFreeze(false);
@@ -26,9 +27,13 @@ const authReducer = createSlice({
       state.email = null;
       state.jwt = null;
     },
+
+    setAuthenticated: (state, action) => {
+      state.isAuthenticated = action.payload.value;
+    },
   },
 });
 
-export const { login, disconnect } = authReducer.actions;
+export const { login, disconnect, setAuthenticated } = authReducer.actions;
 
 export default authReducer.reducer;

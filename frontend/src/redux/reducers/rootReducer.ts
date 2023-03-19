@@ -4,7 +4,7 @@ import authReducer from "./authReducer";
 
 const rootReducer = combineReducers({
   block: blockReducer,
-  auth: authReducer,
+  authReduc: authReducer,
 });
 
 export default rootReducer;
