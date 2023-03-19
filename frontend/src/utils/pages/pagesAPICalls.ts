@@ -11,9 +11,15 @@ export async function getPage(pageId: string | undefined) {
   return await sendAPICall("POST", endpoint, body);
 }
 
-export async function update(state: Object) {
-  const body = {};
-  console.log(body);
+export async function updatePage(pageId: string | null, blocks: Object, slashMenuBlockId: string | null, childList: []) {
+  const body = {
+    pageId,
+    update: {
+      blocks,
+      slashMenuBlockId,
+      childList,
+    },
+  };
 
   const endpoint = `${endpointBase}/`;
   return await sendAPICall("PATCH", endpoint, body);

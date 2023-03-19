@@ -24,12 +24,11 @@ export default function GifPickerBlock(props: propsType) {
   // Functions
 
   const handleClick = (e: any) => {
-    console.log(e);
     setInputs((prevState) => ({
       ...prevState,
       src: e.preview.url,
     }));
-    dispatch(updateHTML({ uuid: props.uuid, newData: inputs.textField }));
+    dispatch(updateHTML({ uuid: props.uuid, newData: e.preview.url }));
     dispatch(closeSettings({ index: props.index }));
   };
   return (

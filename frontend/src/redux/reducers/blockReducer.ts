@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { StateType } from "../../types/PageTypes";
 import { BlockType } from "../../types/PageTypes";
+import { updatePage } from "../../utils/pages/pagesAPICalls";
 
 const initialState: StateType = {
   pageId: null,
@@ -58,6 +59,7 @@ const blockReducer = createSlice({
 
     updateHTML: (state, action) => {
       updateAfterId(state.blocks, action.payload.uuid, action.payload.newData);
+      updatePage(state.pageId, state.blocks, state.slashMenuBlockId, state.childList);
     },
 
     onArrowUp: (state, action) => {
