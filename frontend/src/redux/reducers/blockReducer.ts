@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { StateType } from "../../types/PageTypes";
-import { setAutoFreeze } from "immer";
 import { BlockType } from "../../types/PageTypes";
 
 const initialState: StateType = {
+  pageId: null,
   blocks: [
     {
       html: "",
@@ -15,7 +15,7 @@ const initialState: StateType = {
     },
   ],
   slashMenuBlockId: null,
-  focusIndex: 0,
+  childList: [],
 };
 
 // setAutoFreeze(false);
@@ -24,6 +24,13 @@ const blockReducer = createSlice({
   name: "block",
   initialState,
   reducers: {
+    setPageContent: (state, action) => {
+      state.pageId = action.payload.pageId;
+      state.blocks = action.payload.blocks;
+      state.slashMenuBlockId = action.payload.slashMenuBlockId;
+      state.childList = action.payload.childList;
+    },
+
     addBlock: (state, action) => {
       const id = uuidv4();
       const id2 = uuidv4();
@@ -60,16 +67,10 @@ const blockReducer = createSlice({
     onArrowDown: (state, action) => {
       changeFocusWithArrow(state.blocks, action.payload.uuid, +1);
     },
-    moveBlockDown: (state, action) => {
-      if (action.payload.index < state.blocks.length - 1) {
-        [state.blocks[action.payload.index], state.blocks[action.payload.index + 1]] = [state.blocks[action.payload.index + 1], state.blocks[action.payload.index]];
-        state.focusIndex = action.payload.index + 1;
-      }
-    },
+
     deleteBlock: (state, action) => {
       if (state.blocks.length > 1) {
         state.blocks.splice(action.payload.index, 1);
-        state.focusIndex = action.payload.index === state.blocks.length ? action.payload.index - 1 : state.focusIndex;
       }
     },
     openHelper: (state, action) => {
@@ -88,7 +89,6 @@ const blockReducer = createSlice({
 
     changeType: (state, action) => {
       state.blocks[action.payload.index].type = action.payload.newType;
-      console.log(state.blocks[action.payload.index].type);
     },
 
     createMultiColumn: (state, action) => {
@@ -145,7 +145,6 @@ function addItemAfterId(array: BlockType[], id: string, newItem: BlockType) {
     // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
     // and add the block in the list after it
     if (Array.isArray(item.html)) {
-      console.log("in");
       addItemAfterId(item.html, id, newItem);
     } else {
       // we simply add the block after the found one
@@ -191,6 +190,6 @@ function updateAfterId(array: BlockType[], id: string, newHtml: string) {
   return array;
 }
 
-export const { addBlock, updateHTML, createMultiColumn, onArrowUp, onArrowDown, moveBlockDown, changeType, deleteBlock, openHelper, closeHelper, closeSettings, openSettings } = blockReducer.actions;
+export const { addBlock, updateHTML, createMultiColumn, setPageContent, onArrowUp, onArrowDown, changeType, deleteBlock, openHelper, closeHelper, closeSettings, openSettings } = blockReducer.actions;
 
 export default blockReducer.reducer;

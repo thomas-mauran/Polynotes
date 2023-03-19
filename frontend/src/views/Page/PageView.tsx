@@ -3,7 +3,7 @@ import { Box, Container, IconButton, Menu, MenuItem, Typography } from "@mui/mat
 
 // Style
 import styled from "@emotion/styled";
-import { useRef, useState, MouseEvent } from "react";
+import { useRef, useState, MouseEvent, useEffect } from "react";
 
 // Block components
 import ImageBlock from "../../components/Block/ImageBlock";
@@ -23,10 +23,12 @@ import TextBlock from "../../components/Block/TextBlock";
 import MultiColumnBlock from "../../components/Block/MultiColumnBlock";
 
 import { useSelector, useDispatch } from "react-redux";
-import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings } from "../../redux/reducers/blockReducer";
+import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings, setPageContent } from "../../redux/reducers/blockReducer";
 import GifPickerBlock from "../../components/Block/GifPickerBlock";
 import { setAutoFreeze } from "immer";
 import { RootState } from "../../types/ReduxTypes";
+import { useParams } from "react-router";
+import { getPage } from "../../utils/pages/pagesAPICalls";
 const MainBox = styled.div(`
 width: 100%;
 min-width: 200px;
@@ -34,18 +36,26 @@ margin: 5% 15% 5% 10%;
 `);
 
 export default function PageView() {
-  setAutoFreeze(false);
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetchPage(id);
+  }, [id]);
 
   const blocks = useSelector((state: RootState) => state.block.blocks);
-  const slashMenuBlockId = useSelector((state) => state.block.slashMenuBlockId);
+  const slashMenuBlockId = useSelector((state: RootState) => state.block.slashMenuBlockId);
   const dispatch = useDispatch();
-
-  const focusIndex = useRef(0);
 
   // Functions
   const handleClickMenu = (e: MouseEvent) => {
     dispatch(addBlock({ blockType: (e.target as HTMLButtonElement).id, uuid: slashMenuBlockId }));
     dispatch(closeHelper());
+  };
+
+  const fetchPage = async (id: string | undefined) => {
+    const page = await getPage(id);
+    const { _id, blocks, childList, slashMenuBlockId } = page.data;
+    dispatch(setPageContent({ pageId: _id, blocks, childList, slashMenuBlockId }));
   };
 
   const blockElements = blocks.map((item, index) => {
@@ -59,9 +69,6 @@ export default function PageView() {
             <IconButton onClick={() => dispatch(openSettings({ index: index }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
               <SettingsIcon />
             </IconButton>
-            {/* <IconButton onClick={() => dispatch({type: "DELETE_BLOCK", index: index})} aria-label="add" sx={{ padding: "0px", height: "20px" }}>
-              <AddIcon />
-            </IconButton> */}
           </Box>
           <ImageBlock uuid={item.id} defaultValue={item.html} index={index} settingsOpen={item.settingsOpen} />
         </Box>
@@ -76,10 +83,6 @@ export default function PageView() {
             <IconButton onClick={() => dispatch(openSettings({ index: index }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
               <SettingsIcon />
             </IconButton>
-            {/*
-            <IconButton onClick={() => handleCreateMultiBlock(index)} aria-label="add" sx={{ padding: "0px", height: "20px" }}>
-              <AddIcon />
-            </IconButton> */}
           </Box>
           <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html} settingsOpen={item.settingsOpen} index={index} />
         </Box>
@@ -94,10 +97,6 @@ export default function PageView() {
             <IconButton onClick={() => dispatch(openSettings({ index: index }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
               <SettingsIcon />
             </IconButton>
-            {/*
-              <IconButton onClick={() => handleCreateMultiBlock(index)} aria-label="add" sx={{ padding: "0px", height: "20px" }}>
-                <AddIcon />
-              </IconButton> */}
           </Box>
           <GifPickerBlock uuid={item.id} defaultValue={item.html} index={index} settingsOpen={item.settingsOpen} />
         </Box>

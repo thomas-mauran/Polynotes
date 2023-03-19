@@ -8,7 +8,7 @@ export interface BoardData {
 }
 
 export interface Lane {
-  id: string;
+  id?: string;
   title?: string;
   label?: string;
   style?: CSSProperties;
@@ -60,7 +60,8 @@ export interface MultiColumnBlock extends BaseBlock {
 export type BlockType = TextBlockType | DatabaseBlockType | ImageBlockType | MultiColumnBlock;
 
 export interface StateType {
+  pageId: string | null;
   blocks: BlockType[];
   slashMenuBlockId: null | string;
-  focusIndex: number;
+  childList: [];
 }

@@ -31,9 +31,10 @@ const Router = createBrowserRouter(
       <Route path="cgu" element={<CguView />} />
       <Route path="verifyEmail/:email" element={<VerifyEmail />} />
 
+      {/* <Route path="/" element={<PrivateRoutes />}> */}
       <Route path="/" element={<AppLayout />}>
         <Route path="/workspace" element={<WorkspaceView />} />
-        <Route path="page" element={<PageView />} />
+        <Route path="/page/:id" element={<PageView />} />
       </Route>
     </Route>
   )
