@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { dataLogin } from './types/userTypes';
 
 import { UsersService } from './users.service';
 
@@ -43,7 +44,9 @@ export class UsersController {
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  async loginUser(@Body() loginUserDto: LoginUserDto) {
+  async loginUser(
+    @Body() loginUserDto: LoginUserDto,
+  ): Promise<dataLogin | null> {
     return this.userService.login(loginUserDto);
   }
 }

@@ -12,9 +12,6 @@ export class Page {
   @Prop({ type: String, default: null })
   slashMenuBlockId: string | null;
 
-  @Prop({ type: String, default: null })
-  parentId: string;
-
   @Prop({ default: [] })
   childList: string[];
 }

@@ -9,7 +9,6 @@ export class PagesController {
 
   @Get()
   async getPage(@Body() body: FindPageDto) {
-    console.log(body);
     return await this.pageService.findOrCreate(body);
   }
 

@@ -35,7 +35,6 @@ export class PagesService {
         },
       ],
       slashMenuBlockId: null,
-      parentId: parentId ? parentId : null,
       childList: [],
     });
 

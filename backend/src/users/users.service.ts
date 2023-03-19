@@ -15,12 +15,7 @@ import { hash, compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuid } from 'uuid';
 import { MailService } from './mail.service';
-
-interface dataLogin {
-  username: string;
-  email: string;
-  jwt: string;
-}
+import { dataLogin } from './types/userTypes';
 
 @Injectable()
 export class UsersService {
