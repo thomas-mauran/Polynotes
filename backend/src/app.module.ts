@@ -7,6 +7,9 @@ import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailService } from './users/mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -37,8 +40,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
       }),
       inject: [ConfigService], // Inject the ConfigService.
     }),
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MailService],
+  providers: [AppService, MailService, AuthService, JwtService],
 })
 export class AppModule {}

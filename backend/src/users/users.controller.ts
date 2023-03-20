@@ -6,6 +6,7 @@ import {
   Post,
   HttpStatus,
   Param,
+  Res,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -40,13 +41,5 @@ export class UsersController {
         error: error.message,
       };
     }
-  }
-
-  @Post('login')
-  @HttpCode(HttpStatus.OK)
-  async loginUser(
-    @Body() loginUserDto: LoginUserDto,
-  ): Promise<dataLogin | null> {
-    return this.userService.login(loginUserDto);
   }
 }
