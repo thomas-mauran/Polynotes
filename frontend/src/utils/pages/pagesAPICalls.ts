@@ -13,11 +13,6 @@ export async function getPage(pageId: string | undefined) {
 }
 
 export async function updatePage(blocks: [], pageId: string | null, slashMenuBlockId: string | null, childList: []) {
-  console.log(blocks);
-  console.log(pageId);
-  console.log(slashMenuBlockId);
-  console.log(childList);
-
   const body = {
     pageId,
     update: {

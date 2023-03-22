@@ -12,7 +12,6 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
   let data;
 
   if (response.ok) {
-    console.log(response);
     const responseText = await response.text();
     data = JSON.parse(responseText);
   }

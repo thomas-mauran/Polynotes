@@ -23,7 +23,6 @@ function isTokenExpired(token: string): boolean {
 
 function getTokenExpirationDate(encodedToken: string): Date | null {
   let token: any = decode(encodedToken);
-  console.log(token);
   if (!token.exp) {
     return null;
   }

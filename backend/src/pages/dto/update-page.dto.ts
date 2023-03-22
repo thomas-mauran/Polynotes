@@ -1,5 +1,4 @@
 import { IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
-import { BlockType } from '../types/PageTypes';
 
 export class UpdatePageDto {
   @IsMongoId()

@@ -26,7 +26,5 @@ export async function login(email: string, password: string) {
 export async function isAuth() {
   // const authState = useSelector((state: RootState) => state.auth.auth);
 
-  console.log("test");
-
   return true;
 }

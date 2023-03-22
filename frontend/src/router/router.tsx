@@ -10,12 +10,9 @@ import SignupView from "../views/Signup/SignupView";
 import CguView from "../views/CGU/CguView";
 import VerifyEmail from "../views/VerifyEmail/VerifyEmail";
 import PageView from "../views/Page/PageView";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../types/ReduxTypes";
 import { isLoggedIn } from "../utils/auth/utils";
 
 const AppLayout = () => {
-  const jwt = useSelector((state: RootState) => state.authReduc.jwt);
   if (isLoggedIn()) {
     return (
       <>
