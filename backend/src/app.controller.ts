@@ -1,15 +1,26 @@
-import { Controller, Get, Post, UseGuards, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Req,
+  Res,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { Response } from 'express';
+import { UsersService } from './users/users.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private authService: AuthService,
+    private userService: UsersService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -18,11 +29,22 @@ export class AppController {
     @Req() req: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const token = await this.authService.login(req.user);
-
-    res.cookie('AuthCookie', cookieValue);
-
-    return { message: 'Login successful' };
+    try {
+      const user = await this.authService.login(req.user);
+      response
+        .cookie('JWTCookie', user.access_token, {
+          httpOnly: true,
+          secure: false,
+        })
+        .send({
+          message: 'Success',
+          access_token: user.access_token,
+          email: user.email,
+          username: user.username,
+        });
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   @UseGuards(JwtAuthGuard)

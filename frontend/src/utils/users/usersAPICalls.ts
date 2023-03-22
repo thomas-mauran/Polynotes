@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../types/ReduxTypes";
 import { sendAPICall } from "../APICalls";
 
 const endpointBase = "users";
@@ -21,6 +19,14 @@ export async function login(email: string, password: string) {
     password,
   };
 
-  const endpoint = `${endpointBase}/login`;
+  const endpoint = `auth/login`;
   return await sendAPICall("POST", endpoint, body);
+}
+
+export async function isAuth() {
+  // const authState = useSelector((state: RootState) => state.auth.auth);
+
+  console.log("test");
+
+  return true;
 }

@@ -6,7 +6,6 @@ import { setAutoFreeze } from "immer";
 const initialState: StateType = {
   username: null,
   email: null,
-  jwt: null,
   isAuthenticated: false,
 };
 
@@ -19,13 +18,11 @@ const authReducer = createSlice({
     login: (state, action) => {
       state.username = action.payload.username;
       state.email = action.payload.email;
-      state.jwt = action.payload.jwt;
     },
 
     disconnect: (state, action) => {
       state.username = null;
       state.email = null;
-      state.jwt = null;
     },
 
     setAuthenticated: (state, action) => {

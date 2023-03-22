@@ -25,11 +25,10 @@ import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper } from "../../
 interface propsType {
   index: number;
   defaultValue: string;
-  settingsOpen: boolean;
   uuid: string;
   isFocused: boolean;
-  columnId: number;
-  onChangeMultiColumn: (itemIndex: number, columnIndex: number, newData: string) => {};
+  columnId?: number;
+  onChangeMultiColumn?: (itemIndex: number, columnIndex: number, newData: string) => {};
   className: string;
 }
 

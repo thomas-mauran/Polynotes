@@ -15,7 +15,7 @@ interface propsType {
   settingsOpen: boolean;
   uuid: string;
   dbType: dbTypes;
-  onChange: () => {};
+  onChange?: () => {};
 }
 
 export default function DatabaseBlock(props: propsType) {
@@ -32,7 +32,7 @@ export default function DatabaseBlock(props: propsType) {
         dispatch(updateHTML({ uuid: props.uuid, newData: newData }));
       }
     },
-    [props.onChange, props.dbType]
+    [props.dbType]
   );
 
   const handleDbTypeChange = (e: SelectChangeEvent) => {

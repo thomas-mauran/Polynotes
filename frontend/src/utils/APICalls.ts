@@ -1,14 +1,18 @@
 export async function sendAPICall(method: string, endpoint: string, body: any) {
-  const url = `${import.meta.env.VITE_APP_BASE_URL}/${endpoint}`;
-  const options = {
+  const { VITE_APP_BASE_URL } = await import.meta.env;
+  const url = `${VITE_APP_BASE_URL}/${endpoint}`;
+
+  const options: RequestInit = {
     method,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("AUTH_TOKEN_KEY")}` ?? undefined },
     body: body ? JSON.stringify(body) : undefined, // Check if body is empty
+    credentials: "include",
   };
   const response = await fetch(url, options);
   let data;
 
   if (response.ok) {
+    console.log(response);
     const responseText = await response.text();
     data = JSON.parse(responseText);
   }
@@ -24,7 +28,6 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
     if (responseBody.error) {
       responseBody.message.push(responseBody.error);
     }
-
     return responseBody;
   } catch (error) {
     return {

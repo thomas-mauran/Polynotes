@@ -1,11 +1,10 @@
 import { LoadingButton } from "@mui/lab";
 import { Alert, Container, TextField, Snackbar } from "@mui/material";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { login } from "../../utils/users/usersAPICalls";
-import { RootState } from "../../types/ReduxTypes";
-import { useDispatch } from "react-redux";
+import { login as loginUtils } from "../../utils/auth/utils";
 import { login as loginReducer } from "../../redux/reducers/authReducer";
 
 export default function LoginForm() {
@@ -19,9 +18,9 @@ export default function LoginForm() {
   const [errorAPIList, setErrorAPIList] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   // Functions
   const handleChange = (e: any) => {
@@ -44,8 +43,10 @@ export default function LoginForm() {
       setLoading(false);
     } else {
       // Store the jwt
-      const { username, email, jwt } = response.data;
-      dispatch(loginReducer({ username, email, jwt }));
+      const { username, email, access_token } = response.data;
+      loginUtils(access_token);
+      dispatch(loginReducer({ username, email }));
+
       return navigate(`/workspace/`);
     }
   };

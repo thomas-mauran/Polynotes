@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
+import { LoginUserDto } from 'src/users/dto/login-user.dto';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -28,6 +29,8 @@ export class AuthService {
         expiresIn: '1h',
         secret: this.configService.get('JWT_KEY'),
       }),
+      email: user.email,
+      username: user.username,
     };
   }
 }
