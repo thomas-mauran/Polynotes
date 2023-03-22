@@ -14,7 +14,7 @@ export class PagesService {
   // FIND OR CREATE
 
   async findOrCreate(body: FindPageDto) {
-    const { pageId, parentId } = body;
+    const { pageId, parentId, userId } = body;
 
     if (pageId != null) {
       const pageFound = await this.pageModel.findById(pageId).exec();
@@ -36,6 +36,7 @@ export class PagesService {
       ],
       slashMenuBlockId: null,
       childList: [],
+      author: userId,
     });
 
     if (parentId != null) {

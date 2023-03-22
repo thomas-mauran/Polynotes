@@ -1,7 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { Alert, Container, TextField, Snackbar } from "@mui/material";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { login } from "../../utils/users/usersAPICalls";
 import { login as loginUtils } from "../../utils/auth/utils";
@@ -43,9 +43,8 @@ export default function LoginForm() {
       setLoading(false);
     } else {
       // Store the jwt
-      const { username, email, access_token } = response.data;
-      loginUtils(access_token);
-      dispatch(loginReducer({ username, email }));
+      const { username, email, access_token, user_id } = response.data;
+      loginUtils(username, email, access_token, user_id);
 
       return navigate(`/workspace/`);
     }

@@ -2,7 +2,6 @@ import { Box } from "@mui/system";
 import ImageBlock from "./ImageBlock";
 import DatabaseBlock from "./DatabaseBlock";
 import TextBlock from "./TextBlock";
-import { IndeterminateCheckBoxSharp } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { deleteBlock, openSettings, updateHTML } from "../../redux/reducers/blockReducer";
 import { IconButton } from "@mui/material";

@@ -5,6 +5,7 @@ const endpointBase = "pages";
 export async function getPage(pageId: string | undefined) {
   const body = {
     pageId,
+    userId: localStorage.getItem("user_id"),
   };
 
   const endpoint = `${endpointBase}/`;

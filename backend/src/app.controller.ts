@@ -13,14 +13,12 @@ import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Response } from 'express';
-import { UsersService } from './users/users.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private authService: AuthService,
-    private userService: UsersService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
@@ -41,6 +39,7 @@ export class AppController {
           access_token: user.access_token,
           email: user.email,
           username: user.username,
+          user_id: user._id,
         });
     } catch (error) {
       throw new InternalServerErrorException();

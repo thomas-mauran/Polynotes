@@ -8,4 +8,8 @@ export class FindPageDto {
   @IsMongoId()
   @IsOptional()
   readonly parentId: string;
+
+  @IsMongoId()
+  @IsOptional()
+  readonly userId: string;
 }

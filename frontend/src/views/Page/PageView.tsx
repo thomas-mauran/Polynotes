@@ -36,6 +36,7 @@ margin: 5% 15% 5% 10%;
 `);
 
 export default function PageView() {
+  setAutoFreeze(false);
   const { id } = useParams();
 
   useEffect(() => {

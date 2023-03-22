@@ -10,11 +10,9 @@ import { InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { User, UsersDocument } from './schemas/users.schema';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { hash, compare } from 'bcrypt';
+import { hash } from 'bcrypt';
 import { v4 as uuid } from 'uuid';
 import { MailService } from './mail.service';
-import { dataLogin } from './types/userTypes';
 
 @Injectable()
 export class UsersService {

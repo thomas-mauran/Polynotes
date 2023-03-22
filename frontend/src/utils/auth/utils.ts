@@ -1,8 +1,11 @@
 import decode from "jwt-decode";
 import { useDispatch } from "react-redux";
 
-export function login(jwt: string) {
+export function login(username: string, email: string, jwt: string, user_id: string) {
   localStorage.setItem("AUTH_TOKEN_KEY", jwt);
+  localStorage.setItem("username", username);
+  localStorage.setItem("email", email);
+  localStorage.setItem("user_id", user_id);
 }
 
 export function isLoggedIn() {
