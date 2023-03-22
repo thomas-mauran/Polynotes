@@ -21,8 +21,8 @@ const initialState: StateType = {
 
 // setAutoFreeze(false);
 
-const blockReducer = createSlice({
-  name: "block",
+const pageReducer = createSlice({
+  name: "page",
   initialState,
   reducers: {
     setPageContent: (state, action) => {
@@ -59,7 +59,9 @@ const blockReducer = createSlice({
 
     updateHTML: (state, action) => {
       updateAfterId(state.blocks, action.payload.uuid, action.payload.newData);
-      updatePage(state.pageId, state.blocks, state.slashMenuBlockId, state.childList);
+      const blocksArray = JSON.parse(JSON.stringify(state.blocks));
+      const childList = JSON.parse(JSON.stringify(state.childList));
+      updatePage(blocksArray, state.pageId, state.slashMenuBlockId, childList);
     },
 
     onArrowUp: (state, action) => {
@@ -192,6 +194,6 @@ function updateAfterId(array: BlockType[], id: string, newHtml: string) {
   return array;
 }
 
-export const { addBlock, updateHTML, createMultiColumn, setPageContent, onArrowUp, onArrowDown, changeType, deleteBlock, openHelper, closeHelper, closeSettings, openSettings } = blockReducer.actions;
+export const { addBlock, updateHTML, createMultiColumn, setPageContent, onArrowUp, onArrowDown, changeType, deleteBlock, openHelper, closeHelper, closeSettings, openSettings } = pageReducer.actions;
 
-export default blockReducer.reducer;
+export default pageReducer.reducer;

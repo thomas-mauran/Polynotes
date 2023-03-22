@@ -4,7 +4,7 @@ import Board from "react-trello";
 import { ActiveTable } from "active-table-react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import { changeType, closeSettings, updateHTML } from "../../redux/reducers/blockReducer";
+import { changeType, closeSettings, updateHTML } from "../../redux/reducers/pageReducer";
 import { BoardData, Lane } from "../../types/PageTypes";
 
 type dbTypes = "trello" | "table";

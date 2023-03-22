@@ -20,7 +20,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import CodeIcon from "@mui/icons-material/Code";
 import "./style.css";
 import { useDispatch } from "react-redux";
-import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper } from "../../redux/reducers/blockReducer";
+import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper } from "../../redux/reducers/pageReducer";
 
 interface propsType {
   index: number;

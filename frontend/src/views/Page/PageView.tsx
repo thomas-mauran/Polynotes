@@ -13,7 +13,6 @@ import DatabaseBlock from "../../components/Block/DatabaseBlock";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-import TextFieldsIcon from "@mui/icons-material/TextFields";
 // Draglines
 import AddIcon from "@mui/icons-material/Add";
 import "./blockStyle.css";
@@ -23,7 +22,7 @@ import TextBlock from "../../components/Block/TextBlock";
 import MultiColumnBlock from "../../components/Block/MultiColumnBlock";
 
 import { useSelector, useDispatch } from "react-redux";
-import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings, setPageContent } from "../../redux/reducers/blockReducer";
+import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings, setPageContent } from "../../redux/reducers/pageReducer";
 import GifPickerBlock from "../../components/Block/GifPickerBlock";
 import { setAutoFreeze } from "immer";
 import { RootState } from "../../types/ReduxTypes";
@@ -43,8 +42,9 @@ export default function PageView() {
     fetchPage(id);
   }, [id]);
 
-  const blocks = useSelector((state: RootState) => state.block.blocks);
-  const slashMenuBlockId = useSelector((state: RootState) => state.block.slashMenuBlockId);
+  const blocks = useSelector((state: RootState) => state.pageReduc.blocks);
+  const slashMenuBlockId = useSelector((state: RootState) => state.pageReduc.slashMenuBlockId);
+
   const dispatch = useDispatch();
 
   // Functions

@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import blockReducer from "./blockReducer";
+import pageReducer from "./pageReducer";
 import authReducer from "./authReducer";
 
 const rootReducer = combineReducers({
-  block: blockReducer,
+  pageReduc: pageReducer,
   authReduc: authReducer,
 });
 

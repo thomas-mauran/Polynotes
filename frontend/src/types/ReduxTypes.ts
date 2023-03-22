@@ -5,7 +5,7 @@ export interface RootState {
   authReduc: {
     auth: AuthState;
   };
-  block: {
-    blocks: BlockState;
+  pageReduc: {
+    page: BlockState;
   };
 }

@@ -12,7 +12,12 @@ export async function getPage(pageId: string | undefined) {
   return await sendAPICall("POST", endpoint, body);
 }
 
-export async function updatePage(pageId: string | null, blocks: Object, slashMenuBlockId: string | null, childList: []) {
+export async function updatePage(blocks: [], pageId: string | null, slashMenuBlockId: string | null, childList: []) {
+  console.log(blocks);
+  console.log(pageId);
+  console.log(slashMenuBlockId);
+  console.log(childList);
+
   const body = {
     pageId,
     update: {
