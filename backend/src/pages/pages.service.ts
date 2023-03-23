@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Page, PagesDocument } from './schemas/pages.schema';
 import { v4 as uuidv4 } from 'uuid';
 import { FindPageDto } from './dto/find-page.dto';
@@ -55,5 +55,12 @@ export class PagesService {
       new: true,
     });
     return updatedPage;
+  }
+
+  async getLastUpdatedDocuments(userId: string) {
+    return await this.pageModel
+      .find({ author: userId })
+      .sort({ updatedAt: 'desc' })
+      .limit(10);
   }
 }

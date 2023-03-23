@@ -18,8 +18,6 @@ export default function LoginForm() {
   const [errorAPIList, setErrorAPIList] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   // Functions
