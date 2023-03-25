@@ -33,4 +33,10 @@ export class PagesController {
   async getRecentDocuments(@Param('id') userId: string) {
     return await this.pageService.getLastUpdatedDocuments(userId);
   }
+
+  // @UseGuards(JwtAuthGuard)
+  // @Get('tree/:id')
+  // async getTree(@Param('id') userId: string) {
+  //   return await this.pageService.getElementAsTree(userId);
+  // }
 }

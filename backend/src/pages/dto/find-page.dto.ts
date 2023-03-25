@@ -6,10 +6,10 @@ export class FindPageDto {
   readonly pageId: string;
 
   @IsMongoId()
-  @IsOptional()
+  @IsNotEmpty()
   readonly parentId: string;
 
   @IsMongoId()
-  @IsNotEmpty()
+  @IsOptional()
   readonly userId: string;
 }

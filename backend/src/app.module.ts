@@ -10,6 +10,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
+import { FoldersModule } from './folders/folders.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { JwtService } from '@nestjs/jwt';
       inject: [ConfigService], // Inject the ConfigService.
     }),
     AuthModule,
+    FoldersModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService, AuthService, JwtService],

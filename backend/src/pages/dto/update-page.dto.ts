@@ -1,4 +1,5 @@
 import { IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
+import { UpdatePageTypeBody } from '../types/PageTypes';
 
 export class UpdatePageDto {
   @IsMongoId()
@@ -6,5 +7,5 @@ export class UpdatePageDto {
   readonly pageId: string;
 
   @IsNotEmpty()
-  readonly update: Object;
+  readonly update: UpdatePageTypeBody;
 }

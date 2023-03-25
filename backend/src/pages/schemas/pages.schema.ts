@@ -8,14 +8,17 @@ export type PagesDocument = HydratedDocument<Page>;
   timestamps: true,
 })
 export class Page {
+  @Prop({ type: String, default: 'Untitled' })
+  title: string | null;
+
+  @Prop({ type: String, default: null })
+  thumbnailSrc: string | null;
+
   @Prop({ required: true, type: [Object] })
   blocks: BlockType[];
 
   @Prop({ type: String, default: null })
   slashMenuBlockId: string | null;
-
-  @Prop({ default: [] })
-  childList: string[];
 
   @Prop({ required: true, type: SchemaTypes.ObjectId })
   author: ObjectId;

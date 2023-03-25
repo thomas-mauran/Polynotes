@@ -28,3 +28,14 @@ export type BlockType =
   | DatabaseBlockType
   | ImageBlockType
   | MultiColumnBlock;
+
+export interface UpdatePageTypeBody {
+  blocks: BlockType[];
+  slashMenuBlockId: string | null;
+  author: string;
+}
+
+export interface UpdatePageTypeFull extends UpdatePageTypeBody {
+  title?: string;
+  thumbnailSrc?: string | null;
+}
