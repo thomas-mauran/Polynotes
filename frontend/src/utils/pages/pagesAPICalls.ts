@@ -12,13 +12,14 @@ export async function getPage(pageId: string | undefined) {
   return await sendAPICall("POST", endpoint, body);
 }
 
-export async function updatePage(blocks: [], pageId: string | null, slashMenuBlockId: string | null, childList: []) {
+export async function updatePage(blocks: [], pageId: string | null, slashMenuBlockId: string | null) {
   const body = {
     pageId,
     update: {
+      title: findElementInBlockList(blocks, ["h1"]),
+      thumbnailSrc: findElementInBlockList(blocks, ["img", "gif"]),
       blocks,
       slashMenuBlockId,
-      childList,
     },
   };
 
@@ -31,4 +32,15 @@ export async function getRecentPages() {
   const userId = localStorage.getItem("user_id");
   const endpoint = `${endpointBase}/recentDocuments/${userId}`;
   return await sendAPICall("GET", endpoint, body);
+}
+
+function findElementInBlockList(blockList: any[], type: string[]) {
+  for (const block of blockList) {
+    if (type.includes(block.type)) {
+      let tempElement = document.createElement("div");
+      tempElement.innerHTML = block.html as string;
+      return tempElement.firstChild?.textContent;
+    }
+  }
+  return null;
 }

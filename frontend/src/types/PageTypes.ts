@@ -63,5 +63,4 @@ export interface StateType {
   pageId: string | null;
   blocks: BlockType[];
   slashMenuBlockId: null | string;
-  childList: [];
 }

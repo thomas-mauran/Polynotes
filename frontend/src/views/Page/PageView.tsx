@@ -55,6 +55,7 @@ export default function PageView() {
 
   const fetchPage = async (id: string | undefined) => {
     const page = await getPage(id);
+    console.log(page);
     const { _id, blocks, childList, slashMenuBlockId } = page.data;
     dispatch(setPageContent({ pageId: _id, blocks, childList, slashMenuBlockId }));
   };

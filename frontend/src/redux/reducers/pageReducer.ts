@@ -16,7 +16,6 @@ const initialState: StateType = {
     },
   ],
   slashMenuBlockId: null,
-  childList: [],
 };
 
 // setAutoFreeze(false);
@@ -29,7 +28,6 @@ const pageReducer = createSlice({
       state.pageId = action.payload.pageId;
       state.blocks = action.payload.blocks;
       state.slashMenuBlockId = action.payload.slashMenuBlockId;
-      state.childList = action.payload.childList;
     },
 
     addBlock: (state, action) => {
@@ -60,8 +58,7 @@ const pageReducer = createSlice({
     updateHTML: (state, action) => {
       updateAfterId(state.blocks, action.payload.uuid, action.payload.newData);
       const blocksArray = JSON.parse(JSON.stringify(state.blocks));
-      const childList = JSON.parse(JSON.stringify(state.childList));
-      updatePage(blocksArray, state.pageId, state.slashMenuBlockId, childList);
+      updatePage(blocksArray, state.pageId, state.slashMenuBlockId);
     },
 
     onArrowUp: (state, action) => {

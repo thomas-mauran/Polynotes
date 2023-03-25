@@ -59,13 +59,6 @@ export class PagesService {
 
   async updatePage(body: UpdatePageDto) {
     const { pageId, update } = body;
-    console.log(update);
-    const title = this.findElementInBlockList(update.blocks, 'h1');
-    const thumbnailSrc = this.findElementInBlockList(update.blocks, 'img');
-
-    const fullObject: UpdatePageTypeFull = update;
-    fullObject.title = title ?? 'Untitled';
-    fullObject.thumbnailSrc = thumbnailSrc ?? null;
 
     const updatedPage = await this.pageModel.findByIdAndUpdate(pageId, update, {
       new: true,
@@ -74,17 +67,10 @@ export class PagesService {
   }
 
   async getLastUpdatedDocuments(userId: string) {
-    return await this.pageModel
+    const pages = await this.pageModel
       .find({ author: userId })
       .sort({ updatedAt: 'desc' })
       .limit(10);
-  }
-
-  findElementInBlockList(blockList: BlockType[], type: string) {
-    for (const block of blockList) {
-      if (block.type === type) {
-        return block.html;
-      }
-    }
+    return pages;
   }
 }

@@ -10,7 +10,7 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
   };
   const response = await fetch(url, options);
   let data;
-
+  console.log(response);
   if (response.ok) {
     const responseText = await response.text();
     data = JSON.parse(responseText);
