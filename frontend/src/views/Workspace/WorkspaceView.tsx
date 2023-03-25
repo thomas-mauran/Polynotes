@@ -2,19 +2,29 @@ import { Alert, Container, Divider, Snackbar, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import FileExplorer from "../../components/FileExplorer/FileExplorer";
 import RecentDocument from "../../components/RecentDocuments/RecentDocument";
+import { getTree } from "../../utils/folders/folderAPICalls";
 import { getRecentPages } from "../../utils/pages/pagesAPICalls";
 
 export default function WorkspaceView() {
   const [recentDocuments, setRecentDocuments] = useState([]);
+  const [treeDocuments, setTreeDocuments] = useState([]);
+
   const [errorAPIList, setErrorAPIList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getRecentPages();
-      if (response.code != 200) {
-        setErrorAPIList(response.message);
+      const responseRecent = await getRecentPages();
+      if (responseRecent.code != 200) {
+        setErrorAPIList(responseRecent.message);
       } else {
-        setRecentDocuments(response.data);
+        setRecentDocuments(responseRecent.data);
+      }
+
+      const responseTree = await getTree();
+      if (responseTree.code != 200) {
+        setErrorAPIList(responseTree.message);
+      } else {
+        setTreeDocuments(responseTree.data);
       }
     };
 
@@ -36,7 +46,6 @@ export default function WorkspaceView() {
       <br />
       <br />
       <FileExplorer documents={recentDocuments} />
-
       <Snackbar open={errorAPIList?.length > 0} onClose={handleClose}>
         <div>
           {errorAPIList?.map((errorMsg, index) => (

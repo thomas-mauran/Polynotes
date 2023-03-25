@@ -1,0 +1,8 @@
+.treeItem {
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  width: 50px;
+  font-size: 2em;
+  transform: scale(1.3);
+  color: #707070;
+}

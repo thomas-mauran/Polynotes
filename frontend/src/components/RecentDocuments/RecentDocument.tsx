@@ -26,8 +26,8 @@ export default function RecentDocument(props: Props) {
             <Link to={link} key={doc._id}>
               <Card sx={{ margin: "10px 20px", minWidth: "150px", height: "250px" }}>
                 <CardContent>
-                  <Typography variant="h5" color="text.primary" gutterBottom sx={{ fontWeight: "bold" }}>
-                    {doc.title}
+                  <Typography variant="h6" color="text.primary" gutterBottom sx={{ fontWeight: "bold" }}>
+                    {doc.title.substring(0, 12) + "..."}
                   </Typography>
                   <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
                     {doc.thumbnailSrc == null ? (

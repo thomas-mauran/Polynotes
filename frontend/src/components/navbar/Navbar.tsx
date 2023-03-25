@@ -1,4 +1,3 @@
-import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -20,14 +19,17 @@ import StarIcon from "@mui/icons-material/Star";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { useState, useEffect } from "react";
 
 import { Link, Route, Router } from "react-router-dom";
+import TreeFileExplorer from "../../components/TreeFileExplorer/TreeFileExplorer";
 
 import "./style.css";
 import { useTheme } from "@emotion/react";
+import { getTree } from "../../utils/folders/folderAPICalls";
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -70,8 +72,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const theme = useTheme();
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [sidebarOpen, setSidebarOpen] = React.useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const [treeDocuments, setTreeDocuments] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const responseTree = await getTree();
+      if (responseTree.code != 200) {
+        console.log(responseTree.message);
+      } else {
+        setTreeDocuments(responseTree.data);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const isMenuOpen = Boolean(anchorEl);
   const isSidebarOpen = Boolean(sidebarOpen);
@@ -151,6 +167,9 @@ export default function PrimarySearchAppBar() {
   const sideList = () => (
     <Box sx={{ overflow: "auto" }}>
       <List>
+        <Typography variant="h6" sx={{ margin: "0px 20px", fontWeight: "bold" }}>
+          Actions
+        </Typography>
         {listItems.map((listItem, index) => (
           <Link to={listItem.link} key={index}>
             <ListItem button key={index}>
@@ -160,6 +179,13 @@ export default function PrimarySearchAppBar() {
           </Link>
         ))}
       </List>
+      <Divider />
+      <Box sx={{ marginLeft: "12px" }}>
+        <Typography variant="h6" sx={{ margin: "5px", fontWeight: "bold" }}>
+          File explorer
+        </Typography>
+        <TreeFileExplorer documents={treeDocuments} />
+      </Box>
     </Box>
   );
 
