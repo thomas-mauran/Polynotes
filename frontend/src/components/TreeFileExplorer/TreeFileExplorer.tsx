@@ -12,10 +12,15 @@ interface Props {
 export default function TreeFileExplorer(props: Props) {
   const { documents } = props;
 
-  const renderTree = (nodes: any) => {
+  const renderTree = (nodes: TreeFolderElement) => {
+    console.log(nodes);
     if (!Array.isArray(nodes.children)) {
       // If nodes is a document, wrap it with a Link component
-      return <TreeItem key={nodes.id} nodeId={nodes.id} label={<Link to={`/page/${nodes.id}`}>{nodes.title}</Link>} endIcon={<DescriptionIcon className="treeItem" />} />;
+      return <TreeItem key={nodes.id} nodeId={nodes.id} label={<Link to={`/page/${nodes.id}`}>{nodes.title.substring(0, 12) + "..."}</Link>} endIcon={<DescriptionIcon className="treeItem" />} />;
+    }
+    if (nodes.children.length === 0) {
+      // If nodes is a document, wrap it with a Link component
+      return <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.title} endIcon={<FolderIcon className="treeItem" />} />;
     }
 
     // Otherwise, render it as a folder

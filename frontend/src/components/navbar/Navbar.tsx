@@ -180,7 +180,7 @@ export default function PrimarySearchAppBar() {
         ))}
       </List>
       <Divider />
-      <Box sx={{ marginLeft: "12px" }}>
+      <Box sx={{ margin: "10px 0px 0px 12px", userSelect: "none" }}>
         <Typography variant="h6" sx={{ margin: "5px", fontWeight: "bold" }}>
           File explorer
         </Typography>

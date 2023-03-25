@@ -1,0 +1,12 @@
+.fileExporer {
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  width: 50px;
+  font-size: 2em;
+  transform: scale(2);
+  margin: 10px 20px;
+  color: #707070;
+}
+.MuiTreeItem-label {
+  margin-left: 10px;
+}

@@ -58,7 +58,6 @@ export class FoldersService {
 
     const returnTree = [];
     for (const folder of folders) {
-      console.log(folder);
       if (folder.childList.length > 0) {
         console.log(folder.childList.length);
         const tree = await this.recursiveFind(folder.childList);
@@ -72,6 +71,7 @@ export class FoldersService {
         returnTree.push({
           id: folder._id,
           title: folder.title,
+          children: [],
         });
       }
     }
@@ -94,6 +94,9 @@ export class FoldersService {
       } else {
         // it is a folder so we need to check if it has children
         const folder = await this.folderModel.findById(child.id);
+        if (!folder) {
+          continue;
+        }
 
         if (folder && folder.childList.length > 0) {
           const childResults = await this.recursiveFind(folder.childList);
@@ -104,10 +107,10 @@ export class FoldersService {
               children: childResults,
             });
           } else {
-            results.push({ id: folder.id, title: folder.title });
+            results.push({ id: folder.id, title: folder.title, children: [] });
           }
-        } else if (folder) {
-          results.push({ id: folder.id, title: folder.title });
+        } else {
+          results.push({ id: folder.id, title: folder.title, children: [] });
         }
       }
     }

@@ -45,7 +45,7 @@ export default function WorkspaceView() {
       <Divider />
       <br />
       <br />
-      <FileExplorer documents={recentDocuments} />
+      <FileExplorer documents={treeDocuments} />
       <Snackbar open={errorAPIList?.length > 0} onClose={handleClose}>
         <div>
           {errorAPIList?.map((errorMsg, index) => (
