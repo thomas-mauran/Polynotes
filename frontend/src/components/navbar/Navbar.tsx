@@ -22,7 +22,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { useState, useEffect } from "react";
 
-import { Link, Route, Router } from "react-router-dom";
+import { Link, Route, Router, useNavigate } from "react-router-dom";
 import TreeFileExplorer from "../../components/TreeFileExplorer/TreeFileExplorer";
 
 import "./style.css";
@@ -70,11 +70,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 // Nav bar
 export default function PrimarySearchAppBar() {
-  const theme = useTheme();
-
+  // HOOKS
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [treeDocuments, setTreeDocuments] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,48 +89,10 @@ export default function PrimarySearchAppBar() {
     fetchData();
   }, [sidebarOpen]);
 
+  // CONST
   const isMenuOpen = Boolean(anchorEl);
   const isSidebarOpen = Boolean(sidebarOpen);
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleSidebarMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setSidebarOpen(true);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleSidebarMenuClose = () => {
-    setSidebarOpen(false);
-  };
-
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}>
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
-    </Menu>
-  );
-
-  // Side bar
-
   const listItems = [
     {
       listIcon: <AddIcon />,
@@ -164,6 +126,55 @@ export default function PrimarySearchAppBar() {
     },
   ];
 
+  // FUNCTIONS
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleSidebarMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setSidebarOpen(true);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSidebarMenuClose = () => {
+    setSidebarOpen(false);
+  };
+
+  const handleDisconnect = () => {
+    localStorage.removeItem("AUTH_TOKEN_KEY");
+    localStorage.removeItem("email");
+    localStorage.removeItem("username");
+    localStorage.removeItem("user_id");
+    navigate("/login");
+  };
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}>
+      <MenuItem>{localStorage.getItem("username")}</MenuItem>
+      <MenuItem onClick={handleDisconnect} sx={{ color: "red" }}>
+        Logout
+      </MenuItem>
+    </Menu>
+  );
+
+  // Side bar
+
   const sideList = () => (
     <Box sx={{ overflow: "auto" }}>
       <List>
@@ -188,13 +199,6 @@ export default function PrimarySearchAppBar() {
       </Box>
     </Box>
   );
-
-  //   const StyledSideList = styled(SideList)(({ theme }) => ({
-  //     width: 250,
-  //     background: "#511",
-  //     height: "100vh",
-  //     backgroundColor: "red",
-  //   }));
 
   return (
     <Box sx={{ flexGrow: 1 }}>

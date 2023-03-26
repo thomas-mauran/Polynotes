@@ -20,7 +20,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import CodeIcon from "@mui/icons-material/Code";
 import "./style.css";
 import { useDispatch } from "react-redux";
-import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper } from "../../redux/reducers/pageReducer";
+import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper, deleteBlock } from "../../redux/reducers/pageReducer";
 
 interface propsType {
   index: number;
@@ -73,7 +73,6 @@ export default function TextBlock(props: propsType) {
   const handleKeyDown = (e: KeyboardEvent) => {
     // setState(editor?.getHTML());
     updateParent();
-
     if (e.key === "/") {
       e.preventDefault();
       dispatch(openHelper({ uuid: props.uuid }));
@@ -81,9 +80,14 @@ export default function TextBlock(props: propsType) {
       editor?.commands.setContent(removeLastBr());
       dispatch(addBlock({ blockType: "p", columnIndex: props.columnId, itemIndex: props.index, uuid: props.uuid }));
     } else if (e.key === "ArrowUp") {
+      console.log("aslkdjalskjd");
       dispatch(onArrowUp({ uuid: props.uuid }));
     } else if (e.key === "ArrowDown") {
       dispatch(onArrowDown({ uuid: props.uuid }));
+    } else if (e.key === "Backspace") {
+      if (editor?.getHTML() === "<p></p>") {
+        dispatch(deleteBlock({ uuid: props.uuid }));
+      }
     }
   };
 
@@ -108,7 +112,7 @@ export default function TextBlock(props: propsType) {
 
   const updateParent = (): void => {
     if (props.onChangeMultiColumn) {
-      props.onChangeMultiColumn(props.index, props.columnId, editor?.getHTML() ?? "");
+      props.onChangeMultiColumn(props.index, props.columnId as number, editor?.getHTML() ?? "");
     } else {
       dispatch(updateHTML({ uuid: props.uuid, newData: editor?.getHTML() }));
     }

@@ -62,7 +62,7 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit}>
         <TextField name="email" label="Email address" margin="normal" variant="standard" value={inputs.email} type="email" onChange={handleChange} required />
         <TextField name="password" label="Password" margin="normal" variant="standard" type="password" value={inputs.password} onChange={handleChange} required error={errorMsg !== ""} helperText={errorMsg} />
-        <LoadingButton loading={loading} type="submit" variant="contained" color="info" sx={{ margin: "20px" }}>
+        <LoadingButton loading={loading} type="submit" variant="contained" color="secondary" sx={{ margin: "20px" }}>
           Login
         </LoadingButton>
       </form>

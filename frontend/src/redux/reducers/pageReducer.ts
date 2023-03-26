@@ -71,7 +71,7 @@ const pageReducer = createSlice({
 
     deleteBlock: (state, action) => {
       if (state.blocks.length > 1) {
-        state.blocks.splice(action.payload.index, 1);
+        deleteItemAtId(state.blocks, action.payload.uuid);
       }
     },
     openHelper: (state, action) => {
@@ -119,6 +119,7 @@ const pageReducer = createSlice({
 
 function findItemById(array: BlockType[], id: string): { item: BlockType; index: number; parentArray: BlockType[] } | null {
   // We itterate over the array given in argument
+
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
     if (item.id === id) {
@@ -137,6 +138,32 @@ function findItemById(array: BlockType[], id: string): { item: BlockType; index:
     }
   }
   return null;
+}
+
+function deleteItemAtId(array: BlockType[], id: string) {
+  const found = findItemById(array, id);
+  if (found) {
+    const { item, index, parentArray } = found;
+    // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
+    if (Array.isArray(item.html)) {
+      deleteItemAtId(item.html, id, newItem);
+    } else {
+      // we simply delete the block
+      parentArray.splice(index, 1);
+
+      console.log(index);
+      if (index === 0) {
+        parentArray[index].focus = true;
+      } else if (index === parentArray.length) {
+        // we change the focus to the previous block
+        parentArray[index - 1].focus = true;
+      } else {
+        parentArray[index].focus = true;
+      }
+    }
+  }
+
+  return array;
 }
 
 function addItemAfterId(array: BlockType[], id: string, newItem: BlockType) {

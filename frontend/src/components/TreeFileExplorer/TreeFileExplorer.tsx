@@ -14,18 +14,20 @@ export default function TreeFileExplorer(props: Props) {
 
   const renderTree = (nodes: TreeFolderElement) => {
     console.log(nodes);
+    const title = nodes.title ? nodes.title : "Untitled";
+
     if (!Array.isArray(nodes.children)) {
       // If nodes is a document, wrap it with a Link component
-      return <TreeItem key={nodes.id} nodeId={nodes.id} label={<Link to={`/page/${nodes.id}`}>{nodes.title.substring(0, 12) + "..."}</Link>} endIcon={<DescriptionIcon className="treeItem" />} />;
+      return <TreeItem key={nodes.id} nodeId={nodes.id} label={<Link to={`/page/${nodes.id}`}>{title.substring(0, 12) + "..."}</Link>} endIcon={<DescriptionIcon className="treeItem" />} />;
     }
     if (nodes.children.length === 0) {
       // If nodes is a document, wrap it with a Link component
-      return <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.title} endIcon={<FolderIcon className="treeItem" />} />;
+      return <TreeItem key={nodes.id} nodeId={nodes.id} label={title} endIcon={<FolderIcon className="treeItem" />} />;
     }
 
     // Otherwise, render it as a folder
     return (
-      <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.title} endIcon={<FolderIcon className="treeItem" />}>
+      <TreeItem key={nodes.id} nodeId={nodes.id} label={title} endIcon={<FolderIcon className="treeItem" />}>
         {nodes.children.map((node: TreeFolderElement) => renderTree(node))}
       </TreeItem>
     );

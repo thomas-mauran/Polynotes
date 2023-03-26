@@ -1,24 +1,26 @@
 import { LoadingButton } from "@mui/lab";
-import { Alert, Container, Snackbar, TextField } from "@mui/material";
+import { Alert, Box, Checkbox, Container, FormControlLabel, Snackbar, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { signup } from "../../utils/users/usersAPICalls";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 export default function SignupForm() {
-  // Hooks
+  // HOOKS
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
     password: "",
     passwordConfirm: "",
+    checkbox: false,
   });
 
   const [errorMsg, setErrorMsg] = useState("");
-  const [errorAPIList, setErrorAPIList] = useState([]);
+  const [errorAPIList, setErrorAPIList] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  // Functions
+  // FUNCTIONS
   const handleChange = (e: any) => {
     setInputs((prevState) => ({
       ...prevState,
@@ -28,8 +30,12 @@ export default function SignupForm() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setErrorAPIList([]);
+    setErrorMsg("");
     if (inputs.password != inputs.passwordConfirm) {
       setErrorMsg("Both passwords needs to match");
+    } else if (inputs.checkbox === false) {
+      setErrorAPIList(["You need to accept the terms and conditions"]);
     } else {
       setErrorMsg("");
       setErrorAPIList([]);
@@ -53,7 +59,8 @@ export default function SignupForm() {
       setErrorAPIList([]);
     }
   };
-  // Return
+
+  // RETURN
   return (
     <Container fixed sx={{ textAlign: "center", display: "flex", justifyContent: "center" }}>
       <form onSubmit={handleSubmit}>
@@ -61,7 +68,16 @@ export default function SignupForm() {
         <TextField name="email" label="Email address" margin="normal" variant="standard" value={inputs.email} type="email" onChange={handleChange} required />
         <TextField name="password" label="Password" margin="normal" variant="standard" type="password" value={inputs.password} onChange={handleChange} required error={errorMsg !== ""} helperText={errorMsg} />
         <TextField name="passwordConfirm" label="Password confirmation" margin="normal" variant="standard" type="password" value={inputs.passwordConfirm} onChange={handleChange} required error={errorMsg !== ""} helperText={errorMsg} />
-        <LoadingButton loading={loading} type="submit" variant="contained" color="info" sx={{ margin: "20px" }}>
+        <Box>
+          <Checkbox value={inputs.checkBox} onChange={handleChange} name="checkbox" />
+          <Typography variant="body2" sx={{ display: "inline", textAlign: "left" }}>
+            I agree to the{" "}
+            <Link to="/cgu" style={{ textDecoration: "underline" }}>
+              Polynote Terms and Conditions
+            </Link>
+          </Typography>
+        </Box>
+        <LoadingButton loading={loading} type="submit" variant="contained" color="secondary" sx={{ margin: "20px" }}>
           Signup
         </LoadingButton>
       </form>

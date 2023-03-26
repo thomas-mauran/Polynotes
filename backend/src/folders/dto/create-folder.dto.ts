@@ -1,4 +1,4 @@
-import { IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsOptional, Min } from 'class-validator';
 
 export class CreateFolderDto {
   @IsNotEmpty()
@@ -9,6 +9,7 @@ export class CreateFolderDto {
   readonly userId: string;
 
   @IsNotEmpty()
+  @Min(2)
   readonly title: string;
 
   @IsOptional()
