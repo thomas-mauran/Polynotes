@@ -27,7 +27,7 @@ import GifPickerBlock from "../../components/Block/GifPickerBlock";
 import { setAutoFreeze } from "immer";
 import { RootState } from "../../types/ReduxTypes";
 import { useParams } from "react-router";
-import { getPage } from "../../utils/pages/pagesAPICalls";
+import { findPage } from "../../utils/pages/pagesAPICalls";
 const MainBox = styled.div(`
 width: 100%;
 min-width: 200px;
@@ -54,8 +54,7 @@ export default function PageView() {
   };
 
   const fetchPage = async (id: string | undefined) => {
-    const page = await getPage(id);
-    console.log(page);
+    const page = await findPage(id);
     const { _id, blocks, childList, slashMenuBlockId } = page.data;
     dispatch(setPageContent({ pageId: _id, blocks, childList, slashMenuBlockId }));
   };

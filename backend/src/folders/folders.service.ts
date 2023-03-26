@@ -17,9 +17,12 @@ export class FoldersService {
   async create(createFolderDto: CreateFolderDto): Promise<Folder> {
     let { parentId, isRoot, userId, title } = createFolderDto;
 
-    const parentFolder = await this.folderModel.findById(parentId).exec();
-    if (!parentFolder && !isRoot) {
-      throw new NotFoundException('Parent folder not found');
+    // Check if parent is a valid id
+    if (!isRoot && !mongoose.Types.ObjectId.isValid(parentId)) {
+      const parentFolder = await this.folderModel.findById(parentId).exec();
+      if (!parentFolder) {
+        throw new NotFoundException('Parent folder not found');
+      }
     }
 
     const folder = await this.folderModel.create({

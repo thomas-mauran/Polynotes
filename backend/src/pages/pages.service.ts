@@ -7,6 +7,8 @@ import { FindPageDto } from './dto/find-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { Folder, FoldersDocument } from 'src/folders/schemas/folder.schema';
 import { BlockType, UpdatePageTypeFull } from './types/PageTypes';
+import { CreatePageDto } from './dto/create-page.dto';
+import { FindOrCreatePageDto } from './dto/find-or-create-page.dto';
 
 @Injectable()
 export class PagesService {
@@ -15,9 +17,52 @@ export class PagesService {
     @InjectModel(Folder.name) private folderModel: Model<FoldersDocument>,
   ) {}
 
+  // CREATE
+  async create(body: CreatePageDto) {
+    const { title, parentId, userId } = body;
+
+    const parentFound = await this.folderModel.findById(parentId).exec();
+    if (!parentFound) {
+      throw new NotFoundException('Parent folder not found');
+    }
+
+    const page = await this.pageModel.create({
+      typeOfDocument: 'page',
+      title: title,
+      thumbnailSrc: null,
+      blocks: [
+        {
+          html: `<p>${title}</p>`,
+          type: 'h1',
+          id: uuidv4(),
+          focus: true,
+        },
+      ],
+      slashMenuBlockId: null,
+      author: userId,
+    });
+
+    await this.folderModel.findByIdAndUpdate(
+      parentId,
+      { $push: { childList: { id: page._id, type: 'page' } } },
+      { new: true },
+    );
+    return page;
+  }
+
+  // FIND
+  async find(body: FindPageDto) {
+    const { pageId } = body;
+    const pageFound = await this.pageModel.findById(pageId).exec();
+    if (!pageFound) {
+      throw new NotFoundException('Page not found');
+    }
+    return pageFound;
+  }
+
   // FIND OR CREATE
 
-  async findOrCreate(body: FindPageDto) {
+  async findOrCreate(body: FindOrCreatePageDto) {
     const { pageId, parentId, userId } = body;
 
     if (pageId != null) {
@@ -41,7 +86,6 @@ export class PagesService {
           html: '',
           type: 'p',
           id: uuidv4(),
-          settingsOpen: true,
           focus: true,
         },
       ],

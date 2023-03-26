@@ -4,12 +4,4 @@ export class FindPageDto {
   @IsMongoId()
   @IsOptional()
   readonly pageId: string;
-
-  @IsMongoId()
-  @IsOptional()
-  readonly parentId: string;
-
-  @IsMongoId()
-  @IsOptional()
-  readonly userId: string;
 }

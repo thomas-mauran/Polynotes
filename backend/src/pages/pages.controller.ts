@@ -8,7 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { FindPageDto } from './dto/find-page.dto';
+import { CreatePageDto } from './dto/create-page.dto';
+import { FindOrCreatePageDto } from './dto/find-or-create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { PagesService } from './pages.service';
 
@@ -18,7 +19,19 @@ export class PagesController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async getPage(@Body() body: FindPageDto) {
+  async createPage(@Body() body: CreatePageDto) {
+    return await this.pageService.create(body);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async getPage(@Param('id') pageId: string) {
+    return await this.pageService.find({ pageId });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('findOrCreate')
+  async findOrCreate(@Body() body: FindOrCreatePageDto) {
     return await this.pageService.findOrCreate(body);
   }
 

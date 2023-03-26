@@ -2,9 +2,26 @@ import { sendAPICall } from "../APICalls";
 
 const endpointBase = "pages";
 
-export async function getPage(pageId: string | undefined) {
+export async function findPage(pageId: string | undefined) {
+  const body = null;
+  const endpoint = `${endpointBase}/${pageId}`;
+  return await sendAPICall("GET", endpoint, body);
+}
+
+export async function findOrCreate(pageId: string | undefined) {
   const body = {
     pageId,
+    userId: localStorage.getItem("user_id"),
+  };
+
+  const endpoint = `${endpointBase}/findOrCreate`;
+  return await sendAPICall("POST", endpoint, body);
+}
+
+export async function createPage(title: string, parentId: string) {
+  const body = {
+    title,
+    parentId,
     userId: localStorage.getItem("user_id"),
   };
 
