@@ -143,7 +143,7 @@ export default function TextBlock(props: propsType) {
             </IconButton>
           </BubbleMenu>
         )}
-        <EditorContent editor={editor} onKeyDown={handleKeyDown} className="editor" />
+        <EditorContent editor={editor} onKeyDown={handleKeyDown} className="editor" spellCheck="false" />
       </>
     </div>
   );

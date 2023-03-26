@@ -1,21 +1,24 @@
-.bubbleMenu{
-    background-color: white;
+.bubbleMenu {
+  background-color: white;
 }
 
-.editor{
-    font-family: "sans-serif";
-    max-width: 100%;
+.editor {
+  font-family: "sans-serif";
+  max-width: 100%;
 }
 
-.ProseMirror{
-    width: 100%;
-    max-width: 50vw;
+.ProseMirror {
+  width: 100%;
+  max-width: 50vw;
 }
 
-.ProseMirror p.is-editor-empty:first-child::before {
-    color: #adb5bd;
-    content: "Press / to open the command menu ";
-    float: left;
-    height: 0;
-    pointer-events: none;
-  }
+.ProseMirror p {
+  min-width: 40vw;
+}
+.ProseMirror:focus p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: "Press / to open the command menu ";
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

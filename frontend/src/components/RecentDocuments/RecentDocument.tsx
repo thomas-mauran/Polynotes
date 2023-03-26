@@ -33,7 +33,7 @@ export default function RecentDocument(props: Props) {
                     {doc.thumbnailSrc == null ? (
                       <img src={noPhoto} alt="no thumbnail" style={{ width: "70%", maxHeight: "150px" }} />
                     ) : (
-                      <img src={doc.thumbnailSrc as string} alt="thumbnail of the document" style={{ maxWidth: "60%", maxHeight: "150px" }} />
+                      <img src={doc.thumbnailSrc as string} alt="thumbnail of the document" style={{ maxWidth: "100%", maxHeight: "150px" }} />
                     )}
                   </Box>
 

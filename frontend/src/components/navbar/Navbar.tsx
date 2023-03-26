@@ -87,7 +87,7 @@ export default function PrimarySearchAppBar() {
     };
 
     fetchData();
-  }, []);
+  }, [sidebarOpen]);
 
   const isMenuOpen = Boolean(anchorEl);
   const isSidebarOpen = Boolean(sidebarOpen);
