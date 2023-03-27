@@ -57,6 +57,7 @@ const pageReducer = createSlice({
 
     updateHTML: (state, action) => {
       updateAfterId(state.blocks, action.payload.uuid, action.payload.newData);
+      console.log("updateHTML", JSON.parse(JSON.stringify(state.blocks)));
       const blocksArray = JSON.parse(JSON.stringify(state.blocks));
       updatePage(blocksArray, state.pageId, state.slashMenuBlockId);
     },
@@ -85,11 +86,17 @@ const pageReducer = createSlice({
       state.blocks[action.payload.index].settingsOpen = true;
     },
     closeSettings: (state, action) => {
-      state.blocks[action.payload.index].settingsOpen = false;
+      const item = findItemById(state.blocks, action.payload.uuid);
+      if (item) {
+        item.item.settingsOpen = false;
+      }
     },
 
     changeType: (state, action) => {
-      state.blocks[action.payload.index].type = action.payload.newType;
+      const item = findItemById(state.blocks, action.payload.uuid);
+      if (item) {
+        item.item.type = action.payload.newType;
+      }
     },
 
     createMultiColumn: (state, action) => {
@@ -151,7 +158,6 @@ function deleteItemAtId(array: BlockType[], id: string) {
       // we simply delete the block
       parentArray.splice(index, 1);
 
-      console.log(index);
       if (index === 0) {
         parentArray[index].focus = true;
       } else if (index === parentArray.length) {

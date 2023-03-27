@@ -7,10 +7,7 @@ export default function PrivateRoute() {
   useEffect(() => {
     isAuth()
       .then((response) => {
-        console.log("test", response);
-
         if (response === true) {
-          console.log("asdk;jaslkdj");
           return (
             <>
               <Navbar />
@@ -21,8 +18,6 @@ export default function PrivateRoute() {
           return <Navigate to="/login" />;
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, []);
 }

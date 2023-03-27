@@ -36,7 +36,6 @@ export default function LoginForm() {
     const response = await login(inputs.email, inputs.password);
 
     if (response.error) {
-      console.log(response);
       setErrorAPIList(response.message);
       setLoading(false);
     } else {

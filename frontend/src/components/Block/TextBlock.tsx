@@ -20,7 +20,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import CodeIcon from "@mui/icons-material/Code";
 import "./style.css";
 import { useDispatch } from "react-redux";
-import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper, deleteBlock } from "../../redux/reducers/pageReducer";
+import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper, deleteBlock, updateBackend } from "../../redux/reducers/pageReducer";
 
 interface propsType {
   index: number;
@@ -38,9 +38,8 @@ export default function TextBlock(props: propsType) {
   const gotClickedRef = useRef(false);
 
   const [state, setState] = useState(props.defaultValue);
-
   const ref = React.createRef() as any;
-  const timerRef = useRef<number | null>(null);
+  const timerRef = useRef<Timeout>(null);
   const editor = useEditor({
     extensions: [
       Placeholder.configure({
@@ -63,7 +62,6 @@ export default function TextBlock(props: propsType) {
   });
   useEffect(() => {
     if (editor) {
-      //  && gotClickedRef.current === false
       if (props.isFocused === true) {
         editor?.commands.focus();
       }
@@ -71,7 +69,6 @@ export default function TextBlock(props: propsType) {
   }, [editor, props.isFocused]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    // setState(editor?.getHTML());
     updateParent();
     if (e.key === "/") {
       e.preventDefault();
@@ -80,7 +77,6 @@ export default function TextBlock(props: propsType) {
       editor?.commands.setContent(removeLastBr());
       dispatch(addBlock({ blockType: "p", columnIndex: props.columnId, itemIndex: props.index, uuid: props.uuid }));
     } else if (e.key === "ArrowUp") {
-      console.log("aslkdjalskjd");
       dispatch(onArrowUp({ uuid: props.uuid }));
     } else if (e.key === "ArrowDown") {
       dispatch(onArrowDown({ uuid: props.uuid }));
@@ -111,16 +107,18 @@ export default function TextBlock(props: propsType) {
   // }
 
   const updateParent = (): void => {
-    if (props.onChangeMultiColumn) {
-      props.onChangeMultiColumn(props.index, props.columnId as number, editor?.getHTML() ?? "");
-    } else {
-      dispatch(updateHTML({ uuid: props.uuid, newData: editor?.getHTML() }));
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
     }
+    timerRef.current = setTimeout(() => {
+      if (props.onChangeMultiColumn) {
+        props.onChangeMultiColumn(props.index, props.columnId as number, editor?.getHTML() ?? "");
+      } else {
+        dispatch(updateHTML({ uuid: props.uuid, newData: editor?.getHTML() }));
+      }
+    }, 200);
   };
-
-  // const handleClick = (): void => {
-  //   dispatch(focusBlock({ index: props.index }));
-  // };
 
   return (
     <div className={props.className}>

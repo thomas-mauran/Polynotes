@@ -12,6 +12,10 @@
   max-width: 50vw;
 }
 
+.multiColumn .ProseMirror p {
+  min-width: 20vw;
+}
+
 .ProseMirror p {
   min-width: 40vw;
 }

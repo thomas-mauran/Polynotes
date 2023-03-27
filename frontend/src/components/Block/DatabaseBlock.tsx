@@ -4,7 +4,7 @@ import Board from "react-trello";
 import { ActiveTable } from "active-table-react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import { changeType, closeSettings, updateHTML } from "../../redux/reducers/pageReducer";
+import { changeType, closeSettings, updateBackend, updateHTML } from "../../redux/reducers/pageReducer";
 import { BoardData, Lane } from "../../types/PageTypes";
 
 type dbTypes = "trello" | "table";
@@ -36,8 +36,8 @@ export default function DatabaseBlock(props: propsType) {
   );
 
   const handleDbTypeChange = (e: SelectChangeEvent) => {
-    dispatch(closeSettings({ index: props.index }));
-    dispatch(changeType({ index: props.index, newType: e.target.value }));
+    dispatch(closeSettings({ uuid: props.uuid }));
+    dispatch(changeType({ uuid: props.uuid, newType: e.target.value }));
   };
 
   const tableConvertExport = (content: any) => {

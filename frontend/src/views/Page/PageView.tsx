@@ -28,6 +28,7 @@ import { setAutoFreeze } from "immer";
 import { RootState } from "../../types/ReduxTypes";
 import { useParams } from "react-router";
 import { findPage } from "../../utils/pages/pagesAPICalls";
+import { BlockType, BoardData } from "../../types/PageTypes";
 const MainBox = styled.div(`
 width: 100%;
 min-width: 200px;
@@ -35,6 +36,7 @@ margin: 5% 15% 5% 10%;
 `);
 
 export default function PageView() {
+  // HOOKs
   setAutoFreeze(false);
   const { id } = useParams();
 
@@ -47,7 +49,7 @@ export default function PageView() {
 
   const dispatch = useDispatch();
 
-  // Functions
+  // FUNCTIONS
   const handleClickMenu = (e: MouseEvent) => {
     dispatch(addBlock({ blockType: (e.target as HTMLButtonElement).id, uuid: slashMenuBlockId }));
     dispatch(closeHelper());
@@ -59,7 +61,7 @@ export default function PageView() {
     dispatch(setPageContent({ pageId: _id, blocks, childList, slashMenuBlockId }));
   };
 
-  const blockElements = blocks.map((item, index) => {
+  const blockElements = blocks.map((item: BlockType, index: number) => {
     if (item.type === "img") {
       return (
         <Box className="draggableBox" key={item.id}>
@@ -71,7 +73,7 @@ export default function PageView() {
               <SettingsIcon />
             </IconButton>
           </Box>
-          <ImageBlock uuid={item.id} defaultValue={item.html} index={index} settingsOpen={item.settingsOpen} />
+          <ImageBlock uuid={item.id} defaultValue={item.html as string} index={index} settingsOpen={item.settingsOpen as boolean} />
         </Box>
       );
     } else if (item.type === "trello" || item.type === "table") {
@@ -85,7 +87,7 @@ export default function PageView() {
               <SettingsIcon />
             </IconButton>
           </Box>
-          <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html} settingsOpen={item.settingsOpen} index={index} />
+          <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html as BoardData} settingsOpen={item.settingsOpen as boolean} index={index} />
         </Box>
       );
     } else if (item.type === "gif") {
@@ -99,7 +101,7 @@ export default function PageView() {
               <SettingsIcon />
             </IconButton>
           </Box>
-          <GifPickerBlock uuid={item.id} defaultValue={item.html} index={index} settingsOpen={item.settingsOpen} />
+          <GifPickerBlock uuid={item.id} defaultValue={item.html as string} index={index} settingsOpen={item.settingsOpen as boolean} />
         </Box>
       );
     } else if (item.type === "multiCol") {
@@ -114,7 +116,7 @@ export default function PageView() {
             </IconButton>
           </Box>
           {/* {item.html} */}
-          <MultiColumnBlock uuid={item.id} defaultValue={item.html} index={index} />
+          <MultiColumnBlock uuid={item.id} defaultValue={item.html as BlockType[][]} index={index} />
         </Box>
       );
     } else {
@@ -128,7 +130,7 @@ export default function PageView() {
               <AddIcon />
             </IconButton>
           </Box>
-          <TextBlock uuid={item.id} defaultValue={item.html} index={index} className={item.type} isFocused={item.focus} />
+          <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} className={item.type} isFocused={item.focus} />
         </Box>
       );
     }

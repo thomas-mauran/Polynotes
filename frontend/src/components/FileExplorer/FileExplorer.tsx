@@ -101,7 +101,6 @@ export default function FileExplorer(props: Props) {
   };
   const handlePopoverClose = () => {
     setAnchorEl(null);
-    console.log(documents);
   };
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {

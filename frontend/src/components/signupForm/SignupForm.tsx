@@ -43,7 +43,6 @@ export default function SignupForm() {
       const response = await signup(inputs.username, inputs.email, inputs.password);
 
       if (response.error) {
-        console.log(response);
         setErrorAPIList(response.message);
         setLoading(false);
       } else {
@@ -69,7 +68,7 @@ export default function SignupForm() {
         <TextField name="password" label="Password" margin="normal" variant="standard" type="password" value={inputs.password} onChange={handleChange} required error={errorMsg !== ""} helperText={errorMsg} />
         <TextField name="passwordConfirm" label="Password confirmation" margin="normal" variant="standard" type="password" value={inputs.passwordConfirm} onChange={handleChange} required error={errorMsg !== ""} helperText={errorMsg} />
         <Box>
-          <Checkbox value={inputs.checkBox} onChange={handleChange} name="checkbox" />
+          <Checkbox value={inputs.checkbox} onChange={handleChange} name="checkbox" />
           <Typography variant="body2" sx={{ display: "inline", textAlign: "left" }}>
             I agree to the{" "}
             <Link to="/cgu" style={{ textDecoration: "underline" }}>

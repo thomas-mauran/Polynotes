@@ -3,7 +3,7 @@ import ImageBlock from "./ImageBlock";
 import DatabaseBlock from "./DatabaseBlock";
 import TextBlock from "./TextBlock";
 import { useDispatch } from "react-redux";
-import { deleteBlock, openSettings, updateHTML } from "../../redux/reducers/pageReducer";
+import { deleteBlock, openSettings, updateBackend, updateHTML } from "../../redux/reducers/pageReducer";
 import { IconButton } from "@mui/material";
 
 // Delete line
@@ -20,13 +20,14 @@ interface propsType {
   uuid: string;
 }
 export default function MultiColumnBlock(props: propsType) {
+  const dispatch = useDispatch();
+
   const handleUpdateHtml = (itemIndex: number, columnIndex: number, newData: newDataType) => {
     const newHtml = produce(props.defaultValue, (draft) => {
       draft[columnIndex][itemIndex].html = newData;
     });
     dispatch(updateHTML({ uuid: props.uuid, newData: newHtml }));
   };
-  const dispatch = useDispatch();
 
   const blocks = (columnId: number) => {
     const elements = props.defaultValue[columnId].map((item, index) => {
@@ -55,7 +56,7 @@ export default function MultiColumnBlock(props: propsType) {
                 <SettingsIcon />
               </IconButton>
             </Box>
-            <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html as BoardData} columnId={columnId} settingsOpen={item.settingsOpen} index={index} onChangeMultiColumn={handleUpdateHtml} />
+            <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html as BoardData} columnId={columnId} settingsOpen={item.settingsOpen as boolean} index={index} onChangeMultiColumn={handleUpdateHtml} />
           </Box>
         );
       } else {
@@ -76,8 +77,12 @@ export default function MultiColumnBlock(props: propsType) {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "row", width: "100%" }}>
-      <Box sx={{ display: "flex", flexDirection: "column", width: "35%" }}>{blocks(0)}</Box>
-      <Box sx={{ display: "flex", flexDirection: "column", width: "35%" }}>{blocks(1)}</Box>
+      <Box sx={{ display: "flex", flexDirection: "column", width: "35%" }} className="multiColumn">
+        {blocks(0)}
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", width: "35%" }} className="multiColumn">
+        {blocks(1)}
+      </Box>
     </Box>
   );
 }

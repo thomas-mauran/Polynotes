@@ -13,7 +13,6 @@ export default function TreeFileExplorer(props: Props) {
   const { documents } = props;
 
   const renderTree = (nodes: TreeFolderElement) => {
-    console.log(nodes);
     const title = nodes.title ? nodes.title : "Untitled";
 
     if (!Array.isArray(nodes.children)) {
