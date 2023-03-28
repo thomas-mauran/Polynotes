@@ -25,7 +25,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings, setPageContent } from "../../redux/reducers/pageReducer";
 import GifPickerBlock from "../../components/Block/GifPickerBlock";
 import { setAutoFreeze } from "immer";
-import { RootState } from "../../types/ReduxTypes";
+import { RootState } from "../../redux/store";
 import { useParams } from "react-router";
 import { findPage } from "../../utils/pages/pagesAPICalls";
 import { BlockType, BoardData } from "../../types/PageTypes";

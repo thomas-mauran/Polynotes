@@ -9,10 +9,8 @@ import { IconButton } from "@mui/material";
 // Delete line
 import DeleteIcon from "@mui/icons-material/Delete";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { BlockType, BoardData, TableData } from "../../types/PageTypes";
-import produce from "immer";
-
-type newDataType = string | BoardData;
+import { BlockType, BoardData } from "../../types/PageTypes";
+import GifPickerBlock from "./GifPickerBlock";
 
 interface propsType {
   index: number;
@@ -21,13 +19,6 @@ interface propsType {
 }
 export default function MultiColumnBlock(props: propsType) {
   const dispatch = useDispatch();
-
-  const handleUpdateHtml = (itemIndex: number, columnIndex: number, newData: newDataType) => {
-    const newHtml = produce(props.defaultValue, (draft) => {
-      draft[columnIndex][itemIndex].html = newData;
-    });
-    dispatch(updateHTML({ uuid: props.uuid, newData: newHtml }));
-  };
 
   const blocks = (columnId: number) => {
     const elements = props.defaultValue[columnId].map((item, index) => {
@@ -42,7 +33,22 @@ export default function MultiColumnBlock(props: propsType) {
                 <SettingsIcon />
               </IconButton>
             </Box>
-            <ImageBlock uuid={item.id} defaultValue={item.html as string} index={index} columnId={columnId} settingsOpen={item.settingsOpen as boolean} onChangeMultiColumn={handleUpdateHtml} />
+            <ImageBlock uuid={item.id} defaultValue={item.html as string} index={index} settingsOpen={item.settingsOpen as boolean} />
+          </Box>
+        );
+      }
+      if (item.type === "gif") {
+        return (
+          <Box key={item.id}>
+            <Box className="lineOptions">
+              <IconButton onClick={() => dispatch(deleteBlock({ index }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+                <DeleteIcon />
+              </IconButton>
+              <IconButton onClick={() => dispatch(openSettings({ index: index }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
+                <SettingsIcon />
+              </IconButton>
+            </Box>
+            <GifPickerBlock uuid={item.id} defaultValue={item.html as string} index={index} settingsOpen={item.settingsOpen as boolean} />
           </Box>
         );
       } else if (item.type === "trello" || item.type === "table") {
@@ -56,7 +62,7 @@ export default function MultiColumnBlock(props: propsType) {
                 <SettingsIcon />
               </IconButton>
             </Box>
-            <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html as BoardData} columnId={columnId} settingsOpen={item.settingsOpen as boolean} index={index} onChangeMultiColumn={handleUpdateHtml} />
+            <DatabaseBlock uuid={item.id} dbType={item.type} defaultValue={item.html as BoardData} settingsOpen={item.settingsOpen as boolean} index={index} />
           </Box>
         );
       } else {
@@ -67,7 +73,7 @@ export default function MultiColumnBlock(props: propsType) {
                 <DeleteIcon />
               </IconButton>
             </Box>
-            <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} columnId={columnId} className={item.type} isFocused={item.focus} onChangeMultiColumn={handleUpdateHtml} />
+            <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} className={item.type} isFocused={item.focus} />
           </Box>
         );
       }

@@ -22,9 +22,3 @@ export async function login(email: string, password: string) {
   const endpoint = `auth/login`;
   return await sendAPICall("POST", endpoint, body);
 }
-
-export async function isAuth() {
-  // const authState = useSelector((state: RootState) => state.auth.auth);
-
-  return true;
-}

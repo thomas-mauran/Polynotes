@@ -20,7 +20,7 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import CodeIcon from "@mui/icons-material/Code";
 import "./style.css";
 import { useDispatch } from "react-redux";
-import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper, deleteBlock, updateBackend } from "../../redux/reducers/pageReducer";
+import { addBlock, onArrowUp, onArrowDown, updateHTML, openHelper, deleteBlock } from "../../redux/reducers/pageReducer";
 
 interface propsType {
   index: number;
@@ -35,11 +35,9 @@ interface propsType {
 export default function TextBlock(props: propsType) {
   const dispatch = useDispatch();
 
-  const gotClickedRef = useRef(false);
-
   const [state, setState] = useState(props.defaultValue);
   const ref = React.createRef() as any;
-  const timerRef = useRef<Timeout>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const editor = useEditor({
     extensions: [
       Placeholder.configure({

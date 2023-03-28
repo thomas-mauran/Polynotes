@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { login } from "../../utils/users/usersAPICalls";
 import { login as loginUtils } from "../../utils/auth/utils";
-import { login as loginReducer } from "../../redux/reducers/authReducer";
 
 export default function LoginForm() {
   // Hooks

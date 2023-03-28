@@ -124,21 +124,20 @@ const pageReducer = createSlice({
 });
 
 function findItemById(array: BlockType[], id: string): { item: BlockType; index: number; parentArray: BlockType[] } | null {
-  // We itterate over the array given in argument
-
+  // Iterate over the array given in argument
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
     if (item.id === id) {
       return { item, index: i, parentArray: array };
     }
-    // If the block is a multicol we need to itterate over every element of it's html data
+    // If the block is a multicol we need to iterate over every element of its html data
     if (item.type === "multiCol") {
-      for (let j = 0; j < item.html.length; j++) {
-        // for each child we run back findItemById recursively
-        const nestedItems = item.html[j];
-        const found = findItemById(nestedItems, id);
+      const nestedItems: BlockType[][] = item.html as BlockType[][];
+      for (let j = 0; j < nestedItems.length; j++) {
+        // For each child we call findItemById recursively
+        const found = findItemById(nestedItems[j], id);
         if (found) {
-          return { ...found, parentArray: nestedItems };
+          return { ...found, parentArray: nestedItems[j] };
         }
       }
     }
@@ -146,13 +145,17 @@ function findItemById(array: BlockType[], id: string): { item: BlockType; index:
   return null;
 }
 
-function deleteItemAtId(array: BlockType[], id: string) {
+function deleteItemAtId(array: BlockType[], id: string): BlockType[] {
   const found = findItemById(array, id);
   if (found) {
     const { item, index, parentArray } = found;
-    // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
+    // if the item.html is an array, we are in a multi col and need to run back deleteItemAtId to search back the id
     if (Array.isArray(item.html)) {
-      deleteItemAtId(item.html, id, newItem);
+      const nestedItems: BlockType[][] = item.html as BlockType[][];
+
+      for (let j = 0; j < nestedItems.length; j++) {
+        deleteItemAtId(item.html[j], id).flat();
+      }
     } else {
       // we simply delete the block
       parentArray.splice(index, 1);
@@ -192,7 +195,11 @@ function changeFocusWithArrow(array: BlockType[], id: string, direction: number)
     // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
     // and add the block in the list after it
     if (Array.isArray(item.html)) {
-      changeFocusWithArrow(item.html, id, direction);
+      const nestedItems: BlockType[][] = item.html as BlockType[][];
+      for (let j = 0; j < nestedItems.length; j++) {
+        // For each child we call findItemById recursively
+        changeFocusWithArrow(item.html[j], id, direction);
+      }
     } else {
       // we simply add the block after the found one
       if (parentArray[index + direction]) {

@@ -1,5 +1,9 @@
 import { CSSProperties } from "react";
 
+export interface BoardData {
+  lanes: Lane[];
+}
+
 export interface TableData {
   [index: number]: string[];
 }
@@ -41,7 +45,7 @@ export interface TextBlockType extends BaseBlock {
 }
 
 export interface DatabaseBlockType extends BaseBlock {
-  html: Lane[];
+  html: { lanes: Lane[] };
   settingsOpen: boolean;
 }
 export interface ImageBlockType extends BaseBlock {
