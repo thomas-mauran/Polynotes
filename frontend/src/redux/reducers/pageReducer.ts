@@ -57,7 +57,6 @@ const pageReducer = createSlice({
 
     updateHTML: (state, action) => {
       updateAfterId(state.blocks, action.payload.uuid, action.payload.newData);
-      console.log("updateHTML", JSON.parse(JSON.stringify(state.blocks)));
       const blocksArray = JSON.parse(JSON.stringify(state.blocks));
       updatePage(blocksArray, state.pageId, state.slashMenuBlockId);
     },
@@ -178,13 +177,10 @@ function addItemAfterId(array: BlockType[], id: string, newItem: BlockType) {
     const { item, index, parentArray } = found;
     // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
     // and add the block in the list after it
-    if (Array.isArray(item.html)) {
-      addItemAfterId(item.html, id, newItem);
-    } else {
-      // we simply add the block after the found one
-      parentArray[index].focus = false;
-      parentArray.splice(index + 1, 0, newItem);
-    }
+
+    parentArray[index].focus = false;
+    parentArray.splice(index + 1, 0, newItem);
+    parentArray[index + 1].focus = true;
   }
   return array;
 }
@@ -214,12 +210,12 @@ function updateAfterId(array: BlockType[], id: string, newHtml: string) {
     const { item, index, parentArray } = found;
     // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
     // and add the block in the list after it
-    if (Array.isArray(item.html)) {
-      addItemAfterId(item.html, id, newHtml);
-    } else {
-      // we simply add the block after the found one
-      parentArray[index].html = newHtml;
-    }
+    // if (item.type === "multiCol") {
+    //   updateAfterId(item.html as BlockType[], id, newHtml);
+    // } else {
+    // we simply add the block after the found one
+    parentArray[index].html = newHtml;
+    // }
   }
   return array;
 }

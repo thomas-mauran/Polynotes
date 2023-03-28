@@ -31,7 +31,6 @@ export default function GifPickerBlock(props: propsType) {
     dispatch(closeSettings({ uuid: props.uuid }));
 
     dispatch(updateHTML({ uuid: props.uuid, newData: e.preview.url }));
-    dispatch(updateBackend({}));
   };
   return (
     <Box sx={{ display: "flex" }}>

@@ -69,7 +69,10 @@ export default function TextBlock(props: propsType) {
   }, [editor, props.isFocused]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    updateParent();
+    // we update online if it's a text key
+    if (e.code.startsWith("Key")) {
+      updateParent();
+    }
     if (e.key === "/") {
       e.preventDefault();
       dispatch(openHelper({ uuid: props.uuid }));
@@ -117,7 +120,7 @@ export default function TextBlock(props: propsType) {
       } else {
         dispatch(updateHTML({ uuid: props.uuid, newData: editor?.getHTML() }));
       }
-    }, 200);
+    }, 100);
   };
 
   return (

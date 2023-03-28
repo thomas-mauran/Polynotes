@@ -1,10 +1,11 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
+//@ts-ignore
 import Board from "react-trello";
 import { ActiveTable } from "active-table-react";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch } from "react-redux";
-import { changeType, closeSettings, updateBackend, updateHTML } from "../../redux/reducers/pageReducer";
+import { changeType, closeSettings, updateHTML } from "../../redux/reducers/pageReducer";
 import { BoardData, Lane } from "../../types/PageTypes";
 
 type dbTypes = "trello" | "table";
@@ -97,14 +98,14 @@ export default function DatabaseBlock(props: propsType) {
       // create header row
 
       // Create header row
-      const headerRow = lanes.map((lane) => lane.title);
-      const table = [headerRow];
+      const headerRow: string[] = lanes.map((lane) => (lane.title ? lane.title : ""));
+      const table: (string | number)[][] = [headerRow];
 
       // // create data rows
       const headerLength = headerRow.length;
       const cardMax = cardMaxLength(lanes);
       for (let i = 0; i < cardMax; i++) {
-        const dataRow = [];
+        const dataRow: (string | number)[] = [];
         // const currentColumnLength = lanes[i].cards.length;
         for (let j = 0; j < headerLength; j++) {
           const card = lanes[j].cards?.[i];

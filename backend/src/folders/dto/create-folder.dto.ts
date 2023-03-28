@@ -9,7 +9,6 @@ export class CreateFolderDto {
   readonly userId: string;
 
   @IsNotEmpty()
-  @Min(2)
   readonly title: string;
 
   @IsOptional()

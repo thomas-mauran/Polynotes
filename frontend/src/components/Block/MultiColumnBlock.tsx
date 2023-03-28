@@ -3,7 +3,7 @@ import ImageBlock from "./ImageBlock";
 import DatabaseBlock from "./DatabaseBlock";
 import TextBlock from "./TextBlock";
 import { useDispatch } from "react-redux";
-import { deleteBlock, openSettings, updateBackend, updateHTML } from "../../redux/reducers/pageReducer";
+import { deleteBlock, openSettings, updateHTML } from "../../redux/reducers/pageReducer";
 import { IconButton } from "@mui/material";
 
 // Delete line
