@@ -4,10 +4,14 @@ namespace: thomas
 ingress:
   enabled: true
   name: "polynotes"
-  serviceNameFront: "polynotes-frontend"
-  serviceNameBack: "polynotes-backend"
+  serviceName: "polynotes-frontend"
   tls: true
   className: "nginx"
   host: "polynotes.cluster-2022-6.dopolytech.fr"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
+
+
+# status:
+#   loadBalancer:
+#     ingress: {{ toYaml .Values.ingress | nindent 4 }}

@@ -1,13 +1,13 @@
 #
-name: polynotes-frontend
-namespace: sylvain
+name: polynotes-backend
+namespace: thomas
 
 replicaCount: 1
 
 image:
-  repository: thomasmauran/polynotes-frontend
+  repository: thomasmauran/polynotes-backend
   pullPolicy: Always
-  tag: 2a3c3f4
+  tag: latest
 
 resources:
   limits:

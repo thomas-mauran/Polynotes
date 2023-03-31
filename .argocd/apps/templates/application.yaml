@@ -1,33 +1,33 @@
-{ { range .Values.applications } }
+{{ range .Values.applications }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: { { .name } }
+  name: {{ .name }}
   namespace: argocd
   # Cascade delete
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 
 spec:
-  project: { { $.Values.ProjectName } }
+  project: {{ $.Values.ProjectName }}
   source:
-    repoURL: { { .repoURL } }
+    repoURL: {{ .repoURL }}
     targetRevision: HEAD
-    path: { { .chart } }
+    path: {{ .chart }}
     helm:
       valueFiles:
-        - values.yaml
-
-  destination:
-    server: { { .server } }
-    namespace: { { .namespace } }
+      - values.yaml
+      
+  destination: 
+    server: {{ .server }}
+    namespace: {{ .namespace }}
 
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
----
-{ { end } }
+    - CreateNamespace=true
+...
+{{ end }}
