@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: { { .Values.bootstrap.name } }
+  namespace: argocd
+  # Cascade delete
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+
+spec:
+  project: { { .Values.project.name } }
+  source:
+    path: { { .Values.bootstrap.path } }
+    repoURL: { { .Values.bootstrap.repoURL } }
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+
+  destination:
+    server: { { .Values.bootstrap.server } }
+    namespace: { { .Values.bootstrap.namespace } }
+
+  syncPolicy:
+    automated:
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=false

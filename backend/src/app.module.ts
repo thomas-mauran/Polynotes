@@ -18,7 +18,7 @@ import { FoldersModule } from './folders/folders.module';
     UsersModule,
     MongooseModule.forRootAsync({
       useFactory: async (): Promise<MongooseModuleOptions> => ({
-        uri: 'mongodb://172.20.0.2:27017/polynote',
+        uri: 'mongodb://172.20.0.2:27017/polynotes',
         useNewUrlParser: true,
         useUnifiedTopology: true,
       }),

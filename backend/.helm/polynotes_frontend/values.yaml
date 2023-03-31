@@ -1,0 +1,18 @@
+#
+name: polynotes-frontend
+namespace: sylvain
+
+replicaCount: 1
+
+image:
+  repository: thomasmauran/polynotes-backend
+  pullPolicy: Always
+  tag: 2a3c3f4
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

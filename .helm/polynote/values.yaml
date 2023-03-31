@@ -1,0 +1,13 @@
+namespace: thomas
+
+# External access to the service in a cluster
+ingress:
+  enabled: true
+  name: "polynotes"
+  serviceNameFront: "polynotes-frontend"
+  serviceNameBack: "polynotes-backend"
+  tls: true
+  className: "nginx"
+  host: "polynotes.cluster-2022-6.dopolytech.fr"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production

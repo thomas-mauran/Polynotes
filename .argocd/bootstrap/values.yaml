@@ -1,0 +1,41 @@
+project:
+  # Name of the project: lowercase whithout spaces (kebab-case)
+  name: polynotes-thomas
+  description: "[WOA] Polynotes"
+
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+    - https://github.com/thomasmauran/Polynotes.git
+
+  # Only permit applications to deploy to specific namespace in the same cluster
+  destinations:
+    - server: https://kubernetes.default.svc
+      name: default
+      namespace: "*"
+
+#
+repositories:
+  - type: git
+    url: https://github.com/thomasmauran/Polynotes.git
+    username: thomas-mauran
+    # Replace password
+    password: password
+
+#- type: git
+#  url: https://github.gsissc.myatos.net/FR-MTP-TSSUDEST/dx_paca_mder
+#  sshPrivateKey: |
+#    -----BEGIN OPENSSH PRIVATE KEY-----
+#    ...
+#    -----END OPENSSH PRIVATE KEY-----
+
+bootstrap:
+  # Name of the bootstrap: app of apps
+  name: polynotes-bootstrap
+
+  namespace: argocd
+
+  repoURL: https://github.com/thomasmauran/Polynotes.git
+
+  path: .argocd/apps
+
+  server: https://kubernetes.default.svc
