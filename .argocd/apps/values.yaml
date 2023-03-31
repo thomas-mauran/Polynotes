@@ -10,6 +10,6 @@ applications:
   server: https://kubernetes.default.svc
 - name: polynotes-frontend
   namespace: thomas
-  repoURL: https://github.com/thomas/Polynotes.git
+  repoURL: https://github.com/thomas-mauran/Polynotes.git
   chart: frontend/.helm/polynotes-frontend
   server: https://kubernetes.default.svc
