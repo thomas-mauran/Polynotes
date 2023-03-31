@@ -13,3 +13,8 @@ applications:
   repoURL: https://github.com/thomas-mauran/Polynotes.git
   chart: frontend/.helm/polynotes-frontend
   server: https://kubernetes.default.svc
+- name: polynotes-backend
+  namespace: thomas
+  repoURL: https://github.com/thomas-mauran/Polynotes.git
+  chart: backend/.helm/polynotes-backend
+  server: https://kubernetes.default.svc
