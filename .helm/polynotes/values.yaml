@@ -1,27 +1,21 @@
 namespace: thomas
 
+ingress:
+  enabled: true
+  name: "polynotes"
+  tls: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
 routes:
 # External access to the service in a cluster
-- ingress:
-  enabled: true
-  name: "polynotes"
-  serviceName: "polynotes-frontend"
-  tls: true
+- serviceName: "polynotes-frontend"
   path: "/"
-  className: "nginx"
   host: "polynotes.cluster-2022-6.dopolytech.fr"
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-- ingress:
-  enabled: true
-  name: "polynotes"
-  serviceName: "polynotes-backend"
-  tls: true
-  path: "api"
-  className: "nginx"
+
+- serviceName: "polynotes-backend"
+  path: "/"
   host: "api.polynotes.cluster-2022-6.dopolytech.fr"
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
 
 # status:
 #   loadBalancer:
