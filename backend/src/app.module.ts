@@ -18,7 +18,7 @@ import { FoldersModule } from './folders/folders.module';
     UsersModule,
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService): Promise<MongooseModuleOptions> => ({
-        uri: configService.get<string>('MONGO_HOST'),
+        uri: configService.get<string>('MONGO_URL'),
         useNewUrlParser: true,
         useUnifiedTopology: true,
       }),

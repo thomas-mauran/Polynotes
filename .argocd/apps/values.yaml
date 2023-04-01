@@ -18,8 +18,3 @@ applications:
   repoURL: https://github.com/thomas-mauran/Polynotes.git
   chart: backend/.helm/polynotes-backend
   server: https://kubernetes.default.svc
-- name: polynotes-mongo
-  namespace: thomas
-  repoURL: https://charts.bitnami.com/bitnami
-  chart: mongodb
-  server: https://kubernetes.default.svc

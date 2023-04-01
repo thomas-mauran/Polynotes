@@ -17,6 +17,14 @@ routes:
   path: "/"
   host: "api.polynotes.cluster-2022-6.dopolytech.fr"
 
+mongodb:
+  auth:
+    usernames:
+    - "admin"
+    databases:
+    - "polynotes"
+    existingSecret: "polynotes-thomas-pwd"
+
 # status:
 #   loadBalancer:
 #     ingress: {{ toYaml .Values.ingress | nindent 4 }}

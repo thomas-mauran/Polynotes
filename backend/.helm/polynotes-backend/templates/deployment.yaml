@@ -29,4 +29,12 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ .Values.name }}-env
+        {{ range .Values.secrets }}
+        env:
+        - name: {{ .name }}
+          valueFrom:
+            secretKeyRef: 
+              name: {{ .secretName }}
+              key: {{ .secretKey }}
+        {{ end }}
 ...

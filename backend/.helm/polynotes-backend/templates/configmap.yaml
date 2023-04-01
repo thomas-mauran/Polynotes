@@ -1,23 +1,19 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.name }}-env
+  name: {{ .Values.env.name }}-env
   namespace: {{ .Values.namespace }}
 data:
   DATABASE_URL: {{ .Values.env.databaseUrl }}
 
-  MONGO_USER: {{ .Values.env.mongoUser }}
-  MONGO_PASSWORD: {{ secret.MONGO_PASSWORD }}
-  MONGO_DB: {{ .Values.env.mongoDb }}
-  MONGO_HOST: {{ .Values.env.mongoHost }}
-  MONGO_PORT: {{ .Values.env.mongoPort }}
+
+  APP_BASE_URL: {{ .Values.env.appBaseUrl }}
 
   MAILER_HOST: {{ .Values.env.mailerHost }}
   MAILER_PORT: {{ .Values.env.mailerPort }}
   MAILER_SECURE: {{ .Values.env.mailerSecure }}
-  MAILER_USER: {{ secret.MAILER_USER }}
-  MAILER_PASSWORD: {{ secrets.MAILER_PASSWORD }}
+  MAILER_USER: {{ .Values.env.mailerUser }}
 
-  APP_BASE_URL: {{ .Values.env.appBaseUrl }}
-  JWT_KEY: {{ secret.JWT_KEY }}
   FRONTEND_ORIGIN: {{ .Values.env.frontendOrigin }}
+  
+  # Add more environment variables as needed

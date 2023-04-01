@@ -33,3 +33,15 @@ env:
 
   frontendOrigin: "polynotes.cluster-2022-6.dopolytech.fr"
 
+secret:
+- name: "JWT_KEY"
+  secretName: "polynotes-thomas-pwd"
+  key: "jwt_key"
+
+- name: "MAILER_PASSWORD"
+  secretName: "polynotes-thomas-pwd"
+  key: "mailer-password"
+
+- name: "MONGO_URL"
+  secretName: "polynotes-thomas-pwd"
+  key: "mongo-url"
