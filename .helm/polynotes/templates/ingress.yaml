@@ -27,8 +27,8 @@ spec:
 
 {{ if .Values.ingress.tls }}
   tls:
-  - hosts:
   {{ range .Values.routes }}
+  - hosts:
     - {{ .host }}
     secretName: {{ .host }}
   {{ end }}
