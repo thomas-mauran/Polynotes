@@ -20,6 +20,6 @@ applications:
   server: https://kubernetes.default.svc
 - name: polynotes-mongo
   namespace: thomas
-  repoURL: https://github.com/bitnami/charts
-  chart: bitnami/mongodb
+  repoURL: https://charts.bitnami.com/bitnami
+  chart: mongodb
   server: https://kubernetes.default.svc
