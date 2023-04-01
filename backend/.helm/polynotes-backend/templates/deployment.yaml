@@ -26,4 +26,7 @@ spec:
         - name: http
           containerPort: 3000
           protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.name }}-env
 ...

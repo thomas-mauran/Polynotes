@@ -16,3 +16,20 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
+
+
+env:
+  name: "backend-configmap"
+  databaseUrl: "mongodb://172.20.0.2:27017/polynotes"
+  mongoUser: "admin"
+  mongoHost: "localhost"
+  mongoPort: "27017"
+
+  appBaseUrl: "api.polynotes.cluster-2022-6.dopolytech.fr"
+
+  mailerHost: "smtp.umontpellier.fr"
+  mailerPort: "587"
+  mailerSecure: "true"
+
+  frontendOrigin: "polynotes.cluster-2022-6.dopolytech.fr"
+
