@@ -19,7 +19,7 @@ resources:
 
 env:
 - name: VITE_APP_BASE_URL
-  value: "https://polynotes.cluster-2022-6.dopolytech.fr/api/v1"
+  value: "https://polynotes.cluster-2022-6.dopolytech.fr/api"
 - name: VITE_APP_TENOR_API_KEY
   valueFrom:
     secretKeyRef:

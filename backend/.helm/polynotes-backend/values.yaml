@@ -28,7 +28,7 @@ env:
 - name: MAILER_USER
   value: "thomas.mauran@etu.umontpellier.fr"
 - name: APP_BASE_URL
-  value: "polynotes.cluster-2022-6.dopolytech.fr/api/v1"
+  value: "polynotes.cluster-2022-6.dopolytech.fr/api"
 - name: FRONTEND_ORIGIN
   value: "polynotes.cluster-2022-6.dopolytech.fr"
 
