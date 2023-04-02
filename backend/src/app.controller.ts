@@ -21,6 +21,11 @@ export class AppController {
     private authService: AuthService,
   ) {}
 
+  @Get('')
+  isUp(): string {
+    return "I'm up!"
+  }
+
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(
@@ -46,9 +51,4 @@ export class AppController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('isOn')
-  getHello(): string {
-    return this.appService.getHello();
-  }
 }

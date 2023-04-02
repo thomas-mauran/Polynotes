@@ -6,8 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { InjectConnection } from '@nestjs/mongoose';
-import { Model, Connection } from 'mongoose';
+import { Model } from 'mongoose';
 import { User, UsersDocument } from './schemas/users.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { hash } from 'bcrypt';
@@ -17,8 +16,7 @@ import { MailService } from './mail.service';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectConnection() private connection: Connection,
-    @InjectModel(User.name) private userModel: Model<UsersDocument>,
+    @InjectModel(User.name) private readonly userModel: Model<UsersDocument>,
     private readonly mailService: MailService,
   ) {}
 
@@ -31,24 +29,23 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { username, email, password } = createUserDto;
     const user = await this.userModel.findOne({ email: email });
-
     if (user) {
       throw new ConflictException('Email already used'); // Throw an error if the user doesn't exist
     }
 
     const token = uuid();
 
-    const createdUser = new this.userModel({
+
+
+    await this.mailService.sendEmailVerificationLink(email, token);
+    const createdUser = await this.userModel.create({
       username,
       email,
       password: await hash(password, 10),
       emailVerified: false,
       emailVerificationToken: token,
     });
-
-    await this.mailService.sendEmailVerificationLink(email, token);
-
-    return createdUser.save();
+    return createdUser;
   }
 
   // VERIFY EMAIL

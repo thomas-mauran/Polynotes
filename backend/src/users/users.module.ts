@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UsersSchema } from './schemas/users.schema';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { MailService } from './mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 
