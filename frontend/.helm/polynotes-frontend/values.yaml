@@ -16,3 +16,13 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
+
+env:
+- name: VITE_APP_BASE_URL
+  value: "https://api.polynotes.cluster-2022-6.dopolytech.fr/v1"
+- name: VITE_APP_TENOR_API_KEY
+  valueFrom:
+    secretKeyRef:
+      name: "polynotes-thomas-pwd"
+      key: "tenor-key"
+

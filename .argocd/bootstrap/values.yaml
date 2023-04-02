@@ -2,7 +2,7 @@ project:
 
   # Name of the project: lowercase whithout spaces (kebab-case)
   name: polynotes-thomas
-  description: "[WOA] Polynotes - Projet fil rouge"
+  description: "[WOA] Polynotes - Thomas Mauran"
 
   # Allow manifests to deploy from any Git repos
   sourceRepos:
@@ -14,34 +14,11 @@ project:
     name: default
     namespace: '*'
 
-
-# 
-repositories:
-- type: git
-  url: https://github.com/thomas-mauran/Polynotes.git
-  username: thomas-mauran
-  # Replace password
-  password: password
-
-
-#- type: git
-#  url: https://github.gsissc.myatos.net/FR-MTP-TSSUDEST/dx_paca_mder
-#  sshPrivateKey: |
-#    -----BEGIN OPENSSH PRIVATE KEY-----
-#    ...
-#    -----END OPENSSH PRIVATE KEY-----
-
-
 bootstrap:
-
   # Name of the bootstrap: app of apps
-  name: polynotes-bootstrap
-
+  name: polynotes-bootstrap-thomas
   namespace: argocd
-
   repoURL: https://github.com/thomas-mauran/Polynotes.git
-
   path: .argocd/apps
-
   server: https://kubernetes.default.svc
 

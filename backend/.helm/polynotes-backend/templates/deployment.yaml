@@ -26,15 +26,5 @@ spec:
         - name: http
           containerPort: 3000
           protocol: TCP
-        envFrom:
-        - configMapRef:
-            name: {{ .Values.name }}-env
-        {{ range .Values.secrets }}
-        env:
-        - name: {{ .name }}
-          valueFrom:
-            secretKeyRef: 
-              name: {{ .secretName }}
-              key: {{ .secretKey }}
-        {{ end }}
+        env: {{ toYaml .Values.env | nindent 8 }}
 ...

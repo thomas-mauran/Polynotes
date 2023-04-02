@@ -3,17 +3,17 @@ ProjectName: polynotes-thomas
 
 #
 applications:
-- name: polynotes
+- name: polynotes-thomas
   namespace: thomas
   repoURL: https://github.com/thomas-mauran/Polynotes.git
   chart: .helm/polynotes
   server: https://kubernetes.default.svc
-- name: polynotes-frontend
+- name: polynotes-frontend-thomas
   namespace: thomas
   repoURL: https://github.com/thomas-mauran/Polynotes.git
   chart: frontend/.helm/polynotes-frontend
   server: https://kubernetes.default.svc
-- name: polynotes-backend
+- name: polynotes-backend-thomas
   namespace: thomas
   repoURL: https://github.com/thomas-mauran/Polynotes.git
   chart: backend/.helm/polynotes-backend

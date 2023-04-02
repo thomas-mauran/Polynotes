@@ -19,29 +19,32 @@ resources:
 
 
 env:
-  name: "backend-configmap"
-  databaseUrl: "mongodb://172.20.0.2:27017/polynotes"
-  mongoUser: "admin"
-  mongoHost: "localhost"
-  mongoPort: "27017"
+- name: MAILER_HOST
+  value: "backend-configmap"
+- name: MAILER_SECURE
+  value: "true"
+- name: MAILER_PORT
+  value: "587"
+- name: MAILER_USER
+  value: "thomas.mauran@etu.umontpellier.fr"
+- name: APP_BASE_URL
+  value: "api.polynotes.cluster-2022-6.dopolytech.fr"
+- name: FRONTEND_ORIGIN
+  value: "polynotes.cluster-2022-6.dopolytech.fr"
 
-  appBaseUrl: "api.polynotes.cluster-2022-6.dopolytech.fr"
+- name: JWT_KEY
+  valueFrom:
+    secretKeyRef:
+      name: "polynotes-thomas-pwd"
+      key: "jwt_key"
+- name: MAILER_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: "polynotes-thomas-pwd"
+      key: "mailer-password"
+- name: MONGO_URL
+  valueFrom:
+    secretKeyRef:
+      name: "polynotes-thomas-pwd"
+      key: "mongo-url"
 
-  mailerHost: "smtp.umontpellier.fr"
-  mailerPort: "587"
-  mailerSecure: "true"
-
-  frontendOrigin: "polynotes.cluster-2022-6.dopolytech.fr"
-
-secret:
-- name: "JWT_KEY"
-  secretName: "polynotes-thomas-pwd"
-  key: "jwt_key"
-
-- name: "MAILER_PASSWORD"
-  secretName: "polynotes-thomas-pwd"
-  key: "mailer-password"
-
-- name: "MONGO_URL"
-  secretName: "polynotes-thomas-pwd"
-  key: "mongo-url"

@@ -26,4 +26,6 @@ spec:
         - name: http
           containerPort: 80
           protocol: TCP
+        env: {{ toYaml .Values.env | nindent 8 }}
+
 ...
