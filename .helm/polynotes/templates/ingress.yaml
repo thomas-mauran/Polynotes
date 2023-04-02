@@ -3,8 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations: 
-{{ toYaml .Values.ingress.annotations | nindent 4 }}
+  annotations: {{ toYaml .Values.ingress.annotations | nindent 4 }}
   name: {{ .Values.ingress.name }}
   namespace: {{ .Values.namespace }}
 
@@ -12,27 +11,29 @@ spec:
   ingressClassName: {{ .Values.ingress.className }}
   
   rules:
-{{ range .Values.routes }}
-  - host: {{ .host }}
+  - host: {{ .Values.ingress.host }}
     http:
       paths:
       - pathType: Prefix
-        path: {{ .path }}
+        path: /
         backend:
           service:
-            name: {{ .serviceName }}
+            name: {{ .Values.ingress.serviceNameFront }}
             port:
               name: http
-{{ end }}
+      - pathType: Prefix
+        path: /api
+        backend:
+          service:
+            name: {{ .Values.ingress.serviceNameBack }}
+            port:
+              name: http
 
-{{ if .Values.ingress.tls }}
+  {{ if .Values.ingress.tls }}
   tls:
-  {{ range .Values.routes }}
   - hosts:
-    - {{ .host }}
-    secretName: {{ .host }}
+    - {{ .Values.ingress.host }}
+    secretName: {{ .Values.ingress.host }}
   {{ end }}
-
-{{ end }}
----
+...
 {{ end }}

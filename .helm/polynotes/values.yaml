@@ -1,21 +1,21 @@
 namespace: thomas
 
+# External access to the service in a cluster
 ingress:
   enabled: true
   name: "polynotes"
+  serviceNameFront: "polynotes-frontend"
+  serviceNameBack: "polynotes-backend"
   tls: true
   className: "nginx"
+  host: "polynotes.cluster-2022-6.dopolytech.fr"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
-routes:
-# External access to the service in a cluster
-- serviceName: "polynotes-frontend"
-  path: "/"
-  host: "polynotes.cluster-2022-6.dopolytech.fr"
 
-- serviceName: "polynotes-backend"
-  path: "/"
-  host: "api.polynotes.cluster-2022-6.dopolytech.fr"
+
+# status:
+#   loadBalancer:
+#     ingress: {{ toYaml .Values.ingress | nindent 4 }}
 
 mongodb:
   auth:
@@ -24,7 +24,3 @@ mongodb:
     databases:
     - "polynotes"
     existingSecret: "polynotes-thomas-pwd"
-
-# status:
-#   loadBalancer:
-#     ingress: {{ toYaml .Values.ingress | nindent 4 }}
