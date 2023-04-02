@@ -1,5 +1,4 @@
 import decode from "jwt-decode";
-import { useDispatch } from "react-redux";
 
 export function login(username: string, email: string, jwt: string, user_id: string) {
   localStorage.setItem("AUTH_TOKEN_KEY", jwt);

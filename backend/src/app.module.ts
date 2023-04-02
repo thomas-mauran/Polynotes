@@ -22,6 +22,7 @@ import { FoldersModule } from './folders/folders.module';
         useNewUrlParser: true,
         useUnifiedTopology: true,
       }),
+      inject: [ConfigService], // Inject the ConfigService.
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     MailerModule.forRootAsync({

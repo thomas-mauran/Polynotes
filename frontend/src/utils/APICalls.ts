@@ -1,6 +1,7 @@
 export async function sendAPICall(method: string, endpoint: string, body: any) {
   const { VITE_APP_BASE_URL } = await import.meta.env;
   const url = `${VITE_APP_BASE_URL}/${endpoint}`;
+  console.log("url", url)
 
   const options: RequestInit = {
     method,
