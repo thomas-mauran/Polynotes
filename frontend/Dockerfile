@@ -1,5 +1,5 @@
 # Base image
-FROM node:18-alpine
+FROM node:18-alpine AS build
 
 # Set the working directory
 WORKDIR /app
@@ -14,10 +14,12 @@ RUN npm install
 COPY . .
 
 # Build the app
-RUN npm run build
+ARG VITE_APP_BASE_URL
+ARG VITE_APP_TENOR_API_KEY
+RUN VITE_APP_BASE_URL=${VITE_APP_BASE_URL} VITE_APP_TENOR_API_KEY=${VITE_APP_TENOR_API_KEY} npm run build
 
 # Serve the app with a web server
-FROM nginx:stable-alpine
+FROM nginx:stable-alpine AS prod
 COPY --from=0 /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

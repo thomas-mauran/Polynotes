@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import catGif from "../../assets/gifs/catLogin.gif";
 import LoginForm from "../../components/loginForm/LoginForm";
 
+
+
 // Style
 export default function LoginView() {
   const Box = styled.div`

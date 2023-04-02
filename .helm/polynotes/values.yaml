@@ -13,10 +13,6 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-production
 
 
-# status:
-#   loadBalancer:
-#     ingress: {{ toYaml .Values.ingress | nindent 4 }}
-
 mongodb:
   auth:
     usernames:

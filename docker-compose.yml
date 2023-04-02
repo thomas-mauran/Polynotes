@@ -10,27 +10,37 @@ services:
     networks:
       - backend
 
-  # backend:
-  #   depends_on:
-  #   - mongodb
-  #   container_name: polynote-backend
-  #   build: ./backend
-  #   ports: 
-  #   - "3000:3000"
-  #   networks:
-  #   - backend
-  #   extra_hosts:
-  #   - "host.docker.internal:host-gateway"
-  #   command: npm run start:dev
-    # environment:
-    #   - MONGO_URI=mongodb://mongodb:27017/mydatabase  
+  backend:
+    depends_on:
+    - mongodb
+    container_name: polynote-backend
+    build: ./backend
+    ports: 
+    - "3000:3000"
+    networks:
+    - backend
+    env_file:
+    - ./backend/.env
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
+    command: npm run start:dev
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/mydatabase  
   
-  # frontend:
-  #   container_name: polynote-frontend
-  #   build: ./frontend
-  #   ports: 
-  #   - "80:80"
-  #   - "443:443"
+  frontend:
+    container_name: polynote-frontend
+    build: 
+      context: ./frontend
+      target: prod
+      args:
+        VITE_APP_TENOR_API_KEY: ${VITE_APP_TENOR_API_KEY}
+        VITE_APP_BASE_URL: ${VITE_APP_BASE_URL}
+    env_file:
+      - ./frontend/.env
+
+    ports: 
+    - "80:80"
+    - "443:443"
 
 networks:
   backend:

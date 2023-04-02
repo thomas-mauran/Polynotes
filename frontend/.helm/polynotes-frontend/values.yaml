@@ -25,4 +25,3 @@ env:
     secretKeyRef:
       name: "polynotes-thomas-pwd"
       key: "tenor-key"
-
