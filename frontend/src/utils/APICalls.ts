@@ -2,9 +2,10 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
   const { VITE_APP_BASE_URL } = await import.meta.env;
   let url;
   if(!VITE_APP_BASE_URL){
-    url = `/${endpoint}`;
+    // Meaning we are in production
+    url = `/api/${endpoint}`;
   }else{
-    url = `${VITE_APP_BASE_URL}/${endpoint}`;
+    url = `${VITE_APP_BASE_URL}/api/${endpoint}`;
 
   }
   console.log("url", url)
