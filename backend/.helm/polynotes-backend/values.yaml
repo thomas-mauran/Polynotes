@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: thomasmauran/polynotes-backend
   pullPolicy: Always
-  tag: b5413b4
+  tag: 02c40f1
 
 resources:
   limits:
