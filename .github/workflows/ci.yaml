@@ -37,7 +37,7 @@ jobs:
         tags: thomasmauran/polynotes-frontend:${{ steps.commit.outputs.short }}
 
     - name: Update tag version frontend
-      run: "git_hash=${{ steps.commit.outputs.short }}\nversion=$(cat frontend/.helm/polynotes-frontend/values.yaml | grep tag: | awk '{print $2}')\nsed -i \"s|$version|\"${git_hash}\"|\" frontend/.helm/polynotes-frontend/values.yaml \n"
+      run: "git_hash=${{ steps.commit.outputs.short }}\nversion=$(cat frontend/.helm/polynotes-frontend/values.yaml | grep tag: | awk '{print $2}')\nsed -i \"s|$version|'${git_hash}'|\" frontend/.helm/polynotes-frontend/values.yaml \n"
     ## BACKEND
     - name: Build and push backend
       uses: docker/build-push-action@v4
@@ -48,7 +48,7 @@ jobs:
         tags: thomasmauran/polynotes-backend:${{ steps.commit.outputs.short }}
 
     - name: Update tag version backend
-      run: "git_hash=${{ steps.commit.outputs.short }}\nversion=$(cat backend/.helm/polynotes-backend/values.yaml | grep tag: | awk '{print $2}')\nsed -i \"s|$version|\"${git_hash}\"|\" backend/.helm/polynotes-backend/values.yaml \n"
+      run: "git_hash=${{ steps.commit.outputs.short }}\nversion=$(cat backend/.helm/polynotes-backend/values.yaml | grep tag: | awk '{print $2}')\nsed -i \"s|$version|'${git_hash}'|\" backend/.helm/polynotes-backend/values.yaml \n"
     ## COMMIT CHANGE
     - name: Commit and push changes
       uses: devops-infra/action-commit-push@master

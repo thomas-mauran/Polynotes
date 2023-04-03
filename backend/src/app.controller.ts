@@ -26,7 +26,7 @@ export class AppController {
 
   @Get('')
   isUp(): string {
-    return this.configService.get('MAILER_HOST') ?? "Not found";
+    return "I'm up and runnign !\n" + this.configService.get('MAILER_HOST') ?? "Not found";
   }
 
   @UseGuards(LocalAuthGuard)
