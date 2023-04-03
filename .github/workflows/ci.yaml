@@ -34,6 +34,8 @@ jobs:
         context: frontend
         target: prod
         push: true
+        build-args: |
+          VITE_APP_TENOR_API_KEY=${{ secrets.TENOR_API_KEY }}
         tags: thomasmauran/polynotes-frontend:${{ steps.commit.outputs.short }}
 
     - name: Update tag version frontend
