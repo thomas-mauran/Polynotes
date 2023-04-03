@@ -17,7 +17,6 @@ resources:
     cpu: 100m
     memory: 128Mi
 
-
 env:
 - name: MAILER_HOST
   value: "backend-configmap"

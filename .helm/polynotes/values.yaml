@@ -12,7 +12,6 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
 
-
 mongodb:
   auth:
     usernames:
