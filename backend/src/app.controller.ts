@@ -14,17 +14,19 @@ import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private authService: AuthService,
+    private configService: ConfigService,
   ) {}
 
   @Get('')
   isUp(): string {
-    return "I'm up!"
+    return this.configService.get('MAILER_HOST') ?? "Not found";
   }
 
   @UseGuards(LocalAuthGuard)
