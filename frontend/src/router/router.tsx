@@ -28,10 +28,10 @@ const AppLayout = () => {
 const Router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFoundView />}>
-      <Route path="login" element={<LoginView />} />
-      <Route path="signup" element={<SignupView />} />
-      <Route path="cgu" element={<CguView />} />
-      <Route path="verifyEmail/:email" element={<VerifyEmail />} />
+      <Route path="/login" element={<LoginView />} />
+      <Route path="/signup" element={<SignupView />} />
+      <Route path="/cgu" element={<CguView />} />
+      <Route path="/verifyEmail/:email" element={<VerifyEmail />} />
 
       {/* <Route path="/" element={<PrivateRoutes />}> */}
       <Route path="/" element={<AppLayout />}>
