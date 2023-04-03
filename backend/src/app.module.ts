@@ -30,7 +30,7 @@ import { FoldersModule } from './folders/folders.module';
         transport: {
           host: configService.get<string>('MAILER_HOST'),
           port: configService.get<number>('MAILER_PORT'),
-          secure: false,
+          secure: true,
           auth: {
             user: configService.get<string>('MAILER_USER'),
             pass: configService.get<string>('MAILER_PASSWORD'),

@@ -20,8 +20,6 @@ resources:
 env:
 - name: MAILER_HOST
   value: "backend-configmap"
-- name: MAILER_SECURE
-  value: "true"
 - name: MAILER_PORT
   value: "587"
 - name: MAILER_USER
