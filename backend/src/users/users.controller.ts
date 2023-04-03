@@ -7,23 +7,18 @@ import {
   HttpStatus,
   Param,
   Res,
+  Redirect,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { dataLogin } from './types/userTypes';
 
 import { UsersService } from './users.service';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  @Get()
-  async fetchAll(): Promise<string> {
-    return 'ek';
-  }
-
-  @Get('verify-email/:token')
+  @Redirect('https://polynotes.cluster-2022-6.dopolytech.fr', 302) // use optional chaining operator and fallback to a default value  @Get('verify-email/:token')
   async verifyEmail(@Param('token') token: string) {
     return await this.userService.verifyEmail(token);
   }

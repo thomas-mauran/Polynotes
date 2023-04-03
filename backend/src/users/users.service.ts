@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   Res,
   UnauthorizedException,
@@ -35,16 +36,20 @@ export class UsersService {
 
     const token = uuid();
 
-
-
-    await this.mailService.sendEmailVerificationLink(email, token);
-    const createdUser = await this.userModel.create({
-      username,
-      email,
-      password: await hash(password, 10),
-      emailVerified: false,
-      emailVerificationToken: token,
-    });
+    let createdUser;
+    try{
+      await this.mailService.sendEmailVerificationLink(email, token);
+      createdUser = await this.userModel.create({
+        username,
+        email,
+        password: await hash(password, 10),
+        emailVerified: false,
+        emailVerificationToken: token,
+      });
+    }catch(error){
+      throw new InternalServerErrorException(error.message)
+    }
+    
     return createdUser;
   }
 
