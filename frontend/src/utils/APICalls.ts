@@ -18,15 +18,9 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
   };
   const response = await fetch(url, options);
   let data;
-  console.log(response)
   if (response.ok) {
     const responseText = await response.text();
-    try{
-      data = JSON.parse(responseText);
-    }
-    catch(error){
-      data = responseText;
-    }
+    data = JSON.parse(responseText);
   }
 
   try {

@@ -31,6 +31,7 @@ export class AuthService {
       }),
       email: user.email,
       username: user.username,
+      emailVerified: user.emailVerified,
       _id: user._id,
     };
   }

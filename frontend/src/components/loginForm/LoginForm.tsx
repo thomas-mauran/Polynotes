@@ -33,7 +33,6 @@ export default function LoginForm() {
     setErrorMsg("");
     setLoading(true);
     const response = await login(inputs.email, inputs.password);
-
     if (response.error) {
       setErrorAPIList(response.message);
       setLoading(false);
@@ -41,7 +40,6 @@ export default function LoginForm() {
       // Store the jwt
       const { username, email, access_token, user_id } = response.data;
       loginUtils(username, email, access_token, user_id);
-
       return navigate(`/workspace/`);
     }
   };

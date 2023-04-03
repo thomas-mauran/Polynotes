@@ -6,6 +6,7 @@ import {
   Req,
   Res,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
@@ -32,8 +33,11 @@ export class AppController {
     @Req() req: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
+    const user = await this.authService.login(req.user);
+    if(user.emailVerified === false) {
+      throw new UnauthorizedException('Email not verified');
+    }
     try {
-      const user = await this.authService.login(req.user);
       response
         .cookie('JWTCookie', user.access_token, {
           httpOnly: true,

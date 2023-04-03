@@ -30,27 +30,27 @@ export class UsersService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { username, email, password } = createUserDto;
     const user = await this.userModel.findOne({ email: email });
+    
     if (user) {
-      throw new ConflictException('Email already used'); // Throw an error if the user doesn't exist
+      throw new ConflictException('Email already used'); 
     }
 
     const token = uuid();
-
-    let createdUser;
     try{
       await this.mailService.sendEmailVerificationLink(email, token);
-      createdUser = await this.userModel.create({
+      const user = await this.userModel.create({
         username,
         email,
         password: await hash(password, 10),
         emailVerified: false,
         emailVerificationToken: token,
       });
+      return user;
+
     }catch(error){
       throw new InternalServerErrorException(error.message)
     }
     
-    return createdUser;
   }
 
   // VERIFY EMAIL
