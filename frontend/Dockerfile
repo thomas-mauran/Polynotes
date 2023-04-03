@@ -21,5 +21,6 @@ RUN VITE_APP_BASE_URL=${VITE_APP_BASE_URL} VITE_APP_TENOR_API_KEY=${VITE_APP_TEN
 # Serve the app with a web server
 FROM nginx:stable-alpine AS prod
 COPY --from=0 /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+# Config to serve the app on the root path and handle 404 errors
+COPY nginx.conf /etc/nginx/conf.d/default.conf
