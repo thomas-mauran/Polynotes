@@ -19,7 +19,7 @@ resources:
 
 env:
 - name: MAILER_HOST
-  value: "backend-configmap"
+  value: "smtp.umontpellier.fr"
 - name: MAILER_PORT
   value: "587"
 - name: MAILER_USER
