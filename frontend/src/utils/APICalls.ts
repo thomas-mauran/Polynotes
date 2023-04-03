@@ -8,7 +8,6 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
     url = `${VITE_APP_BASE_URL}/api/${endpoint}`;
 
   }
-  console.log("url", url)
 
   const options: RequestInit = {
     method,
@@ -20,12 +19,15 @@ export async function sendAPICall(method: string, endpoint: string, body: any) {
   let data;
   if (response.ok) {
     const responseText = await response.text();
-    data = JSON.parse(responseText);
+    try{
+      data = JSON.parse(responseText);
+    }catch(error){
+      data = responseText;
+    }
   }
 
   try {
     const responseBody = await response.json();
-
     // If there is an error, we put a list of errors in the `message` field
     if (typeof responseBody.message === "string") {
       responseBody.message = [responseBody.message];
