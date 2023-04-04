@@ -26,10 +26,10 @@ export default function MultiColumnBlock(props: propsType) {
         return (
           <Box key={item.id}>
             <Box className="lineOptions">
-              <IconButton onClick={() => dispatch(deleteBlock({ index }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <IconButton onClick={() => dispatch(deleteBlock({ uuid: item.id }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
                 <DeleteIcon />
               </IconButton>
-              <IconButton onClick={() => dispatch(openSettings({ index: index }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
+              <IconButton onClick={() => dispatch(openSettings({ uuid: item.id }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
                 <SettingsIcon />
               </IconButton>
             </Box>
@@ -41,10 +41,10 @@ export default function MultiColumnBlock(props: propsType) {
         return (
           <Box key={item.id}>
             <Box className="lineOptions">
-              <IconButton onClick={() => dispatch(deleteBlock({ index }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <IconButton onClick={() => dispatch(deleteBlock({ uuid: item.id }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
                 <DeleteIcon />
               </IconButton>
-              <IconButton onClick={() => dispatch(openSettings({ index: index }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
+              <IconButton onClick={() => dispatch(openSettings({ uuid: item.id }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
                 <SettingsIcon />
               </IconButton>
             </Box>
@@ -55,10 +55,10 @@ export default function MultiColumnBlock(props: propsType) {
         return (
           <Box key={item.id}>
             <Box className="lineOptions">
-              <IconButton onClick={() => dispatch(deleteBlock({ index }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <IconButton onClick={() => dispatch(deleteBlock({ uuid: item.id }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
                 <DeleteIcon />
               </IconButton>
-              <IconButton onClick={() => dispatch(openSettings({ index: index }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
+              <IconButton onClick={() => dispatch(openSettings({ uuid: item.id }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
                 <SettingsIcon />
               </IconButton>
             </Box>
@@ -69,7 +69,7 @@ export default function MultiColumnBlock(props: propsType) {
         return (
           <Box key={item.id}>
             <Box className="lineOptions">
-              <IconButton onClick={() => dispatch(deleteBlock({ index }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <IconButton onClick={() => dispatch(deleteBlock({ uuid: item.id }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
                 <DeleteIcon />
               </IconButton>
             </Box>

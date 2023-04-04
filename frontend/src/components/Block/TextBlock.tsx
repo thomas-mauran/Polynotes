@@ -1,7 +1,4 @@
-import { Box, Menu, MenuItem, MenuList, Popover, Typography } from "@mui/material";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
-import ContentEditable from "react-contenteditable";
-
 import React from "react";
 
 import { Color } from "@tiptap/extension-color";
@@ -71,7 +68,7 @@ export default function TextBlock(props: propsType) {
     if (e.code.startsWith("Key")) {
       updateParent();
     }
-    if (e.key === "/") {
+    if (e.key === "/" && editor?.isEmpty) {
       e.preventDefault();
       dispatch(openHelper({ uuid: props.uuid }));
     } else if (e.key === "Enter" && e.shiftKey) {
@@ -81,10 +78,8 @@ export default function TextBlock(props: propsType) {
       dispatch(onArrowUp({ uuid: props.uuid }));
     } else if (e.key === "ArrowDown") {
       dispatch(onArrowDown({ uuid: props.uuid }));
-    } else if (e.key === "Backspace") {
-      if (editor?.getHTML() === "<p></p>") {
+    } else if (e.key === "Backspace" && editor?.isEmpty) {
         dispatch(deleteBlock({ uuid: props.uuid }));
-      }
     }
   };
 
@@ -99,13 +94,6 @@ export default function TextBlock(props: propsType) {
     }
   };
 
-  // const openHelp = (): void => {
-  //   if (props.onChangeMultiColumn) {
-  //     props.onChangeMultiColumn(props.index, props.columnId, editor?.getHTML())
-  // } else {
-  //     dispatch(updateHTML({ index: props.index, newData: editor?.getHTML() }));
-  // }
-  // }
 
   const updateParent = (): void => {
     if (timerRef.current) {
@@ -150,16 +138,4 @@ export default function TextBlock(props: propsType) {
       </>
     </div>
   );
-}
-{
-  /* <ContentEditable
-spellCheck={false}
-className={props.className}
-innerRef={ref}
-html={state.html}
-onChange={handleChange}
-onKeyDown={handleKeyDown}
-onClick={handleClick}
-style={{ width: "100%", fontFamily: '"Roboto","Helvetica","Arial",sans-serif', outline: "0px solid transparent" }}
-/> */
 }
