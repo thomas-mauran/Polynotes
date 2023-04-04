@@ -48,6 +48,17 @@ export class PagesController {
   }
 
   // @UseGuards(JwtAuthGuard)
+  @Get('findAll/:id')
+  async getAllPages(@Param('id') userId: string) {
+    return await this.pageService.getAll(userId);
+  }
+
+  // @UseGuards(JwtAuthGuard)
+  @Get('getTitle/:id')
+  async getPageTitle(@Param('id') pageId: string) {
+    return await this.pageService.getTitle(pageId);
+  }
+  // @UseGuards(JwtAuthGuard)
   // @Get('tree/:id')
   // async getTree(@Param('id') userId: string) {
   //   return await this.pageService.getElementAsTree(userId);

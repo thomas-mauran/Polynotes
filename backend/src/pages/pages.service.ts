@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import { Model, ObjectExpression, ObjectId } from 'mongoose';
 import { Page, PagesDocument } from './schemas/pages.schema';
 import { v4 as uuidv4 } from 'uuid';
 import { FindPageDto } from './dto/find-page.dto';
@@ -116,5 +116,29 @@ export class PagesService {
       .sort({ updatedAt: 'desc' })
       .limit(10);
     return pages;
+  }
+
+  async getAll(userId: string) {
+    const pages = await this.pageModel.find({ author: userId }).select({"title": 1, "updatedAt": 1});
+    const returnList = [];
+
+    // we need to format the data to be used in the select frontend component
+    for (const page of pages){
+      // we create a new arraay of object {id, label}
+      const label = page.title + " - " + page.updatedAt?.toLocaleDateString();
+      const id = page._id;
+      returnList.push({id, label});
+    }
+
+    return returnList;
+  }
+
+  async getTitle(pageId: string) {
+    const pageFound = await this.pageModel.findById(pageId).exec();
+
+    if (!pageFound) {
+      throw new NotFoundException('Page not found');
+    }
+    return pageFound.title; 
   }
 }

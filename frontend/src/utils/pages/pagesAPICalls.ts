@@ -18,6 +18,18 @@ export async function findOrCreate(pageId: string | undefined) {
   return await sendAPICall("POST", endpoint, body);
 }
 
+export async function getPages(){
+  const body = null;
+  const endpoint = `${endpointBase}/findAll/${localStorage.getItem("user_id")}`;
+  return await sendAPICall("GET", endpoint, body);
+}
+
+export async function getPageTitle(pageId: string){
+  const body = null;
+  const endpoint = `${endpointBase}/getTitle/${pageId}`;
+  return await sendAPICall("GET", endpoint, body);
+}
+
 export async function createPage(title: string, parentId: string) {
   const body = {
     title,
