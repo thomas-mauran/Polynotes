@@ -9,11 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@mui/icons-material": "^5.11.9",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.120",
-    "@mui/material": "^5.11.9",
+    "@mui/material": "^5.11.15",
     "@reduxjs/toolkit": "^1.9.3",
     "@tiptap/extension-color": "^2.0.0-beta.220",
     "@tiptap/extension-list-item": "^2.0.0-beta.220",

@@ -8,6 +8,11 @@ export interface TableData {
   [index: number]: string[];
 }
 
+export interface SupageHTML {
+  id: string;
+  label: string;
+}
+
 export interface Lane {
   id?: string;
   title?: string;
@@ -44,6 +49,10 @@ export interface TextBlockType extends BaseBlock {
   html: string;
 }
 
+export interface SubpageBlock extends BaseBlock {
+  html: SupageHTML
+}
+
 export interface DatabaseBlockType extends BaseBlock {
   html: { lanes: Lane[] };
   settingsOpen: boolean;
@@ -58,7 +67,7 @@ export interface MultiColumnBlock extends BaseBlock {
   settingsOpen: boolean;
 }
 
-export type BlockType = TextBlockType | DatabaseBlockType | ImageBlockType | MultiColumnBlock;
+export type BlockType = TextBlockType | DatabaseBlockType | ImageBlockType | MultiColumnBlock | SubpageBlock;
 
 export interface StateType {
   pageId: string | null;

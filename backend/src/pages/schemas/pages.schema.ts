@@ -22,6 +22,9 @@ export class Page {
 
   @Prop({ required: true, type: SchemaTypes.ObjectId })
   author: ObjectId;
+  
+  @Prop({ type: Date, default: null })
+  updatedAt: Date | null;
 }
 
 export const PagesSchema = SchemaFactory.createForClass(Page);

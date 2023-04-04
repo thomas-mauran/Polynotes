@@ -40,6 +40,11 @@ const pageReducer = createSlice({
         addItemAfterId(state.blocks, id, { html: "", type: "p", id: id2, focus: false });
       }
 
+      // Link blocks
+      else if (action.payload.blockType === "subpage") {
+        addItemAfterId(state.blocks, action.payload.uuid, { html: "", type: "subpage", settingsOpen: true, id, focus: true });
+        addItemAfterId(state.blocks, id, { html: "", type: "p", id: id2, focus: false });
+      }
       // Image blocks
       else if (action.payload.blockType === "img") {
         addItemAfterId(state.blocks, action.payload.uuid, { html: "", type: "img", settingsOpen: true, id, focus: true });
@@ -82,7 +87,10 @@ const pageReducer = createSlice({
       state.slashMenuBlockId = null;
     },
     openSettings: (state, action) => {
-      state.blocks[action.payload.index].settingsOpen = true;
+      const item = findItemById(state.blocks, action.payload.uuid);
+      if (item) {
+        item.item.settingsOpen = true;
+      }    
     },
     closeSettings: (state, action) => {
       const item = findItemById(state.blocks, action.payload.uuid);
@@ -215,17 +223,11 @@ function updateAfterId(array: BlockType[], id: string, newHtml: string) {
   const found = findItemById(array, id);
   if (found) {
     const { item, index, parentArray } = found;
-    // if the item.html is an array so we are in a multi col and need to run back addItemAfterId to search back the id
-    // and add the block in the list after it
-    // if (item.type === "multiCol") {
-    //   updateAfterId(item.html as BlockType[], id, newHtml);
-    // } else {
-    // we simply add the block after the found one
     parentArray[index].html = newHtml;
-    // }
   }
   return array;
 }
+
 
 export const { addBlock, updateHTML, createMultiColumn, setPageContent, onArrowUp, onArrowDown, changeType, deleteBlock, openHelper, closeHelper, closeSettings, openSettings } = pageReducer.actions;
 
