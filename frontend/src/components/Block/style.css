@@ -5,6 +5,8 @@
 .editor {
   font-family: "sans-serif";
   max-width: 100%;
+  color:#37352F !important;
+
 }
 
 .ProseMirror {
