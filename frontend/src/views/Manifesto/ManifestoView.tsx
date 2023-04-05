@@ -2,7 +2,6 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Parallax, Background } from "react-parallax";
 import "./manifestoStyle.css";
 import Card from "../../components/Manifesto/Card";
 
@@ -12,7 +11,6 @@ import login from "../../assets/png/manifesto/login.png";
 import signup from "../../assets/png/manifesto/signup.png";
 import workspace from "../../assets/png/manifesto/workspace.png";
 
-import AOS from "aos";
 
 export default function Manifesto() {
   const [currentStyle, setCurrentStyle] = useState({});

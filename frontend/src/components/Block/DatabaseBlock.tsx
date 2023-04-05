@@ -90,23 +90,20 @@ export default function DatabaseBlock(props: propsType) {
     return data;
   };
 
-  const tableConvertImport = (): (string | number)[][] => {
+  const tableConvertImport = (): string => {
     const lanes = props.defaultValue.lanes;
     if (lanes.length === 0) {
-      return [["Click me"]];
+      return '[["Click me"]]';
     } else {
-      // create header row
-
       // Create header row
       const headerRow: string[] = lanes.map((lane) => (lane.title ? lane.title : ""));
       const table: (string | number)[][] = [headerRow];
-
-      // // create data rows
+  
+      // Create data rows
       const headerLength = headerRow.length;
       const cardMax = cardMaxLength(lanes);
       for (let i = 0; i < cardMax; i++) {
         const dataRow: (string | number)[] = [];
-        // const currentColumnLength = lanes[i].cards.length;
         for (let j = 0; j < headerLength; j++) {
           const card = lanes[j].cards?.[i];
           if (card && card.title) {
@@ -117,7 +114,8 @@ export default function DatabaseBlock(props: propsType) {
         }
         table.push(dataRow);
       }
-      return table;
+      // Convert table to string ... sorry for that but I didn't find a better way to do it
+      return table as unknown as string;
     }
   };
 
@@ -134,15 +132,7 @@ export default function DatabaseBlock(props: propsType) {
     return max;
   };
 
-  // const tableMaxLength = (lines: any) => {
-  //   let max = 0;
-  //   for (let i = 0; i < lines.length; i++) {
-  //       if (lines[i].length > max) {
-  //         max = lines[i].length;
-  //       }
-  //   }
-  //   return max;
-  // };
+
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -175,7 +165,7 @@ export default function DatabaseBlock(props: propsType) {
         />
       ) : (
         <Box sx={{ display: "flex" }}>
-          <ActiveTable content={tableConvertImport()} csvButtons={{ export: true }} headerStyles={{ default: { backgroundColor: "#d6d6d630" } }} onContentUpdate={handleChange} />
+          <ActiveTable content={tableConvertImport()} csvButtons={{ export: true }} headerStyles={{ default: { backgroundColor: "#d6d6d6" } }} onContentUpdate={handleChange} />
         </Box>
       )}
     </Box>
