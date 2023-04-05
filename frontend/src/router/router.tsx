@@ -11,6 +11,7 @@ import CguView from "../views/CGU/CguView";
 import VerifyEmail from "../views/VerifyEmail/VerifyEmail";
 import PageView from "../views/Page/PageView";
 import { isLoggedIn } from "../utils/auth/utils";
+import ManifestoView from "../views/Manifesto/ManifestoView";
 
 const AppLayout = () => {
   if (isLoggedIn()) {
@@ -21,13 +22,14 @@ const AppLayout = () => {
       </>
     );
   } else {
-    return <Navigate to={"/login"} />;
+    return <Navigate to={"/manifesto"} />;
   }
 };
 
 const Router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<NotFoundView />}>
+      <Route path="/manifesto" element={<ManifestoView />} />
       <Route path="/login" element={<LoginView />} />
       <Route path="/signup" element={<SignupView />} />
       <Route path="/cgu" element={<CguView />} />
