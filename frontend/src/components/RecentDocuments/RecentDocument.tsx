@@ -22,13 +22,16 @@ export default function RecentDocument(props: Props) {
         {documents.map((doc) => {
           const date = new Date(doc.updatedAt).toLocaleDateString();
           const link = `/page/${doc._id}`;
-          const title = doc.title ? doc.title : "Untitled";
+          let title = doc.title ? doc.title : "Untitled";
+          if(title.length > 20){
+            title = title.substring(0, 20) + "..."
+          }
           return (
             <Link to={link} key={doc._id}>
               <Card sx={{ margin: "10px 20px", minWidth: "150px", height: "250px" }}>
                 <CardContent>
                   <Typography variant="h6" color="text.primary" gutterBottom sx={{ fontWeight: "bold" }}>
-                    {title.substring(0, 12) + "..."}
+                    {title}
                   </Typography>
                   <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
                     {doc.thumbnailSrc == null ? (

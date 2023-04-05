@@ -1,5 +1,5 @@
 // MUI
-import { Box, Container, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { Box, Container, IconButton, Menu, MenuItem, Popover, Typography } from "@mui/material";
 
 // Style
 import styled from "@emotion/styled";
@@ -30,6 +30,9 @@ import { useParams } from "react-router";
 import { findPage } from "../../utils/pages/pagesAPICalls";
 import { BlockType, BoardData, SupageHTML } from "../../types/PageTypes";
 import SubPage from "../../components/Block/SubpageBlock";
+import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
+import IosShareIcon from "@mui/icons-material/IosShare";
+
 const MainBox = styled.div(`
 width: 100%;
 min-width: 200px;
@@ -50,6 +53,8 @@ export default function PageView() {
 
   const dispatch = useDispatch();
 
+  const [shareMenuOpen, setShareMenuOpen] = useState(false);
+
   // FUNCTIONS
   const handleClickMenu = (e: MouseEvent) => {
     dispatch(addBlock({ blockType: (e.target as HTMLButtonElement).id, uuid: slashMenuBlockId }));
@@ -62,8 +67,11 @@ export default function PageView() {
     dispatch(setPageContent({ pageId: _id, blocks, childList, slashMenuBlockId }));
   };
 
-  const blockElements = blocks.map((item: BlockType, index: number) => {
+  const openSharePopOver = (e: MouseEvent) => {
+    setShareMenuOpen(shareMenuOpen ? false : true);
+  };
 
+  const blockElements = blocks.map((item: BlockType, index: number) => {
     if (item.type === "img") {
       return (
         <Box className="line" key={item.id}>
@@ -106,21 +114,21 @@ export default function PageView() {
           <GifPickerBlock uuid={item.id} defaultValue={item.html as string} index={index} settingsOpen={item.settingsOpen as boolean} />
         </Box>
       );
-  } else if (item.type === "subpage") {
-    return (
-      <Box className="line" key={item.id}>
-        <Box className="lineOptions">
-          <IconButton onClick={() => dispatch(deleteBlock({ uuid: item.id }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
-            <DeleteIcon />
-          </IconButton>
-          <IconButton onClick={() => dispatch(openSettings({ uuid: item.id }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
-            <SettingsIcon />
-          </IconButton>
+    } else if (item.type === "subpage") {
+      return (
+        <Box className="line" key={item.id}>
+          <Box className="lineOptions">
+            <IconButton onClick={() => dispatch(deleteBlock({ uuid: item.id }))} aria-label="delete" sx={{ padding: "0px", height: "20px" }}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={() => dispatch(openSettings({ uuid: item.id }))} aria-label="setting" sx={{ padding: "0px", height: "20px" }}>
+              <SettingsIcon />
+            </IconButton>
+          </Box>
+          <SubPage uuid={item.id} defaultValue={item.html as SupageHTML} index={index} settingsOpen={item.settingsOpen as boolean} />
         </Box>
-        <SubPage uuid={item.id} defaultValue={item.html as SupageHTML} index={index} settingsOpen={item.settingsOpen as boolean} />
-      </Box>
-    );
-  }else if (item.type === "multiCol") {
+      );
+    } else if (item.type === "multiCol") {
       return (
         <Box className="line" key={item.id}>
           <Box className="lineOptions">
@@ -153,6 +161,29 @@ export default function PageView() {
 
   return (
     <Container fixed>
+      <Box sx={{ position: "absolute", top: "0.4rem", right: "5rem" }}>
+        <PopupState variant="popover" popupId="demo-popup-popover">
+          {(popupState) => (
+            <div>
+              <IconButton aria-label="Share button"  {...bindTrigger(popupState)} sx={{ color: "black", width: "40px" }}>
+                <IosShareIcon sx={{ fontSize: "2rem" }} />
+              </IconButton>
+              <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}>
+                <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+              </Popover>
+            </div>
+          )}
+        </PopupState>
+      </Box>
       <MainBox id="mainBlock">
         <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={slashMenuBlockId !== null} onClose={() => dispatch(closeHelper())}>
           <MenuItem id="h1" onClick={handleClickMenu} key="h1">
@@ -191,7 +222,6 @@ export default function PageView() {
             <img src="https://media.tenor.com/GIVLitDIxr8AAAAM/breaking-bad-walter-white.gif" alt="Gif Block" className="menuImg" />
             <Typography variant="h5">gif</Typography>
           </MenuItem>
-       
         </Menu>
         {blockElements}
       </MainBox>
