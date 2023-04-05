@@ -1,12 +1,13 @@
-import { TextField, IconButton, Autocomplete } from "@mui/material";
+import { TextField, IconButton, Autocomplete, Select, MenuItem } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { closeSettings, updateHTML } from "../../redux/reducers/pageReducer";
 import { useDispatch } from "react-redux";
 import { getPageTitle, getPages } from "../../utils/pages/pagesAPICalls";
 import { Link as LinkRouter } from "react-router-dom";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
+import { SelectChangeEvent } from '@mui/material/Select';
 
 interface propsType {
   index: number;
@@ -17,11 +18,11 @@ interface propsType {
 
 export default function SubpageBlock(props: propsType) {
   const [inputs, setInputs] = useState({
-    id: props.defaultValue.id,
-    label: props.defaultValue.label,
+    id: props.defaultValue.id ?? "",
+    label: props.defaultValue.label ?? "",
   });
 
-  const [userPages, setUserPages] = useState([]);
+  const [userPages, setUserPages] = useState<{id: string, label: string}[]>([]);
   const [errorAPIList, setErrorAPIList] = useState([]);
 
   const dispatch = useDispatch();
@@ -52,11 +53,17 @@ export default function SubpageBlock(props: propsType) {
     fetchNewName();
   }, []);
 
-  const handleSelect = (value: { label: any; id: any } | null) => {
+  const handleSelect = (e: SelectChangeEvent<string>) => {
+    const label = findLabel(e.target.value);
     setInputs((prevState) => ({
-      label: value?.label,
-      id: value?.id,
+      label: label,
+      id: e.target.value,
     }));
+  };
+
+  const findLabel = (id: string) => {
+    const page = userPages.find((page) => page.id === id);
+    return page?.label ?? "";
   };
 
   const handleClick = () => {
@@ -68,7 +75,14 @@ export default function SubpageBlock(props: propsType) {
     <Box sx={{ display: "flex" }}>
       {props.settingsOpen === true ? (
         <>
-          <Autocomplete disablePortal id="combo-box-demo" options={userPages} onChange={(event, value) => handleSelect(value)} sx={{ width: 300, marginTop: "10px" }} renderInput={(params) => <TextField {...params} label="Recent pages" />} />
+            <Select id="combo-box-demo" value={inputs.id} onChange={handleSelect} 
+            sx={{ width: 300, marginTop: "10px" }} 
+            >
+              {userPages.map((page) => (
+                <MenuItem key={page.id} value={page.id} id={page.label} >{page.label}</MenuItem>
+              ))}
+
+            </Select>
 
           <IconButton onClick={handleClick} aria-label="delete" sx={{ padding: "0px", height: "30px", marginTop: "20px" }}>
             <AddBoxIcon fontSize="large" />
