@@ -3,6 +3,7 @@
   padding-top: 10%;
   font-size: 1.7em;
   padding-right: 10px;
+  background-color: white;
 }
 
 .descriptionBox{
@@ -31,4 +32,5 @@
   font-family: "Roboto", sans-serif;
   font-weight: bold;
   padding-bottom: 30px;
+  
 }

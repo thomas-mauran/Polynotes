@@ -11,52 +11,40 @@ import login from "../../assets/png/manifesto/login.png";
 import signup from "../../assets/png/manifesto/signup.png";
 import workspace from "../../assets/png/manifesto/workspace.png";
 
-
 export default function Manifesto() {
   const [currentStyle, setCurrentStyle] = useState({});
   const [index, setIndex] = useState(0);
 
-  const styles = [
-    { fontFamily: "'Arvo', serif" },
-    { fontFamily: "'Delicious Handrawn', cursive" },
-    { fontFamily: "'Fugaz One', cursive" },
-    { fontFamily: "'Jost', sans-serif" },
-    { fontFamily: "'Permanent Marker', cursive" },
-    { fontFamily: "'PT Serif', serif" },
-    { fontFamily: "'Roboto', sans-serif" },
-    { fontFamily: "'Rowdies', cursive" },
-  ];
-
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
   const navigate = useNavigate();
 
-  // change the style every second
-  useEffect(() => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    const newTimeoutId = setTimeout(() => {
-      setCurrentStyle(styles[index]);
-      setIndex((index + 1) % styles.length);
-    }, 1600);
-    setTimeoutId(newTimeoutId);
-  }, [currentStyle]);
-
   return (
-    <Box className="box" sx={{ width: "100vw"}}>
-
-
-      <Typography variant="h1" margin={"20px"} sx={currentStyle}>
-        Polynotes
+    <Box className="box" sx={{ width: "100vw" }}>
+      <Typography variant="h2" margin={"20px"} sx={{fontFamily: "'Roboto', sans-serif", fontWeight: "bold"}}>
+        Poly<span className="titlePolynotes">notes</span>
       </Typography>
 
-      <Typography variant="h6" color="initial">
+      <Typography variant="body2" color="initial" fontSize={"1.5em"} margin={"20px"}>
         A place to organize your thoughts and ideas.
       </Typography>
-      <Box sx={{display: "flex", marginBottom: "100px"}}>
-        <Button variant="contained" color="secondary" sx={{margin: "10px"}} onClick={() => {navigate("/login")}} >Login</Button>
-        <Button variant="outlined" color="secondary"  sx={{margin: "10px"}} onClick={() => {navigate("/signup")}}>Signup</Button>
+      <Box sx={{ display: "flex", marginBottom: "100px" }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ margin: "10px" }}
+          onClick={() => {
+            navigate("/login");
+          }}>
+          Login
+        </Button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          sx={{ margin: "10px" }}
+          onClick={() => {
+            navigate("/signup");
+          }}>
+          Signup
+        </Button>
       </Box>
       <div data-aos="false">
         <Card title="Beautiful Login Forms" description="Discover stunning login forms that combine form and function to create a seamless user experience." imgSrc={login} isRight />

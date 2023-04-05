@@ -1,48 +1,57 @@
+body {
+  /* background: linear-gradient(102deg, rgba(30,9,121,1) 0%, rgba(207,67,255,1) 0%, rgba(136,157,252,1) 100%);  */
 
-body{
-/* background: linear-gradient(102deg, rgba(30,9,121,1) 0%, rgba(207,67,255,1) 0%, rgba(136,157,252,1) 100%);  */
- 
   /* background: rgba(30, 9, 121, ); */
   padding: 0%;
   margin: 0%;
+    background-size: 40px 40px;
+    background-image: radial-gradient(circle, #0000008b 1px, rgba(0, 0, 0, 0) 1px);
 }
 
-
 .container {
-    height: 800px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  height: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+@media (max-width: 600px) {
+  .container {
+    height: 500px;
   }
-  
-  @media (max-width: 600px) {
-    .container {
-      height: 500px;
-    }
-  }
-  
+}
+
+.title {
+  color: #fff;
+  text-align: center;
+  font-size: 48px;
+}
+
+.titlePolynotes {
+  background: rgb(30,9,121);
+background: linear-gradient(301deg, rgba(30,9,121,1) 0%, rgba(156,39,176,1) 0%, rgba(136,157,252,1) 100%); 
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+@media (max-width: 600px) {
   .title {
-    color: #fff;
-    text-align: center;
-    font-size: 48px;
+    font-size: 32px;
   }
-  
-  @media (max-width: 600px) {
-    .title {
-      font-size: 32px;
-    }
-  }
-  
+}
+
+.subtitle {
+  color: #fff;
+  text-align: center;
+  font-size: 24px;
+}
+
+@media (max-width: 600px) {
   .subtitle {
-    color: #fff;
-    text-align: center;
-    font-size: 24px;
+    font-size: 18px;
   }
-  
-  @media (max-width: 600px) {
-    .subtitle {
-      font-size: 18px;
-    }
-  }
-  
+}
