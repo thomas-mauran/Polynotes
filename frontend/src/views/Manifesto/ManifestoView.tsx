@@ -18,7 +18,7 @@ export default function Manifesto() {
   const navigate = useNavigate();
 
   return (
-    <Box className="box" sx={{ width: "100vw" }}>
+    <Box className="manifestoBox box" sx={{ width: "100vw" }}>
       <Typography variant="h2" margin={"20px"} sx={{fontFamily: "'Roboto', sans-serif", fontWeight: "bold"}}>
         Poly<span className="titlePolynotes">notes</span>
       </Typography>
