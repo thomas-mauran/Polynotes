@@ -14,7 +14,6 @@ interface PropsType {
 }
 
 export default function EnableShareBlock(props: PropsType) {
-  console.log("rights", props.readRights, props.updateRights);
   const [state, setState] = useState({
     readRights: props.readRights,
     updateRights: props.updateRights,

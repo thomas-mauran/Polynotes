@@ -62,7 +62,8 @@ export default function PageView() {
 
   // FUNCTIONS
   const handleClickMenu = (e: MouseEvent) => {
-    dispatch(addBlock({ blockType: (e.target as HTMLButtonElement).id, uuid: slashMenuBlockId }));
+    const blockType = e.currentTarget.getAttribute("id");
+    dispatch(addBlock({ blockType: blockType, uuid: slashMenuBlockId }));
     dispatch(closeHelper());
   };
 
@@ -145,7 +146,7 @@ export default function PageView() {
               <SettingsIcon />
             </IconButton>
           </Box>
-          <MultiColumnBlock uuid={item.id} defaultValue={item.html as BlockType[][]} index={index} />
+          <MultiColumnBlock uuid={item.id} defaultValue={item.html as BlockType[][]} index={index} isEditable={updateRights}/>
         </Box>
       );
     } else {

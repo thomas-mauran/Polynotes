@@ -87,6 +87,9 @@ const pageReducer = createSlice({
       if (state.blocks.length > 1) {
         deleteItemAtId(state.blocks, action.payload.uuid);
       }
+      const blocksArray = JSON.parse(JSON.stringify(state.blocks));
+      updatePage(blocksArray, state.pageId, state.slashMenuBlockId);
+
     },
     openHelper: (state, action) => {
       state.slashMenuBlockId = action.payload.uuid;
@@ -162,30 +165,12 @@ function findItemById(array: BlockType[], id: string): { item: BlockType; index:
   return null;
 }
 
+
 function deleteItemAtId(array: BlockType[], id: string): BlockType[] {
   const found = findItemById(array, id);
   if (found) {
     const { item, index, parentArray } = found;
-    // if the item.html is an array, we are in a multi col and need to run back deleteItemAtId to search back the id
-    if (Array.isArray(item.html)) {
-      const nestedItems: BlockType[][] = item.html as BlockType[][];
-
-      for (let j = 0; j < nestedItems.length; j++) {
-        deleteItemAtId(item.html[j], id).flat();
-      }
-    } else {
-      // we simply delete the block
-      parentArray.splice(index, 1);
-
-      if (index === 0) {
-        parentArray[index].focus = true;
-      } else if (index === parentArray.length) {
-        // we change the focus to the previous block
-        parentArray[index - 1].focus = true;
-      } else {
-        parentArray[index].focus = true;
-      }
-    }
+    parentArray.splice(index, 1);
   }
 
   return array;

@@ -3,7 +3,6 @@ import { sendAPICall } from "../APICalls";
 const endpointBase = "folders";
 
 export async function createFolder(title: string, parentId: string, isRoot: boolean) {
-  console.log("createFolder", title, parentId, isRoot);
   const body = {
     title,
     parentId,

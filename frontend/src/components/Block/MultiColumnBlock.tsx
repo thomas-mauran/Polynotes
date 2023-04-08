@@ -16,6 +16,7 @@ interface propsType {
   index: number;
   defaultValue: BlockType[][];
   uuid: string;
+  isEditable: boolean;
 }
 export default function MultiColumnBlock(props: propsType) {
   const dispatch = useDispatch();
@@ -73,7 +74,7 @@ export default function MultiColumnBlock(props: propsType) {
                 <DeleteIcon />
               </IconButton>
             </Box>
-            <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} className={item.type} isFocused={item.focus} />
+            <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} className={item.type} isFocused={item.focus} isEditable={props.isEditable}/>
           </Box>
         );
       }

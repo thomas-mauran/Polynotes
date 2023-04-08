@@ -69,7 +69,6 @@ export class PagesController {
   @UseGuards(JwtAuthGuard)
   @Patch('updateRights')
   async updateRights(@Body() body: UpdateRightsDto) {
-    console.log("fesses")
     const { pageId, readRights, updateRights } = body;
     return await this.pageService.updateRights(pageId, readRights, updateRights);
   }

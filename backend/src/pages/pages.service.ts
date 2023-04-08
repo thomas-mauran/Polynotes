@@ -80,7 +80,6 @@ export class PagesService {
         "You don't have the rights to read this page",
       );
     }
-    console.log(pageFound)
     return pageFound;
   }
 
@@ -202,7 +201,6 @@ export class PagesService {
       { readRights, updateRights },
       { new: true },
     );
-    console.log(updatedPage);
     return updatedPage;
   }
 }

@@ -10,13 +10,11 @@ export async function findPage(pageId: string | undefined) {
 
 export async function updateRights(pageId: string | null, readRights: boolean, updateRights: boolean) {
 
-  console.log(typeof readRights, typeof updateRights)
   const body = {
     pageId,
     readRights,
     updateRights,
   };
-  console.log(body)
   const endpoint = `${endpointBase}/updateRights`;
   return await sendAPICall("PATCH", endpoint, body);
 }

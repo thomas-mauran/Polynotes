@@ -17,7 +17,6 @@ const AppLayout = () => {
 
   // we want to check if the view we ask is a page view
   const isPageView = window.location.pathname.startsWith("/page");
-  console.log(isPageView)
   if (isPageView || isLoggedIn() ) {
     return (
       <>

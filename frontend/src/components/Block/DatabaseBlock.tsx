@@ -93,7 +93,7 @@ export default function DatabaseBlock(props: propsType) {
   const tableConvertImport = (): string => {
     const lanes = props.defaultValue.lanes;
     if (lanes.length === 0) {
-      return '[["Click me"]]';
+      return [["Click me"]] as unknown as string;
     } else {
       // Create header row
       const headerRow: string[] = lanes.map((lane) => (lane.title ? lane.title : ""));
@@ -131,7 +131,6 @@ export default function DatabaseBlock(props: propsType) {
     }
     return max;
   };
-
 
 
   return (
