@@ -71,6 +71,9 @@ export type BlockType = TextBlockType | DatabaseBlockType | ImageBlockType | Mul
 
 export interface StateType {
   pageId: string | null;
+  author: string | null;
+  readRights: boolean;
+  updateRights: boolean;
   blocks: BlockType[];
   slashMenuBlockId: null | string;
 }

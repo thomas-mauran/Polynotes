@@ -35,4 +35,22 @@ export class AuthService {
       _id: user._id,
     };
   }
+
+  async findUserByToken(token: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('JWT_KEY'),
+      });
+      const user = await this.usersService.findOne(payload.email);
+      return user;
+    } catch (error) {
+      if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
+        return null;
+      } else {
+        throw error;
+      }
+    }
+  }
+  
+  
 }

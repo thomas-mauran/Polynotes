@@ -22,6 +22,12 @@ export class Page {
 
   @Prop({ required: true, type: SchemaTypes.ObjectId })
   author: ObjectId;
+
+  @Prop({ type: Boolean, default: false })
+  readRights: boolean;
+
+  @Prop({ type: Boolean, default: false })
+  updateRights: boolean;
   
   @Prop({ type: Date, default: null })
   updatedAt: Date | null;

@@ -27,6 +27,7 @@ interface propsType {
   columnId?: number;
   onChangeMultiColumn?: (itemIndex: number, columnIndex: number, newData: string) => {};
   className: string;
+  isEditable: boolean;
 }
 
 export default function TextBlock(props: propsType) {
@@ -36,6 +37,7 @@ export default function TextBlock(props: propsType) {
   const ref = React.createRef() as any;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const editor = useEditor({
+    editable: props.isEditable,
     extensions: [
       Placeholder.configure({
         emptyEditorClass: "is-editor-empty",

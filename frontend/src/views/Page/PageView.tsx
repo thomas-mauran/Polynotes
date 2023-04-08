@@ -3,7 +3,7 @@ import { Box, Container, IconButton, Menu, MenuItem, Popover, Typography } from 
 
 // Style
 import styled from "@emotion/styled";
-import { useRef, useState, MouseEvent, useEffect } from "react";
+import { MouseEvent, useEffect } from "react";
 
 // Block components
 import ImageBlock from "../../components/Block/ImageBlock";
@@ -26,12 +26,11 @@ import { addBlock, closeHelper, createMultiColumn, deleteBlock, openSettings, se
 import GifPickerBlock from "../../components/Block/GifPickerBlock";
 import { setAutoFreeze } from "immer";
 import { RootState } from "../../redux/store";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { findPage } from "../../utils/pages/pagesAPICalls";
 import { BlockType, BoardData, SupageHTML } from "../../types/PageTypes";
 import SubPage from "../../components/Block/SubpageBlock";
-import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
-import IosShareIcon from "@mui/icons-material/IosShare";
+import EnableShareBlock from "../../components/EnableShare/EnableShareBlock";
 
 const MainBox = styled.div(`
 width: 100%;
@@ -40,6 +39,8 @@ margin: 5% 15% 5% 10%;
 `);
 
 export default function PageView() {
+  // CONSTANTS
+
   // HOOKs
   setAutoFreeze(false);
   const { id } = useParams();
@@ -48,12 +49,16 @@ export default function PageView() {
     fetchPage(id);
   }, [id]);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // REDUX
+  const pageAuthor = useSelector((state: RootState) => state.pageReduc.author);
+  const pageId = useSelector((state: RootState) => state.pageReduc.pageId);
+  const readRights = useSelector((state: RootState) => state.pageReduc.readRights);
+  const updateRights = useSelector((state: RootState) => state.pageReduc.updateRights);
   const blocks = useSelector((state: RootState) => state.pageReduc.blocks);
   const slashMenuBlockId = useSelector((state: RootState) => state.pageReduc.slashMenuBlockId);
-
-  const dispatch = useDispatch();
-
-  const [shareMenuOpen, setShareMenuOpen] = useState(false);
 
   // FUNCTIONS
   const handleClickMenu = (e: MouseEvent) => {
@@ -63,12 +68,13 @@ export default function PageView() {
 
   const fetchPage = async (id: string | undefined) => {
     const page = await findPage(id);
-    const { _id, blocks, childList, slashMenuBlockId } = page.data;
-    dispatch(setPageContent({ pageId: _id, blocks, childList, slashMenuBlockId }));
-  };
+    if (page.code !== 200) {
+      navigate("/notFound");
+    }
+    let { _id, blocks, childList, slashMenuBlockId, readRights, updateRights, author } = page.data;
+    dispatch(setPageContent({ pageId: _id, author, readRights, updateRights, blocks, childList, slashMenuBlockId }));
 
-  const openSharePopOver = (e: MouseEvent) => {
-    setShareMenuOpen(shareMenuOpen ? false : true);
+
   };
 
   const blockElements = blocks.map((item: BlockType, index: number) => {
@@ -153,7 +159,7 @@ export default function PageView() {
               <AddIcon />
             </IconButton>
           </Box>
-          <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} className={item.type} isFocused={item.focus} />
+          <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} className={item.type} isFocused={item.focus} isEditable={updateRights} />
         </Box>
       );
     }
@@ -161,29 +167,10 @@ export default function PageView() {
 
   return (
     <Container fixed>
-      <Box sx={{ position: "absolute", top: "0.4rem", right: "5rem" }}>
-        <PopupState variant="popover" popupId="demo-popup-popover">
-          {(popupState) => (
-            <div>
-              <IconButton aria-label="Share button"  {...bindTrigger(popupState)} sx={{ color: "black", width: "40px" }}>
-                <IosShareIcon sx={{ fontSize: "2rem" }} />
-              </IconButton>
-              <Popover
-                {...bindPopover(popupState)}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "center",
-                }}>
-                <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-              </Popover>
-            </div>
-          )}
-        </PopupState>
-      </Box>
+      {updateRights == false && <Box className="noEdit"></Box>}
+      {localStorage.getItem("user_id") == pageAuthor && <EnableShareBlock pageId={pageId} readRights={readRights} updateRights={updateRights} />}
+
+
       <MainBox id="mainBlock">
         <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={slashMenuBlockId !== null} onClose={() => dispatch(closeHelper())}>
           <MenuItem id="h1" onClick={handleClickMenu} key="h1">

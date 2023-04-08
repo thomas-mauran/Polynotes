@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -12,6 +13,8 @@ import { CreatePageDto } from './dto/create-page.dto';
 import { FindOrCreatePageDto } from './dto/find-or-create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { PagesService } from './pages.service';
+import { UpdateRightsDto } from './dto/update-rights.dto';
+import { Request } from 'express';
 
 @Controller('pages')
 export class PagesController {
@@ -23,10 +26,12 @@ export class PagesController {
     return await this.pageService.create(body);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async getPage(@Param('id') pageId: string) {
-    return await this.pageService.find({ pageId });
+  async getPage(@Req() req: Request, @Param('id') pageId: string) {
+    const bearerToken = req.headers.authorization?.split(' ')[1];
+    return await this.pageService.find({ pageId }, bearerToken);
+
   }
 
   @UseGuards(JwtAuthGuard)
@@ -35,10 +40,11 @@ export class PagesController {
     return await this.pageService.findOrCreate(body);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Patch()
-  async updatePage(@Body() body: UpdatePageDto) {
-    return await this.pageService.updatePage(body);
+  async updatePage(@Req() req: Request, @Body() body: UpdatePageDto) {
+    const bearerToken = req.headers.authorization?.split(' ')[1];
+    return await this.pageService.updatePage(body, bearerToken);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -47,20 +53,24 @@ export class PagesController {
     return await this.pageService.getLastUpdatedDocuments(userId);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('findAll/:id')
   async getAllPages(@Param('id') userId: string) {
     return await this.pageService.getAll(userId);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('getTitle/:id')
   async getPageTitle(@Param('id') pageId: string) {
     return await this.pageService.getTitle(pageId);
   }
-  // @UseGuards(JwtAuthGuard)
-  // @Get('tree/:id')
-  // async getTree(@Param('id') userId: string) {
-  //   return await this.pageService.getElementAsTree(userId);
-  // }
+
+  // update rights
+  @UseGuards(JwtAuthGuard)
+  @Patch('updateRights')
+  async updateRights(@Body() body: UpdateRightsDto) {
+    console.log("fesses")
+    const { pageId, readRights, updateRights } = body;
+    return await this.pageService.updateRights(pageId, readRights, updateRights);
+  }
 }

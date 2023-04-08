@@ -8,6 +8,20 @@ export async function findPage(pageId: string | undefined) {
   return await sendAPICall("GET", endpoint, body);
 }
 
+export async function updateRights(pageId: string | null, readRights: boolean, updateRights: boolean) {
+
+  console.log(typeof readRights, typeof updateRights)
+  const body = {
+    pageId,
+    readRights,
+    updateRights,
+  };
+  console.log(body)
+  const endpoint = `${endpointBase}/updateRights`;
+  return await sendAPICall("PATCH", endpoint, body);
+}
+
+
 export async function findOrCreate(pageId: string | undefined) {
   const body = {
     pageId,

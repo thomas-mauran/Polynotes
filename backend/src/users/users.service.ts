@@ -26,6 +26,7 @@ export class UsersService {
     return await this.userModel.findOne({ email: email });
   }
 
+
   // SIGNUP
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { username, email, password } = createUserDto;

@@ -14,7 +14,11 @@ import { isLoggedIn } from "../utils/auth/utils";
 import ManifestoView from "../views/Manifesto/ManifestoView";
 
 const AppLayout = () => {
-  if (isLoggedIn()) {
+
+  // we want to check if the view we ask is a page view
+  const isPageView = window.location.pathname.startsWith("/page");
+  console.log(isPageView)
+  if (isPageView || isLoggedIn() ) {
     return (
       <>
         <Navbar />
@@ -37,8 +41,8 @@ const Router = createBrowserRouter(
 
       {/* <Route path="/" element={<PrivateRoutes />}> */}
       <Route path="/" element={<AppLayout />}>
-        <Route path="/workspace" element={<WorkspaceView />} />
         <Route path="/page/:id?" element={<PageView />} />
+        <Route path="/workspace" element={<WorkspaceView />} />
         <Route path="/page" element={<PageView />} />
       </Route>
     </Route>

@@ -2,10 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { StateType } from "../../types/PageTypes";
 import { BlockType } from "../../types/PageTypes";
-import { updatePage } from "../../utils/pages/pagesAPICalls";
+import { updatePage, updateRights } from "../../utils/pages/pagesAPICalls";
 
 const initialState: StateType = {
   pageId: null,
+  author: null,
+  readRights: false,
+  updateRights: false,
   blocks: [
     {
       html: "",
@@ -24,11 +27,17 @@ const pageReducer = createSlice({
   name: "page",
   initialState,
   reducers: {
+
     setPageContent: (state, action) => {
       state.pageId = action.payload.pageId;
+      state.author = action.payload.author;
+      state.readRights = action.payload.readRights;
+      state.updateRights = action.payload.updateRights;
       state.blocks = action.payload.blocks;
       state.slashMenuBlockId = action.payload.slashMenuBlockId;
     },
+
+
 
     addBlock: (state, action) => {
       const id = uuidv4();
