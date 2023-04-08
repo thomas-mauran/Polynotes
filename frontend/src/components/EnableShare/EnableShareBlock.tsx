@@ -18,7 +18,6 @@ export default function EnableShareBlock(props: PropsType) {
     readRights: props.readRights,
     updateRights: props.updateRights,
   });
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setState((prevState) => ({ ...prevState, readRights: props.readRights, updateRights: props.updateRights }));
@@ -42,14 +41,13 @@ export default function EnableShareBlock(props: PropsType) {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
   };
 
   return (
     <Box sx={{ position: "absolute", top: "0.4rem", right: "5rem" }}>
       <PopupState variant="popover" popupId="demo-popup-popover">
         {(popupState) => (
-          <div>
+        <div>
             <IconButton aria-label="Share button" {...bindTrigger(popupState)} sx={{ color: "black", width: "40px" }}>
               <IosShare sx={{ fontSize: "2rem" }} />
             </IconButton>
@@ -62,7 +60,8 @@ export default function EnableShareBlock(props: PropsType) {
               transformOrigin={{
                 vertical: "center",
                 horizontal: "right",
-              }}>
+              }}
+              >
               <Box sx={{ textAlign: "center", display: "flex", alignItems: "center", flexDirection: "column", borderRadius: "0.5rem", fontWeight: "bold", padding: "20px" }}>
                 <Box sx={{ textAlign: "center", display: "flex", alignItems: "center", flexDirection: "column", borderRadius: "0.5rem", fontWeight: "bold", padding: "20px" }}>
                   <FormGroup sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
@@ -76,7 +75,6 @@ export default function EnableShareBlock(props: PropsType) {
                       variant="contained"
                       startIcon={<FileCopy />}
                       onClick={copyToClipboard}
-                      disabled={copied}
                       sx={{
                         backgroundColor: "#3f51b5",
                         color: "white",
@@ -84,7 +82,7 @@ export default function EnableShareBlock(props: PropsType) {
                           backgroundColor: "#303f9f",
                         },
                       }}>
-                      {copied ? "Copied!" : "Copy Link"}
+                      Copy
                     </Button>
                   </Box>
                 </Box>

@@ -62,9 +62,7 @@ export class FoldersService {
     const returnTree = [];
     for (const folder of folders) {
       if (folder.childList.length > 0) {
-        console.log(folder.childList.length);
         const tree = await this.recursiveFind(folder.childList);
-        console.log(tree);
         returnTree.push({
           id: folder._id,
           title: folder.title,
@@ -87,7 +85,6 @@ export class FoldersService {
     const results: RecursiveFindResult[] = [];
 
     for (const child of childList) {
-      console.log(child);
       // Check if it is a page meaning there is no childList
       if (child.type == 'page') {
         const page = await this.pageModel.findById(child.id);

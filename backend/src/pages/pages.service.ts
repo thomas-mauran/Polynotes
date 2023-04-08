@@ -45,6 +45,8 @@ export class PagesService {
       ],
       slashMenuBlockId: null,
       author: userId,
+      readRights: false,
+      updateRights: false,
     });
 
     await this.folderModel.findByIdAndUpdate(
@@ -71,9 +73,7 @@ export class PagesService {
     }
 
     if (user && user?.id == pageFound.author) {
-      // Code to execute if the condition is true
-      pageFound.readRights = true;
-      pageFound.updateRights = true;
+      return pageFound;
     }
     if (pageFound.readRights == false) {
       throw new UnauthorizedException(

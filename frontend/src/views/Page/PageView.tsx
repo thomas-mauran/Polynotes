@@ -73,6 +73,7 @@ export default function PageView() {
       navigate("/notFound");
     }
     let { _id, blocks, childList, slashMenuBlockId, readRights, updateRights, author } = page.data;
+    console.log(readRights)
     dispatch(setPageContent({ pageId: _id, author, readRights, updateRights, blocks, childList, slashMenuBlockId }));
 
 
@@ -169,6 +170,8 @@ export default function PageView() {
   return (
     <Container fixed>
       {updateRights == false && <Box className="noEdit"></Box>}
+      {readRights}
+      {updateRights}
       {localStorage.getItem("user_id") == pageAuthor && <EnableShareBlock pageId={pageId} readRights={readRights} updateRights={updateRights} />}
 
 
