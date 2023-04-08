@@ -4,6 +4,8 @@ import { IosShare } from "@mui/icons-material";
 import "./style.css";
 import { useEffect, useState } from "react";
 import { updateRights } from "../../utils/pages/pagesAPICalls";
+import { Button, TextField } from "@mui/material";
+import { FileCopy } from "@mui/icons-material";
 
 interface PropsType {
   pageId: string | null;
@@ -12,11 +14,12 @@ interface PropsType {
 }
 
 export default function EnableShareBlock(props: PropsType) {
-  console.log("rights", props.readRights, props.updateRights)
+  console.log("rights", props.readRights, props.updateRights);
   const [state, setState] = useState({
     readRights: props.readRights,
     updateRights: props.updateRights,
   });
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setState((prevState) => ({ ...prevState, readRights: props.readRights, updateRights: props.updateRights }));
@@ -29,13 +32,18 @@ export default function EnableShareBlock(props: PropsType) {
       updateR = false;
     }
     await updateRights(props.pageId, newReadRights, updateR); // update the database
-    setState((prevState) => ({ updateRights: updateR , readRights: newReadRights }));
+    setState((prevState) => ({ updateRights: updateR, readRights: newReadRights }));
   };
-  
+
   const handleUpdateToggle = async () => {
     const newUpdateRights = !state.updateRights; // toggle the updateRights value
     await updateRights(props.pageId, state.readRights, newUpdateRights); // update the database
     setState((prevState) => ({ ...prevState, updateRights: newUpdateRights }));
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
   };
 
   return (
@@ -56,11 +64,31 @@ export default function EnableShareBlock(props: PropsType) {
                 vertical: "center",
                 horizontal: "right",
               }}>
-              <Box sx={{ textAlign: "center", display: "flex", alignItems: "center", flexDirection: "column", borderRadius: "0.5rem", fontWeight: "bold" }}>
-                <FormGroup>
-                  <FormControlLabel control={<Switch color="secondary" checked={state.readRights} onChange={handlePublicToggle} />} label="Share the file" labelPlacement="top" />
-                  {state.readRights && <FormControlLabel control={<Switch color="secondary" checked={state.updateRights} onChange={handleUpdateToggle} />} label="Allow modifications" labelPlacement="top" />}
-                </FormGroup>
+              <Box sx={{ textAlign: "center", display: "flex", alignItems: "center", flexDirection: "column", borderRadius: "0.5rem", fontWeight: "bold", padding: "20px" }}>
+                <Box sx={{ textAlign: "center", display: "flex", alignItems: "center", flexDirection: "column", borderRadius: "0.5rem", fontWeight: "bold", padding: "20px" }}>
+                  <FormGroup sx={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+                    <FormControlLabel control={<Switch color="secondary" checked={state.readRights} onChange={handlePublicToggle} />} label={<Box sx={{ fontWeight: "bold" }}>Public</Box>} labelPlacement="top" />
+                    {state.readRights && <FormControlLabel control={<Switch color="secondary" checked={state.updateRights} onChange={handleUpdateToggle} />} label={<Box sx={{ fontWeight: "bold" }}>Enable editing</Box>} labelPlacement="top" />}
+                  </FormGroup>
+
+                  <Box sx={{ display: "flex", alignItems: "center", marginTop: "20px" }}>
+                    <TextField variant="outlined" size="small" value={window.location.href} InputProps={{ readOnly: true }} sx={{ mr: 1 }} />
+                    <Button
+                      variant="contained"
+                      startIcon={<FileCopy />}
+                      onClick={copyToClipboard}
+                      disabled={copied}
+                      sx={{
+                        backgroundColor: "#3f51b5",
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: "#303f9f",
+                        },
+                      }}>
+                      {copied ? "Copied!" : "Copy Link"}
+                    </Button>
+                  </Box>
+                </Box>
               </Box>
             </Popover>
           </div>
