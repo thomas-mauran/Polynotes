@@ -17,13 +17,16 @@ import { FoldersModule } from './folders/folders.module';
     PagesModule,
     UsersModule,
     MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService): Promise<MongooseModuleOptions> => ({
+      useFactory: async (
+        configService: ConfigService,
+      ): Promise<MongooseModuleOptions> => ({
         uri: configService.get<string>('MONGO_URL'),
         useNewUrlParser: true,
         useUnifiedTopology: true,
       }),
       inject: [ConfigService], // Inject the ConfigService.
     }),
+
     ConfigModule.forRoot({ isGlobal: true }),
     MailerModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
