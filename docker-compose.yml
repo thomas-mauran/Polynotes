@@ -4,31 +4,32 @@ services:
   mongodb:  
     image: mongo
     restart: always
-    container_name: polynote-mongodb
+    container_name: polynotes-mongodb
     volumes:
       - ./mnt/data/polynote:/data/db
     networks:
-      - backend
+      polynote_net:
+        ipv4_address: 172.28.1.2
 
   backend:
     depends_on:
     - mongodb
-    container_name: polynote-backend
+    container_name: polynotes-backend
     build: ./backend
     ports: 
     - "3000:3000"
-    networks:
-    - backend
     env_file:
     - ./backend/.env
     extra_hosts:
     - "host.docker.internal:host-gateway"
     command: npm run start:dev
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/mydatabase  
+      - MONGO_URI=mongodb://mongodb:27017/mydatabase
+    networks:
+    - polynote_net
   
   frontend:
-    container_name: polynote-frontend
+    container_name: polynotes-frontend
     build: 
       context: ./frontend
       target: prod
@@ -37,13 +38,16 @@ services:
         VITE_APP_BASE_URL: ${VITE_APP_BASE_URL}
     env_file:
       - ./frontend/.env
-
     ports: 
     - "80:80"
     - "443:443"
 
 networks:
-  backend:
+  polynote_net:
     driver: bridge
-
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+          gateway: 172.28.0.1
   
