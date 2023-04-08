@@ -33,8 +33,6 @@ interface propsType {
 export default function TextBlock(props: propsType) {
   const dispatch = useDispatch();
 
-  const [state, setState] = useState(props.defaultValue);
-  const ref = React.createRef() as any;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const editor = useEditor({
     editable: props.isEditable,
@@ -64,6 +62,10 @@ export default function TextBlock(props: propsType) {
       }
     }
   }, [editor, props.isFocused]);
+
+  useEffect(() => {
+    editor?.setEditable(props.isEditable);
+  }, [props.isEditable]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     // we update online if it's a text key

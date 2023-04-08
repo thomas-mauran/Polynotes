@@ -3,7 +3,7 @@ import { Box, Container, IconButton, Menu, MenuItem, Popover, Typography } from 
 
 // Style
 import styled from "@emotion/styled";
-import { MouseEvent, useEffect } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 // Block components
 import ImageBlock from "../../components/Block/ImageBlock";
@@ -39,7 +39,7 @@ margin: 5% 15% 5% 10%;
 `);
 
 export default function PageView() {
-  // CONSTANTS
+
 
   // HOOKs
   setAutoFreeze(false);
@@ -51,6 +51,9 @@ export default function PageView() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [isEditable, setIsEditable] = useState(false);
+
 
   // REDUX
   const pageAuthor = useSelector((state: RootState) => state.pageReduc.author);
@@ -73,9 +76,10 @@ export default function PageView() {
       navigate("/notFound");
     }
     let { _id, blocks, childList, slashMenuBlockId, readRights, updateRights, author } = page.data;
-    console.log(readRights)
     dispatch(setPageContent({ pageId: _id, author, readRights, updateRights, blocks, childList, slashMenuBlockId }));
-
+    if(localStorage.getItem("user_id") == author || updateRights == true){
+      setIsEditable(true);
+    }
 
   };
 
@@ -147,7 +151,7 @@ export default function PageView() {
               <SettingsIcon />
             </IconButton>
           </Box>
-          <MultiColumnBlock uuid={item.id} defaultValue={item.html as BlockType[][]} index={index} isEditable={updateRights}/>
+          <MultiColumnBlock uuid={item.id} defaultValue={item.html as BlockType[][]} index={index} isEditable={isEditable}/>
         </Box>
       );
     } else {
@@ -161,7 +165,7 @@ export default function PageView() {
               <AddIcon />
             </IconButton>
           </Box>
-          <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} className={item.type} isFocused={item.focus} isEditable={updateRights} />
+          <TextBlock uuid={item.id} defaultValue={item.html as string} index={index} className={item.type} isFocused={item.focus} isEditable={isEditable} />
         </Box>
       );
     }
@@ -169,9 +173,7 @@ export default function PageView() {
 
   return (
     <Container fixed>
-      {updateRights == false && <Box className="noEdit"></Box>}
-      {readRights}
-      {updateRights}
+      {isEditable == false && <Box className="noEdit"></Box>}
       {localStorage.getItem("user_id") == pageAuthor && <EnableShareBlock pageId={pageId} readRights={readRights} updateRights={updateRights} />}
 
 
