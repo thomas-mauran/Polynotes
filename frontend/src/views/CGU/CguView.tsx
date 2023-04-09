@@ -97,21 +97,21 @@ export default function CguView() {
             9. Governing Law
           </Typography>
           <Typography variant="body1" gutterBottom>
-            These Terms shall be governed and construed in accordance with the laws of [INSERT YOUR JURISDICTION], without regard to its conflict of law provisions. Any disputes arising under or in connection with these Terms shall be subject to the
-            exclusive jurisdiction of the courts located in [INSERT YOUR JURISDICTION].
+            These Terms shall be governed and construed in accordance with the laws of Montpellier, without regard to its conflict of law provisions. Any disputes arising under or in connection with these Terms shall be subject to the
+            exclusive jurisdiction of the courts located in Montpellier.
           </Typography>
           <Typography variant="h6" gutterBottom>
             10. Changes to the Terms
           </Typography>
           <Typography variant="body1" gutterBottom>
-            We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least [INSERT NOTICE PERIOD] days' notice prior to any new terms taking effect. What constitutes a
+            We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 10 days' notice prior to any new terms taking effect. What constitutes a
             material change will be determined at our sole discretion.
           </Typography>
           <Typography variant="h6" gutterBottom>
             11. Contact Us
           </Typography>
           <Typography variant="body1" gutterBottom>
-            If you have any questions about these Terms, please contact us at [INSERT YOUR CONTACT INFORMATION].
+            If you have any questions about these Terms, please contact us at thomas.mauran@etu.umontpellier.fr .
           </Typography>
         </Typography>
       </Box>
