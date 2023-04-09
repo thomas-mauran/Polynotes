@@ -10,6 +10,7 @@ import page from "../../assets/png/manifesto/page.png";
 import login from "../../assets/png/manifesto/login.png";
 import signup from "../../assets/png/manifesto/signup.png";
 import workspace from "../../assets/png/manifesto/workspace.png";
+import Footer from "../../components/Footer/Footer";
 
 export default function Manifesto() {
   const [currentStyle, setCurrentStyle] = useState({});
@@ -53,6 +54,8 @@ export default function Manifesto() {
         <Card title="Note-Taking Made Easy" description="Upgrade your note-taking experience with these intuitive and user-friendly interfaces." imgSrc={page} />
         <Card title="Stunning Page Designs" description="Explore these visually stunning page designs that showcase the possibilities of web design." imgSrc={page2} isRight />
       </div>
+      <Footer />
+
     </Box>
   );
 }

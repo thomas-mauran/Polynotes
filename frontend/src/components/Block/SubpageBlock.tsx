@@ -6,9 +6,8 @@ import { closeSettings, updateHTML } from "../../redux/reducers/pageReducer";
 import { useDispatch } from "react-redux";
 import { getPageTitle, getPages } from "../../utils/pages/pagesAPICalls";
 import { Link as LinkRouter } from "react-router-dom";
-import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import { SelectChangeEvent } from '@mui/material/Select';
-
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 interface propsType {
   index: number;
   defaultValue: { id: string; label: string };
@@ -102,7 +101,7 @@ export default function SubpageBlock(props: propsType) {
                 boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
               },
             }}>
-            <InsertDriveFileOutlinedIcon />
+            <OpenInNewIcon />
             <LinkRouter to={`/page/${inputs.id}`}>{inputs.label}</LinkRouter>
           </Box>
         </Box>

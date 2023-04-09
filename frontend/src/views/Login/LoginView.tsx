@@ -33,7 +33,6 @@ export default function LoginView() {
           </Typography>
         </Box>
       </Container>
-      <Footer />
     </Container>
   );
 }

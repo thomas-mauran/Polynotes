@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import errorCat from "../../assets/gifs/errorCat.gif"
 import './style.css'
+import Footer from "../../components/Footer/Footer";
 
 export default function NotFoundView() {
   return (
@@ -13,6 +14,7 @@ export default function NotFoundView() {
       <Typography variant="h6" margin={"20px"}>
         Let's go back in the <Link to={'/workspace'} style={{textDecoration: "underline"}}>safe place</Link>
       </Typography>
+      <Footer />
     </Box>
   );
 }
