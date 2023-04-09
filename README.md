@@ -239,7 +239,7 @@ We setup a grafana dashboard to monitor the cluster. I used the same [kube prome
 
 
 
-## Conclusion
+## Conclusion / Post Mortem
 
 In the end I am happy with the result. I learned a lot of new things way more than expected and I am really happy to have been able to work on this project. Looking back at it I made multiple mistakes especially in the frontend part for things like the database block that I should have been designing by myself instead of trying to make two library work together since the result is not that great and that made me loose even more time in the end. Same thing for react redux, I could have save some time on the api calls by using the create api function provided. I also spent a lot of time refactoring my code multiple times, especially the page reducer part. 
 This multiple refactors where due to new features like the database blocks or the multicolumn blocks that I didn't planned in the base conception of the infrastructure. I think that if I had planned it better I would have been able to save a lot of time. 
