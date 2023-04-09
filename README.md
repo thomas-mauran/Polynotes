@@ -176,7 +176,7 @@ In this section I will explain the choices I made for the tech stack and why I c
 
 <img src="https://user-images.githubusercontent.com/25181517/183897015-94a058a6-b86e-4e42-a37f-bf92061753e5.png" alt="react logo" width="50" /> **React**
 
-React was imposed as a requirement for the project. I had already used it for a small project but didn't have a big background with it. It was honestly harder than vue js, especially in the state and reactivity management. When using react I feel like I have to think more about the state management and the reactivity to optimize rendering and avoid unnecessary re-renders. Another thing I didn't appreciate was the way to manage the jsx html code. Things like conditional rendering or loops aren't as easy to read as in other frameworks like vue js or svelte.
+React was imposed as a requirement for the project. I had already used it for a small project but didn't have a big background with it. It was honestly harder than vue js, especially in the state and reactivity management. When using react I feel like I have to think more about the state management and the reactivity to optimize rendering and avoid unnecessary re-renders. Another thing I didn't appreciate was the way to manage the jsx html code. Things like conditional rendering or loops aren't as easy to read as in other frameworks like vue js or svelte. In the other hand react is currently one of the most popular frameworks and it is used by a lot of big companies. It is also a framework that is well documented and has a lot of resources to learn it.
 
 <img src="https://user-images.githubusercontent.com/25181517/183890598-19a0ac2d-e88a-4005-a8df-1ee36782fde1.png" alt="Typescript logo" width="50" /> **Typescript**
 
@@ -188,7 +188,7 @@ I used Redux to manage the state of the application. It was the first time I wor
 
 <img src="https://mui.com/static/logo.png" alt="MUI logo" width="50" /> **MUI**
 
-I used MUI for the UI components. It was honestly great and also the first time I used a component library. My code isn't amazing sometimes since I didn't know if it was better to style the component with the `sx` prop or to use a separate stylesheet but overall I had a good experience with it.
+I used MUI for the UI components. It was honestly great and also the first time I used a component library. My code isn't amazing sometimes since I didn't know if it was better to style the component with the `sx` prop or to use a separate stylesheet but overall I had a good experience with it. One of the other great thing about MUI is that it is well documented and has a lot of resources to learn it since it is one of the most popular component libraries.
 
 <img src="https://vitejs.dev/logo-with-shadow.png" alt="Vite logo" width="50" /> **Vite**
 
@@ -208,7 +208,7 @@ I didn't want to use Express once again so I decided to try NestJS since I had h
 
 <img src="https://cdn.iconscout.com/icon/free/png-256/mongodb-3629020-3030245.png" alt="Mongodb logo" width="50" /> **Mongodb**
 
-A document oriented database was I think one of the best choices for this kind of project. Whenever pages don't have strong relations between them, or when it's important to write fast, a document oriented database is a great choice.Even thought I am proud of the database structure, I think it could have been better. I feel like some parts are looking a bit like a relational database but for a first time it was a good introduction to practice what I learned in the mongo DB course.
+A document oriented database was I think one of the best choices for this kind of project. Whenever pages don't have strong relations between them, or when it's important to write fast, a document oriented database is a great choice.Even thought I am proud of the database structure, I think it could have been better. I feel like some parts are looking a bit like a relational database but for a first time it was a good introduction to practice what I learned in the mongo DB course. On another side having a very flexible document oriented database isn't always a good thing. It can be hard to find the right structure for your data and it can be hard to optimize the queries.
 
 ---
 
