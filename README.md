@@ -5,18 +5,39 @@
   <img src="https://media.tenor.com/BcUevwfD6zUAAAAC/the-wind-rises-writing.gif" alt="the wind rises gif" width="70%" style="border-radius: 5px; box-shadow: 3px 3px 10px black; max-width: 600px; min-width: 300px;">
 </div>
 
+-----
+
+## Table of contents
+
+- [Screenshots](#screenshots)
+- [Roadmap](#roadmap)
+- [Environment Variables](#environment-variables)
+- [Run Locally](#run-locally)
+  - [Prerequisites](#prerequisites)
+- [Features](#features)
+- [Frontend Architecture](#frontend-architecture)
+  - [Page view and block render](#page-view-and-block-render)
+- [Swagger API Documentation](#swagger-api-documentation)
+- [Deployment infrastructure](#deployment-infrastructure)
+  - [CI/CD](#ci-cd)
+    - [Explanations](#explanations)
+  - [Secret management](#secret-management)
+- [Tech Stack](#tech-stack)
+  - [Choices](#choices)
+    - [Frontend](#frontend)
+    - [Backend](#backend)
+    - [Infrastructure](#infrastructure)
+- [Conclusion](#conclusion)
+- [License](#license)
+- [Badges](#badges)
+- [Authors](#authors)
+
 ## Screenshots
 
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
-  <div style="padding: 1rem; ">
-    <img src="./readme-assets/manifesto.png" alt="Manifesto" style="width: 33%; ">
-  </div>
-  <div style="padding: 1rem; ">
-    <img src="./readme-assets/workspace.png" alt="Workspace" style="width: 33%; ">
-  </div>
-  <div style="padding: 1rem; ">
-    <img src="./readme-assets/page1.png" alt="Page Example" style="width: 33%; ">
-  </div>
+<div style="display: flex;">
+    <img src="./readme-assets/page1.png" alt="Page Example" style="height: 200px;">
+    <img src="./readme-assets/manifesto.png" alt="Manifesto" style="height: 200px;">
+    <img src="./readme-assets/workspace.png" alt="Workspace" style="height: 200px;">
 </div>
 
 ## Roadmap
@@ -82,13 +103,37 @@ To help you fill the .env files you can copy the .env.example files and rename t
 |   ❌   | Realtime collaboration | Collaborate with other users on notes in real-time                                                                                |
 |   ❌   | Page and folder delete | For the moment you can't delete a page or a folder from the client                                                                |
 
+
+## Frontend Architecture
+
+
+### Page view and block render
+
+![Frontend infrastructure schema](./readme-assets/pageDiagram.png)
+
+**Schema explanation**
+
+This schema explains the full process of rendering a page. Here is explained each part of the schema as splitted by arrow color.
+
+**1. Blue arrows: Fetch page and provision store**
+Whenever a user navigates to a page, on the /page/:id frontend route, the page view component useEffect gets triggered. This useEffect will call the [findPage](https://github.com/thomas-mauran/Polynotes/blob/445747c09437a20537643486284cda44ee87899f/frontend/src/utils/pages/pagesAPICalls.ts#L5) function that will fetch the page from the backend and return the page object. This page object will be used to provision the store with the page data.
+
+**2. Red arrows: Update the store and the database**
+Whenever a block gets updated it will always communicate with the store to update the page, this page update will also send the new page state to the database using the [updatePage](https://github.com/thomas-mauran/Polynotes/blob/445747c09437a20537643486284cda44ee87899f/frontend/src/utils/pages/pagesAPICalls.ts#L56) function. This function will send a PATCH request to the backend that will update the page in the database. Before refactoring it this way the page state was managed in the pageView component. It was passing as props to it's block child function to update it's store like an event driven architecture. This was not a good solution because the more block you add the more props you have to pass and take care of, it was adding a lot of complexity to the whole process. I really decided to refactor this part of the code when I had to make the multicolumn block. Since this block could also have child it would have been to much complex to manage the store in the pageView component. Whenever a block needs to update the store it will call a dispatch function and pass it's uuid. The dispatch function will then use reccursion to find the block in the store and proceed to the needed action. This way I didn't had to care about a `focus index` in the page state, I just had to care about the block uuid.
+
+**3. Green arrows: Render cycle of the page**
+
+When the page store is updated the pageView component will rerender the right block component. Rendering only the right block component is optimizing the rendering process and will prevent the page to rerender all the blocks when only one of them is updated. 
+
+
+
 ## Swagger API Documentation
 
 Here is the link to the swagger documentation of the API: [Swagger Link](https://polynotes.cluster-2022-6.dopolytech.fr/api/swagger)
 
-## Infrastructure
+## Deployment infrastructure
 
-For this project and the following ones we decided with [@sylvain-pierrot](https://www.github.com/sylvain-pierrot) and [@charley04310](https://github.com/charley04310) to connect our k3s clusters into a single one. This way we can share the same infrastructure and deploy our applications on the same server allowing us in the future to have a fully scalable and secure infrastructure.
+For this project and the following ones we decided with [@sylvain-pierrot](https://www.github.com/sylvain-pierrot) and [@charley04310](https://github.com/charley04310) to connect our k3s clusters into a single one. This way we can share the same infrastructure and deploy our applications on the same server allowing us in the future to have a fully scalable and secure infrastructure. This infrastructure will be able to prevent sustain a lot of traffic and will be able to scale up and down automatically. With multiple nodes the cluster will be able to keep services up even if a node goes down.
 
 ### CI/CD
 
@@ -189,13 +234,18 @@ We used terraform with sylvain and charley to manage our cluster infrastructure 
 
 We setup a grafana dashboard to monitor the cluster. I used the same [kube prometheus stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) that I used on my personal cluster. I think it's a great tool to monitor the cluster and to be able to see what's going on and understand where you can optimize ressources, either by upscalling or improving the codebase. I wanted to try adding a custom ELK stack to monitor the frontend logs and especially the localisation of the users to create a map in the admin dashboard but I didn't have the time to do it.
 
-**Admin console dashboard example: **
+**Admin console dashboard example:**
   <img src="./readme-assets/grafana.png" alt="Grafana admin console" >
 
 
 
-## PostMortem
+## Conclusion
 
+In the end I am happy with the result. I learned a lot of new things way more than expected and I am really happy to have been able to work on this project. Looking back at it I made multiple mistakes especially in the frontend part for things like the database block that I should have been designing by myself instead of trying to make two library work together since the result is not that great and that made me loose even more time in the end. Same thing for react redux, I could have save some time on the api calls by using the create api function provided. I also spent a lot of time refactoring my code multiple times, especially the page reducer part. 
+This multiple refactors where due to new features like the database blocks or the multicolumn blocks that I didn't planned in the base conception of the infrastructure. I think that if I had planned it better I would have been able to save a lot of time. 
+As making mistakes is part of learning I am happy to have made them to understand why they are mistakes and how to avoid them.
+
+With more time I would have liked to refactor part of my code especially the pageView render to split it in multiple component and make it more readable. I would also have liked to add simple but very useful features like page / folder deletion and better styling on some parts.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
