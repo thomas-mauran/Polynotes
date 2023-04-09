@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: thomasmauran/polynotes-frontend
   pullPolicy: Always
-  tag: 'a88cc67'
+  tag: '72d528c'
 
 resources:
   limits:
