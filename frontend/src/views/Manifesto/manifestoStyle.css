@@ -16,11 +16,6 @@
   flex-direction: column;
 }
 
-@media (max-width: 600px) {
-  .container {
-    height: 500px;
-  }
-}
 
 .title {
   color: #fff;
@@ -38,20 +33,10 @@ background: linear-gradient(301deg, rgba(30,9,121,1) 0%, rgba(156,39,176,1) 0%, 
   -moz-text-fill-color: transparent;
 }
 
-@media (max-width: 600px) {
-  .title {
-    font-size: 32px;
-  }
-}
 
-.subtitle {
-  color: #fff;
-  text-align: center;
-  font-size: 24px;
-}
 
 @media (max-width: 600px) {
-  .subtitle {
-    font-size: 18px;
+  .container {
+    height: 500px;
   }
 }

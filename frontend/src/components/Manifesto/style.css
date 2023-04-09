@@ -12,7 +12,7 @@
 }
 
 .manifestoImg {
-  min-width: 100px;
+  min-width: 300px;
   width: 80%;
   border-radius: 10px;
   box-shadow: 7px 7px 17px black;
@@ -33,4 +33,10 @@
   font-weight: bold;
   padding-bottom: 30px;
   
+}
+
+@media (max-width: 600px) {
+  .descriptionBox{
+    display: none;
+  }
 }
