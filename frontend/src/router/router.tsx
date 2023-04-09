@@ -12,6 +12,7 @@ import VerifyEmail from "../views/VerifyEmail/VerifyEmail";
 import PageView from "../views/Page/PageView";
 import { isLoggedIn } from "../utils/auth/utils";
 import ManifestoView from "../views/Manifesto/ManifestoView";
+import Footer from "../components/Footer/Footer";
 
 const AppLayout = () => {
 
@@ -22,6 +23,7 @@ const AppLayout = () => {
       <>
         <Navbar />
         <Outlet />
+        <Footer />
       </>
     );
   } else {
@@ -40,6 +42,8 @@ const Router = createBrowserRouter(
 
       {/* <Route path="/" element={<PrivateRoutes />}> */}
       <Route path="/" element={<AppLayout />}>
+      <Route path="/" element={<WorkspaceView />} />
+
         <Route path="/page/:id?" element={<PageView />} />
         <Route path="/workspace" element={<WorkspaceView />} />
         <Route path="/page" element={<PageView />} />

@@ -7,3 +7,7 @@ a{
   color: black;
   text-decoration: none;
 }
+
+html{
+  min-height: 100vh;
+}

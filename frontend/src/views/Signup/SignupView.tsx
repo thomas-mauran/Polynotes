@@ -1,14 +1,11 @@
-import { Alert, Button, Checkbox, Container, Divider, FormControl, FormControlLabel, FormHelperText, Input, InputLabel, Snackbar, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Container, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 
 import SignupForm from "../../components/signupForm/SignupForm";
 
 import catGif from "../../assets/gifs/catSignup.gif";
-import { useState } from "react";
 
-import { signup } from "../../utils/users/usersAPICalls";
 // Style
 export default function SignupView() {
   const Box = styled.div`
