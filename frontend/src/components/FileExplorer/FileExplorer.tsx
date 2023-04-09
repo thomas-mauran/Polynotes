@@ -101,6 +101,7 @@ export default function FileExplorer(props: Props) {
   };
   const handlePopoverClose = () => {
     setAnchorEl(null);
+    setTextFieldInput("");
   };
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -189,7 +190,9 @@ export default function FileExplorer(props: Props) {
           transformOrigin={{
             vertical: "top",
             horizontal: "center",
-          }}>
+          }} 
+          
+          >
           <Box margin={"10px 20px"} sx={{ borderRadius: "10px" }}>
             <Typography variant="body1" color="text.primary" gutterBottom fontWeight={"bold"}>
               {anchorEl?.id === "addFolderBtn" ? "New folder name" : "New page title"}

@@ -3,7 +3,7 @@ import { Box, Container, IconButton, Menu, MenuItem, Popover, Typography } from 
 
 // Style
 import styled from "@emotion/styled";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 
 // Block components
 import ImageBlock from "../../components/Block/ImageBlock";
@@ -41,6 +41,15 @@ margin: 5% 15% 5% 10%;
 export default function PageView() {
 
 
+  // REDUX
+  const pageAuthor = useSelector((state: RootState) => state.pageReduc.author);
+  const pageId = useSelector((state: RootState) => state.pageReduc.pageId);
+  const readRights = useSelector((state: RootState) => state.pageReduc.readRights);
+  const updateRights = useSelector((state: RootState) => state.pageReduc.updateRights);
+  const blocks = useSelector((state: RootState) => state.pageReduc.blocks);
+  const slashMenuBlockId = useSelector((state: RootState) => state.pageReduc.slashMenuBlockId);
+
+
   // HOOKs
   setAutoFreeze(false);
   const { id } = useParams();
@@ -54,14 +63,14 @@ export default function PageView() {
 
   const [isEditable, setIsEditable] = useState(false);
 
+  const anchorElRef = useRef<HTMLElement | null>(null);
 
-  // REDUX
-  const pageAuthor = useSelector((state: RootState) => state.pageReduc.author);
-  const pageId = useSelector((state: RootState) => state.pageReduc.pageId);
-  const readRights = useSelector((state: RootState) => state.pageReduc.readRights);
-  const updateRights = useSelector((state: RootState) => state.pageReduc.updateRights);
-  const blocks = useSelector((state: RootState) => state.pageReduc.blocks);
-  const slashMenuBlockId = useSelector((state: RootState) => state.pageReduc.slashMenuBlockId);
+  useEffect(() => {
+    const element = document.getElementById(slashMenuBlockId as string);
+    anchorElRef.current = element ?? null;
+  }, [slashMenuBlockId]);
+  
+
 
   // FUNCTIONS
   const handleClickMenu = (e: MouseEvent) => {
@@ -77,10 +86,9 @@ export default function PageView() {
     }
     let { _id, blocks, childList, slashMenuBlockId, readRights, updateRights, author } = page.data;
     dispatch(setPageContent({ pageId: _id, author, readRights, updateRights, blocks, childList, slashMenuBlockId }));
-    if(localStorage.getItem("user_id") == author || updateRights == true){
+    if (localStorage.getItem("user_id") == author || updateRights == true) {
       setIsEditable(true);
     }
-
   };
 
   const blockElements = blocks.map((item: BlockType, index: number) => {
@@ -151,7 +159,7 @@ export default function PageView() {
               <SettingsIcon />
             </IconButton>
           </Box>
-          <MultiColumnBlock uuid={item.id} defaultValue={item.html as BlockType[][]} index={index} isEditable={isEditable}/>
+          <MultiColumnBlock uuid={item.id} defaultValue={item.html as BlockType[][]} index={index} isEditable={isEditable} />
         </Box>
       );
     } else {
@@ -176,9 +184,8 @@ export default function PageView() {
       {isEditable == false && <Box className="noEdit"></Box>}
       {localStorage.getItem("user_id") == pageAuthor && <EnableShareBlock pageId={pageId} readRights={readRights} updateRights={updateRights} />}
 
-
       <MainBox id="mainBlock">
-        <Menu anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={slashMenuBlockId !== null} onClose={() => dispatch(closeHelper())}>
+        <Menu anchorEl={document.getElementById(slashMenuBlockId as string)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }} transformOrigin={{ vertical: "top", horizontal: "center" }} open={slashMenuBlockId !== null} onClose={() => dispatch(closeHelper())}>
           <MenuItem id="h1" onClick={handleClickMenu} key="h1">
             <img src="https://cdn-icons-png.flaticon.com/512/2800/2800015.png" alt="H1 block" className="menuImg" />
             <Typography variant="h5">h1</Typography>

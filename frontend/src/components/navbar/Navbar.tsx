@@ -22,11 +22,10 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { useState, useEffect } from "react";
 
-import { Link, Route, Router, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TreeFileExplorer from "../../components/TreeFileExplorer/TreeFileExplorer";
 
 import "./style.css";
-import { useTheme } from "@emotion/react";
 import { getTree } from "../../utils/folders/folderAPICalls";
 
 const drawerWidth = 300;
@@ -95,11 +94,6 @@ export default function PrimarySearchAppBar() {
   const menuId = "primary-search-account-menu";
   const listItems = [
     {
-      listIcon: <AddIcon />,
-      listText: "Create",
-      link: "/page",
-    },
-    {
       listIcon: <HomeIcon />,
       listText: "My workspace",
       link: "/workspace",
@@ -107,22 +101,22 @@ export default function PrimarySearchAppBar() {
     {
       listIcon: <SharedIcon />,
       listText: "Shared with me",
-      link: "/shared",
+      link: "/workspace",
     },
     {
       listIcon: <RestoreIcon />,
       listText: "Recent",
-      link: "/recent",
+      link: "/workspace",
     },
     {
       listIcon: <StarIcon />,
       listText: "Stared",
-      link: "/stared",
+      link: "/workspace",
     },
     {
       listIcon: <DeleteIcon />,
       listText: "Trash",
-      link: "/trash",
+      link: "/workspace",
     },
   ];
 
