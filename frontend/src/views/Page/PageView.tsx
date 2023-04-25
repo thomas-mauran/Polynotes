@@ -50,7 +50,7 @@ export default function PageView() {
   const slashMenuBlockId = useSelector((state: RootState) => state.pageReduc.slashMenuBlockId);
 
 
-  // HOOKs
+  // HOOKS
   setAutoFreeze(false);
   const { id } = useParams();
 
